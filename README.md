@@ -8,7 +8,7 @@
 
 # obsidianator
 
-[![CI](https://github.com/Fx64b/obsidianator/actions/workflows/ci.yml/badge.svg)](https://github.com/Fx64b/obsidianator/actions/workflows/ci.yml)
+[![CI](https://github.com/Fx64b/obsidianator/actions/workflows/ci.yml/badge.svg)](https://github.com/Fx64b/obsidianator/actions/workflows/ci.yaml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 Turn an [Obsidian](https://obsidian.md) vault into a self-contained static website — or serve it directly in the browser without writing anything to disk.
