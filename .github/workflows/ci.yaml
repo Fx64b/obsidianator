@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+
+      - uses: pnpm/action-setup@v5.0.0
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v6.4.0
+        with:
+          node-version: '22'
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+
+      - uses: actions/setup-go@v6.4.0
+        with:
+          go-version-file: go.mod
+
+      - name: Install frontend dependencies
+        run: cd web && pnpm install --frozen-lockfile
+
+      - name: TypeScript type-check
+        run: cd web && pnpm exec tsc --noEmit
+
+      - name: Build frontend
+        run: cd web && pnpm build
+
+      - name: Go test
+        run: go test ./...
+
+      - name: Go build
+        run: go build -o obsidianator .
