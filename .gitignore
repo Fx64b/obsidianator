@@ -1,0 +1,8 @@
+dist/
+.claude/
+obsidianator
+static/
+vault-data.json
+.idea/
+node_modules/
+graphify-out/
