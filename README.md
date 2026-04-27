@@ -19,16 +19,14 @@ Turn an [Obsidian](https://obsidian.md) vault into a self-contained static websi
 
 ## Install
 
-**Go install** (builds from source, puts binary in `$GOPATH/bin`):
-```sh
-go install github.com/Fx64b/obsidianator@latest
-```
+Either download it from latest release or:
 
 **From source:**
 ```sh
 git clone https://github.com/Fx64b/obsidianator
 cd obsidianator
 make all          # builds frontend then Go binary
+make install      # adds to path
 ```
 
 **Requirements:** Go 1.21+, Node 18+, pnpm.
