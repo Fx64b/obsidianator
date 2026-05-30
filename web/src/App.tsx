@@ -133,14 +133,16 @@ export default function App() {
 		style.textContent = dark ? githubDarkCss : githubCss;
 	}, [dark]);
 
-	// Sync active note with URL hash (#<noteId>).
-	// On initial load: prefer hash over localStorage. On note change: write hash.
+	// Sync active note from URL hash on vault load (initial mount + live reload).
+	// Must NOT depend on activeNoteId — otherwise it fights the hash-writer effect
+	// below and creates an infinite A↔B loop on in-app back/forward navigation,
+	// where the hash and activeNoteId are briefly out of sync.
 	useEffect(() => {
 		if (!vault || vault.notes.length === 0) return;
 		const hashId = location.hash.slice(1);
 		const fromHash = hashId ? vault.notes.find((n) => n.id === hashId) : null;
 		if (fromHash) {
-			if (activeNoteId !== fromHash.id) setActiveNoteId(fromHash.id);
+			setActiveNoteId(fromHash.id);
 		} else if (
 			!activeNoteId ||
 			!vault.notes.find((n) => n.id === activeNoteId)
@@ -148,7 +150,7 @@ export default function App() {
 			setActiveNoteId(vault.notes[0].id);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [vault, activeNoteId, setActiveNoteId]);
+	}, [vault]);
 
 	// Keep hash in sync whenever activeNoteId changes
 	useEffect(() => {

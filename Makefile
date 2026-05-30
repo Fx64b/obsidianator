@@ -9,7 +9,7 @@ all: web build
 
 # Build the Vite frontend into ./static
 web:
-	cd web && pnpm build
+	cd web && pnpm install && pnpm build
 
 # Build the Go binary (embeds ./static); strip debug info for smaller binary
 build:

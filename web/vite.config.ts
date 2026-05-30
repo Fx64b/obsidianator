@@ -13,5 +13,18 @@ export default defineConfig({
 	build: {
 		outDir: "../static",
 		emptyOutDir: true,
+		rollupOptions: {
+			output: {
+				// Collapse all of mermaid's internal chunks (dagre, sequence,
+				// flowchart, etc.) into a single chunk. Mermaid normally splits
+				// each diagram type into its own dynamically-imported sub-chunk;
+				// any one of those failing to load (transient network, aborted
+				// fetch from a remount) breaks that diagram type for the rest of
+				// the session because the browser caches failed module promises.
+				manualChunks(id) {
+					if (id.includes("node_modules/mermaid")) return "mermaid";
+				},
+			},
+		},
 	},
 });

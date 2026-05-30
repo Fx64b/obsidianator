@@ -9,9 +9,22 @@ import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 
 // Allow callout sentinel attributes produced by the Go parser, plus elements
 // needed by GFM (mark, task-list checkboxes) and syntax highlighting (className).
+// `clobberPrefix: ""` disables the default `user-content-` prefix — remark-gfm
+// already emits footnote ids with that prefix, and re-prefixing would break the
+// matching `#user-content-fn-N` hrefs.
 const sanitizeSchema = {
 	...defaultSchema,
+	clobberPrefix: "",
 	tagNames: [...(defaultSchema.tagNames ?? []), "mark"],
+	protocols: {
+		...defaultSchema.protocols,
+		href: [
+			...((defaultSchema.protocols?.href ?? []) as string[]),
+			"wiki",
+			"wiki-missing",
+			"tag",
+		],
+	},
 	attributes: {
 		...defaultSchema.attributes,
 		span: [
@@ -24,7 +37,6 @@ const sanitizeSchema = {
 		input: ["type", "checked", "disabled"],
 	},
 };
-import mermaid from "mermaid";
 import {
 	Copy,
 	Check,
@@ -394,37 +406,51 @@ const COLOR_CLASSES: Record<
 };
 
 // ---------------------------------------------------------------------------
-// MermaidBlock — renders a mermaid diagram from raw code
+// MermaidBlock — renders a mermaid diagram from raw code.
+//
+// `suppressErrorRendering: true` is critical: without it, mermaid inserts its
+// bomb / "Syntax error in text" SVG directly into document.body on failure,
+// where it persists across navigations and pollutes unrelated notes. With it,
+// failures only surface through the promise's catch — our own error UI below.
 // ---------------------------------------------------------------------------
-let mermaidReady = false;
-
 function MermaidBlock({ code }: { code: string }) {
 	const ref = useRef<HTMLDivElement>(null);
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		const isDark = document.documentElement.classList.contains("dark");
-		mermaid.initialize({
-			startOnLoad: false,
-			theme: isDark ? "dark" : "default",
-			securityLevel: "strict",
-		});
-		mermaidReady = true;
-
 		const id = `mermaid-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-		mermaid
-			.render(id, code)
-			.then(({ svg }) => {
+		let cancelled = false;
+
+		(async () => {
+			try {
+				const { default: mermaid } = await import("mermaid");
+				if (cancelled) return;
+				const isDark = document.documentElement.classList.contains("dark");
+				mermaid.initialize({
+					startOnLoad: false,
+					theme: isDark ? "dark" : "default",
+					securityLevel: "strict",
+					suppressErrorRendering: true,
+				});
+				const { svg } = await mermaid.render(id, code);
+				if (cancelled) return;
 				if (ref.current) {
 					ref.current.innerHTML = svg;
 					setError(null);
 				}
-			})
-			.catch((err: unknown) => {
+			} catch (err) {
+				if (cancelled) return;
 				setError(err instanceof Error ? err.message : String(err));
-			});
-		// Re-render when dark mode changes (the class on <html> changes)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+			}
+		})();
+
+		return () => {
+			cancelled = true;
+			// Defensively remove any temp render container mermaid may have left
+			// in document.body if it was interrupted mid-render.
+			document.getElementById(id)?.remove();
+			document.getElementById(`d${id}`)?.remove();
+		};
 	}, [code]);
 
 	if (error) {
@@ -442,9 +468,6 @@ function MermaidBlock({ code }: { code: string }) {
 		/>
 	);
 }
-
-// Suppress unused warning — mermaidReady is a module-level init guard
-void mermaidReady;
 
 // ---------------------------------------------------------------------------
 // CodeBlock — shadcn ScrollArea for horizontal scroll
@@ -804,7 +827,7 @@ export function MarkdownView({
 
 			// Table with horizontal scroll
 			table: ({ children }: { children?: React.ReactNode }) => (
-				<ScrollArea className="my-4 w-full">
+				<ScrollArea type="auto" className="my-4 w-full">
 					<table className="border-collapse text-sm">{children}</table>
 					<ScrollBar orientation="horizontal" />
 				</ScrollArea>

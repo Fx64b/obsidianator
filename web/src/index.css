@@ -228,7 +228,10 @@
 }
 
 .markdown-body table {
-	width: 100%;
+	/* Fill the container when content is narrow, but grow beyond it (and let
+	   the ScrollArea wrapper scroll horizontally) when columns don't fit. */
+	min-width: 100%;
+	width: max-content;
 	border-collapse: collapse;
 	margin: 1.25rem 0;
 	font-size: 0.875rem;
