@@ -263,19 +263,27 @@ function preprocessContent(content: string, vault: VaultData): string {
 		},
 	);
 
-	// 5. Wikilinks  [[Target]] [[Target|Alias]] [[Target#Anchor]]
+	// 5. Wikilinks  [[Target]] [[Target|Alias]] [[Target#Anchor]] [[#Anchor]]
 	out = out.replace(
-		/\[\[([^\]|#]+?)(?:#([^\]|]+?))?(?:\|([^\]]+?))?\]\]/g,
-		(_, target, anchor, alias) => {
-			const targetNote = findNote(target.trim(), vault);
-			const displayText = alias ?? target.trim();
+		/\[\[([^\]|#]*?)(?:#([^\]|]+?))?(?:\|([^\]]+?))?\]\]/g,
+		(match, target, anchor, alias) => {
+			const t = target.trim();
+			// Same-note header link: [[#Anchor]] points at a heading in the
+			// current note, so emit a plain #-anchor handled by the link renderer.
+			if (!t) {
+				if (!anchor) return match; // malformed [[]] — leave untouched
+				const displayText = alias ?? anchor.trim();
+				return `[${displayText}](#${slugify(anchor)})`;
+			}
+			const targetNote = findNote(t, vault);
+			const displayText = alias ?? t;
 			if (targetNote) {
 				const href = anchor
 					? `wiki:${targetNote.id}#${slugify(anchor)}`
 					: `wiki:${targetNote.id}`;
 				return `[${displayText}](${href})`;
 			}
-			return `[${displayText}](wiki-missing:${encodeURIComponent(target.trim())})`;
+			return `[${displayText}](wiki-missing:${encodeURIComponent(t)})`;
 		},
 	);
 
@@ -845,9 +853,9 @@ export function MarkdownView({
 	);
 
 	return (
-		<div className="mx-auto max-w-2xl px-4 py-8 sm:px-10 sm:py-12">
+		<div className="mx-auto min-w-0 max-w-2xl px-4 py-8 sm:px-10 sm:py-12">
 			{/* Title */}
-			<h1 className="text-3xl font-bold tracking-tight leading-tight">
+			<h1 className="text-2xl font-bold tracking-tight leading-tight break-words sm:text-3xl">
 				{note.title}
 			</h1>
 

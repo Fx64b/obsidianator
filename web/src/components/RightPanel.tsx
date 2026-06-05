@@ -87,7 +87,7 @@ export function RightPanel({
 									onClick={() => onSelectNote(note.id, `#${h.slug}`)}
 									style={{ paddingLeft: `${(h.level - 1) * 10 + 12}px` }}
 									className={cn(
-										"block w-full py-1 pr-3 text-left text-xs leading-snug transition-colors",
+										"block w-full py-1 pr-3 text-left text-xs leading-snug break-words transition-colors",
 										activeHeadingId === h.slug
 											? "font-medium text-foreground"
 											: "text-muted-foreground hover:text-foreground",

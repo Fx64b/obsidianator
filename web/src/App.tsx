@@ -224,14 +224,14 @@ export default function App() {
 		<TooltipProvider delayDuration={300}>
 			<div className="flex h-screen flex-col bg-background overflow-hidden">
 				{/* ── Top bar ──────────────────────────────────────────────────── */}
-				<header className="flex h-12 shrink-0 items-center gap-2 border-b border-border px-3">
+				<header className="flex h-12 shrink-0 items-center gap-1 overflow-hidden border-b border-border px-2 sm:gap-2 sm:px-3">
 					{/* Sidebar toggle */}
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<button
 								type="button"
 								onClick={() => setSidebarOpen((v) => !v)}
-								className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+								className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
 							>
 								<PanelLeft className="h-4 w-4" />
 							</button>
@@ -248,7 +248,7 @@ export default function App() {
 								type="button"
 								onClick={goBack}
 								disabled={!canBack}
-								className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
+								className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
 							>
 								<ChevronLeft className="h-4 w-4" />
 							</button>
@@ -263,7 +263,7 @@ export default function App() {
 								type="button"
 								onClick={goForward}
 								disabled={!canFwd}
-								className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
+								className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
 							>
 								<ChevronRight className="h-4 w-4" />
 							</button>
@@ -274,29 +274,29 @@ export default function App() {
 					</Tooltip>
 
 					{/* Brand */}
-					<div className="flex items-center gap-1.5 select-none">
+					<div className="flex min-w-0 items-center gap-1.5 select-none">
 						<img
 							src="/logo.svg"
 							alt=""
-							className={cn("h-5 w-auto", dark && "invert")}
+							className={cn("h-5 w-auto shrink-0", dark && "invert")}
 						/>
-						<span className="text-sm font-semibold tracking-tight">
+						<span className="hidden text-sm font-semibold tracking-tight sm:inline">
 							Obsidianator
 						</span>
 						{vault.name && (
 							<>
-								<span className="text-border">/</span>
-								<span className="max-w-[160px] truncate text-sm text-muted-foreground">
+								<span className="hidden text-border sm:inline">/</span>
+								<span className="max-w-[120px] truncate text-sm text-muted-foreground sm:max-w-[160px]">
 									{vault.name}
 								</span>
 							</>
 						)}
 					</div>
 
-					<div className="flex-1" />
+					<div className="min-w-[8px] flex-1" />
 
 					{/* View toggle — segmented control */}
-					<div className="flex items-center rounded-md border border-border bg-muted p-0.5">
+					<div className="flex shrink-0 items-center rounded-md border border-border bg-muted p-0.5">
 						{(["notes", "graph"] as const).map((v) => (
 							<button
 								type="button"
@@ -323,7 +323,7 @@ export default function App() {
 					<button
 						type="button"
 						onClick={() => setSearchOpen(true)}
-						className="flex h-7 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-xs text-muted-foreground transition-colors hover:border-foreground/20 hover:text-foreground"
+						className="flex h-7 shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2 text-xs text-muted-foreground transition-colors hover:border-foreground/20 hover:text-foreground sm:px-2.5"
 					>
 						<Search className="h-3.5 w-3.5" />
 						<span className="hidden sm:inline">Search…</span>
@@ -338,7 +338,7 @@ export default function App() {
 							<button
 								type="button"
 								onClick={() => setDark((d) => !d)}
-								className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+								className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
 							>
 								{dark ? (
 									<Sun className="h-4 w-4" />
@@ -356,7 +356,7 @@ export default function App() {
 							<button
 								type="button"
 								onClick={() => setRightSidebarOpen((v) => !v)}
-								className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+								className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
 							>
 								<PanelRight className="h-4 w-4" />
 							</button>

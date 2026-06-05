@@ -103,7 +103,7 @@ function FieldValue({ value, vault, onSelectNote }: FieldValueProps) {
 			);
 		}
 
-		return <span className="text-sm">{value}</span>;
+		return <span className="text-sm break-words">{value}</span>;
 	}
 
 	if (Array.isArray(value)) {

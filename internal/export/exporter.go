@@ -17,6 +17,18 @@ import (
 	"github.com/fsnotify/fsnotify"
 )
 
+var banner = `
+   ____  __         _     ___                   __
+  / __ \/ /_  _____(_)___/ (_)___ _____  ____ _/ /_____  _____
+ / / / / __ \/ ___/ / __  / / __ '/ __ \/ __ '/ __/ __ \/ ___/
+/ /_/ / /_/ (__  ) / /_/ / / /_/ / / / / /_/ / /_/ /_/ / /
+\____/_.___/____/_/\__,_/_/\__,_/_/ /_/\__,_/\__/\____/_/
+
+------------------ By Fx64b -------------------------------
+                https://fx64b.dev
+
+`
+
 // Export writes vault-data.json and the embedded static assets to outputDir.
 // Attachment files are copied to outputDir/files/<vault-relative-path>.
 // vault-data.json is written LAST to ensure it is never overwritten by stale embedded copy.
@@ -113,7 +125,7 @@ func securityHeaders(next http.Handler) http.Handler {
 var allowedAttachmentExt = map[string]bool{
 	".jpg": true, ".jpeg": true, ".png": true, ".gif": true, ".svg": true,
 	".webp": true, ".bmp": true, ".ico": true, ".avif": true,
-	".pdf":  true,
+	".pdf": true,
 	".mp3": true, ".ogg": true, ".wav": true, ".m4a": true, ".flac": true,
 	".mp4": true, ".webm": true, ".ogv": true,
 	".ttf": true, ".otf": true, ".woff": true, ".woff2": true,
@@ -137,6 +149,7 @@ func ServeInMemory(
 	parseVault func(string) (*vault.VaultData, error),
 ) error {
 	t0 := time.Now()
+	fmt.Printf(banner)
 	data, err := parseVault(vaultPath)
 	if err != nil {
 		return fmt.Errorf("parsing vault: %w", err)

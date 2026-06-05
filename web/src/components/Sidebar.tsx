@@ -63,7 +63,7 @@ function NoteItem({
 			)}
 		>
 			<FileText className="h-3 w-3 shrink-0 opacity-60" />
-			<span className="truncate">{note.title}</span>
+			<span className="truncate min-w-0">{note.title}</span>
 		</button>
 	);
 }
@@ -118,7 +118,7 @@ function FolderNode({
 						open && "rotate-90",
 					)}
 				/>
-				<span className="truncate">{folder.name}</span>
+				<span className="truncate min-w-0">{folder.name}</span>
 			</CollapsibleTrigger>
 			<CollapsibleContent>
 				<div className="mt-px space-y-px">
@@ -310,9 +310,9 @@ export function Sidebar({
 												: "text-muted-foreground hover:text-foreground hover:bg-accent/60",
 										)}
 									>
-										<span className="flex items-center gap-1.5 text-xs w-full">
+										<span className="flex items-center gap-1.5 text-xs w-full min-w-0">
 											<FileText className="h-3 w-3 shrink-0 opacity-60" />
-											<span className="truncate">{note.title}</span>
+											<span className="truncate min-w-0">{note.title}</span>
 										</span>
 										{note.folder && (
 											<span className="pl-[18px] text-[10px] text-muted-foreground/60 truncate w-full">
@@ -372,7 +372,7 @@ export function Sidebar({
 											)}
 										>
 											<Hash className="h-2.5 w-2.5 shrink-0" />
-											<span className="flex-1 truncate">{tag}</span>
+											<span className="flex-1 truncate min-w-0">{tag}</span>
 											<span className="text-[10px] opacity-50">{count}</span>
 										</button>
 										{isActive && notes.length > 0 && (
