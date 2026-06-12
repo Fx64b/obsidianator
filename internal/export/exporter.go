@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -131,25 +133,56 @@ var allowedAttachmentExt = map[string]bool{
 	".ttf": true, ".otf": true, ".woff": true, ".woff2": true,
 }
 
-// Serve starts a simple HTTP file server on port serving outputDir.
-func Serve(outputDir string, port int) error {
-	addr := fmt.Sprintf(":%d", port)
-	fmt.Printf("Serving at http://localhost%s\n", addr)
-	return http.ListenAndServe(addr, securityHeaders(http.FileServer(http.Dir(outputDir))))
+// newServer returns an http.Server with timeouts that protect against slow or
+// stalled connections (Slowloris). ReadTimeout and WriteTimeout are deliberately
+// left unset: /reload is a long-lived SSE stream that must stay open indefinitely,
+// and IdleTimeout only applies between requests so it does not affect it.
+func newServer(addr string, handler http.Handler) *http.Server {
+	return &http.Server{
+		Addr:              addr,
+		Handler:           securityHeaders(handler),
+		ReadHeaderTimeout: 10 * time.Second,
+		IdleTimeout:       2 * time.Minute,
+	}
+}
+
+// listenInfo returns the address to bind to and a human-readable URL for the
+// startup banner that reflects how the server is actually reachable.
+func listenInfo(host string, port int) (addr, display string) {
+	if host == "" {
+		host = "127.0.0.1"
+	}
+	addr = net.JoinHostPort(host, strconv.Itoa(port))
+	switch host {
+	case "0.0.0.0", "::":
+		display = fmt.Sprintf("http://localhost:%d — listening on ALL interfaces; the vault is reachable from the network", port)
+	case "127.0.0.1", "localhost", "::1":
+		display = fmt.Sprintf("http://localhost:%d", port)
+	default:
+		display = "http://" + addr
+	}
+	return addr, display
+}
+
+// Serve starts a simple HTTP file server serving outputDir on host:port.
+func Serve(outputDir, host string, port int) error {
+	addr, display := listenInfo(host, port)
+	fmt.Printf("Serving at %s\n", display)
+	return newServer(addr, http.FileServer(http.Dir(outputDir))).ListenAndServe()
 }
 
 // ServeInMemory serves an Obsidian vault directly without writing any files to disk.
 // Static assets are served from the embedded FS, vault-data.json is generated in-memory,
 // and attachment files are served directly from the original vault path.
 func ServeInMemory(
-	vaultPath string,
+	vaultPath, host string,
 	port int,
 	watchMode bool,
 	staticFS embed.FS,
 	parseVault func(string) (*vault.VaultData, error),
 ) error {
 	t0 := time.Now()
-	fmt.Printf(banner)
+	fmt.Print(banner)
 	data, err := parseVault(vaultPath)
 	if err != nil {
 		return fmt.Errorf("parsing vault: %w", err)
@@ -248,15 +281,19 @@ func ServeInMemory(
 		}()
 
 		fmt.Printf("Watching vault: %s\n", vaultPath)
-		fmt.Printf("Serving at http://localhost:%d (with live reload)\n", port)
+	}
+
+	addr, display := listenInfo(host, port)
+	if watchMode {
+		fmt.Printf("Serving at %s (with live reload)\n", display)
 	} else {
-		fmt.Printf("Serving at http://localhost:%d\n", port)
+		fmt.Printf("Serving at %s\n", display)
 	}
 
 	// Embedded static assets (index.html, JS, CSS)
 	mux.Handle("/", http.FileServer(http.FS(sub)))
 
-	return http.ListenAndServe(fmt.Sprintf(":%d", port), securityHeaders(mux))
+	return newServer(addr, mux).ListenAndServe()
 }
 
 func watchVaultInMemory(
@@ -337,12 +374,12 @@ func watchVaultInMemory(
 // Watch starts a file watcher on vaultPath, re-exports on .md changes,
 // and serves outputDir with an SSE /reload endpoint.
 func Watch(
-	vaultPath, outputDir string,
+	vaultPath, outputDir, host string,
 	port int,
 	staticFS embed.FS,
 	parseVault func(string) (*vault.VaultData, error),
 ) error {
-	addr := fmt.Sprintf(":%d", port)
+	addr, display := listenInfo(host, port)
 
 	// SSE broker
 	broker := newSSEBroker()
@@ -396,8 +433,8 @@ func Watch(
 	}()
 
 	fmt.Printf("Watching vault: %s\n", vaultPath)
-	fmt.Printf("Serving at http://localhost%s (with live reload)\n", addr)
-	return http.ListenAndServe(addr, securityHeaders(mux))
+	fmt.Printf("Serving at %s (with live reload)\n", display)
+	return newServer(addr, mux).ListenAndServe()
 }
 
 func watchVault(
