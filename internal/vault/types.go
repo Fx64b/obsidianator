@@ -2,7 +2,9 @@ package vault
 
 // VaultData is the top-level structure exported to vault-data.json.
 type VaultData struct {
-	Name        string            `json:"name"`
+	Name       string `json:"name"`
+	AppVersion string `json:"appVersion,omitempty"` // obsidianator version that generated this file
+
 	Notes       []Note            `json:"notes"`
 	Tags        []string          `json:"tags"`
 	Folders     []Folder          `json:"folders"`

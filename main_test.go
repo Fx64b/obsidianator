@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/Fx64b/obsidianator/internal/vault"
+	"github.com/spf13/pflag"
 )
 
 // ── makeFilteredParser ────────────────────────────────────────────────────────
@@ -81,6 +82,14 @@ func TestExportCommandWithInclude(t *testing.T) {
 	if _, err := os.Stat(vaultPath); os.IsNotExist(err) {
 		t.Skip("test vault not found")
 	}
+
+	// The global exportCmd keeps flag state between Execute calls; reset the
+	// accumulated --include values so other tests see the full vault.
+	t.Cleanup(func() {
+		f := exportCmd.Flags().Lookup("include")
+		_ = f.Value.(pflag.SliceValue).Replace(nil)
+		f.Changed = false
+	})
 
 	outDir := filepath.Join(t.TempDir(), "dist")
 	rootCmd.SetArgs([]string{"export", vaultPath, "--output", outDir, "--include", "Graph"})

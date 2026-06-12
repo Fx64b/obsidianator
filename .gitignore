@@ -1,7 +1,7 @@
 dist/
 .claude/
 obsidianator
-static/
+static/*
 !static/placeholder.txt
 vault-data.json
 !web/src/test/fixtures/vault-data.json

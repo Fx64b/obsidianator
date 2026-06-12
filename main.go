@@ -97,7 +97,9 @@ func makeFilteredParser(includes []string) func(string) (*vault.VaultData, error
 		if err != nil {
 			return nil, err
 		}
-		return vault.FilterVaultData(data, includes), nil
+		filtered := vault.FilterVaultData(data, includes)
+		filtered.AppVersion = version
+		return filtered, nil
 	}
 }
 
