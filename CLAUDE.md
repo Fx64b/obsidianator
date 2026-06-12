@@ -56,6 +56,10 @@ make clean
 
 The test vault is at `data/test/`.
 
+## Commits and versioning
+
+All commit messages MUST follow [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, `ci:`; breaking changes via `!` or a `BREAKING CHANGE:` footer). Releases are fully automated: [release-please](https://github.com/googleapis/release-please) runs on every push to `main`, derives the next semver version from the commit history, and maintains a release PR with the changelog. Merging that PR creates the tag and GitHub release, bumps the version constant in `main.go` (via the `x-release-please-version` annotation), and triggers the cross-compiled binary build that attaches artifacts to the release. Never bump the version or create tags manually.
+
 ## Architecture
 
 Obsidianator is a Go CLI that parses an Obsidian vault and serves it as an interactive web app. The Go binary embeds the compiled Vite/React frontend via `//go:embed static`.

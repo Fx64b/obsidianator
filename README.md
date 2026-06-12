@@ -14,7 +14,7 @@
 
 Turn an [Obsidian](https://obsidian.md) vault into a self-contained static website — or serve it directly in the browser without writing anything to disk.
 
-> **Status:** `0.1.0-beta` — functional, actively developed.
+> **Status:** beta — functional, actively developed. See [releases](https://github.com/Fx64b/obsidianator/releases) for the current version.
 
 ---
 
@@ -126,9 +126,18 @@ Tests cover `pathToID`, `slugify`, `resolveLinks`, `buildFolders`, `stripMarkdow
 
 ---
 
-## Release builds
+## Releases & versioning
 
-Cross-compiles stripped binaries for Linux, macOS (Intel + Apple Silicon), and Windows:
+Versioning is automated with [release-please](https://github.com/googleapis/release-please) and follows [semantic versioning](https://semver.org). On every push to `main`, release-please reads the commit history and maintains a release PR; merging it tags a new version, generates the changelog, and publishes cross-compiled binaries to the GitHub release.
+
+For this to work, **all commits must follow the [Conventional Commits](https://www.conventionalcommits.org/) format**:
+
+- `fix: ...` → patch release
+- `feat: ...` → minor release
+- `feat!: ...` or a `BREAKING CHANGE:` footer → major release
+- `docs:`, `chore:`, `refactor:`, `test:`, `ci:` → no release, but keep history clean
+
+To build release binaries locally (Linux, macOS Intel + Apple Silicon, Windows):
 
 ```sh
 make release
