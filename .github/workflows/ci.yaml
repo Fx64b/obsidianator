@@ -32,6 +32,9 @@ jobs:
       - name: TypeScript type-check
         run: cd web && pnpm exec tsc --noEmit
 
+      - name: Frontend tests
+        run: cd web && pnpm test
+
       - name: Build frontend
         run: cd web && pnpm build
 

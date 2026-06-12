@@ -19,6 +19,8 @@
 		"dev": "vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
+		"test": "vitest run",
+		"test:watch": "vitest",
 		"format": "biome format --write",
 		"lint": "biome lint --write"
 	},
@@ -58,15 +60,20 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.4.12",
+		"@testing-library/jest-dom": "^6.9.1",
+		"@testing-library/react": "^16.3.2",
+		"@testing-library/user-event": "^14.6.1",
 		"@types/node": "^22.19.17",
 		"@types/react": "^18.3.28",
 		"@types/react-dom": "^18.3.7",
 		"@vitejs/plugin-react": "^4.7.0",
 		"autoprefixer": "^10.5.0",
+		"jsdom": "^29.1.1",
 		"postcss": "^8.5.10",
 		"shadcn": "^4.3.0",
 		"tailwindcss": "^4.2.2",
 		"typescript": "^5.9.3",
-		"vite": "^6.4.2"
+		"vite": "^6.4.2",
+		"vitest": "^4.1.8"
 	}
 }

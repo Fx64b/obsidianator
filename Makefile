@@ -1,4 +1,4 @@
-.PHONY: all web build clean dev-web dev-serve dev-export copy-vault-data release
+.PHONY: all web build clean dev-web dev-serve dev-export copy-vault-data release test test-go test-web
 
 BINARY    := obsidianator
 TEST_VAULT := data/test
@@ -14,6 +14,15 @@ web:
 # Build the Go binary (embeds ./static); strip debug info for smaller binary
 build:
 	go build $(LDFLAGS) -o $(BINARY) .
+
+# Run all tests (Go + frontend)
+test: test-go test-web
+
+test-go:
+	go test ./...
+
+test-web:
+	cd web && pnpm test
 
 # Clean build artifacts
 clean:

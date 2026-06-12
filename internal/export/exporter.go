@@ -1,7 +1,6 @@
 package export
 
 import (
-	"embed"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -34,7 +33,7 @@ var banner = `
 // Export writes vault-data.json and the embedded static assets to outputDir.
 // Attachment files are copied to outputDir/files/<vault-relative-path>.
 // vault-data.json is written LAST to ensure it is never overwritten by stale embedded copy.
-func Export(data *vault.VaultData, vaultPath, outputDir string, staticFS embed.FS) error {
+func Export(data *vault.VaultData, vaultPath, outputDir string, staticFS fs.FS) error {
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
 		return fmt.Errorf("creating output dir: %w", err)
 	}
@@ -178,7 +177,7 @@ func ServeInMemory(
 	vaultPath, host string,
 	port int,
 	watchMode bool,
-	staticFS embed.FS,
+	staticFS fs.FS,
 	parseVault func(string) (*vault.VaultData, error),
 ) error {
 	t0 := time.Now()
@@ -376,7 +375,7 @@ func watchVaultInMemory(
 func Watch(
 	vaultPath, outputDir, host string,
 	port int,
-	staticFS embed.FS,
+	staticFS fs.FS,
 	parseVault func(string) (*vault.VaultData, error),
 ) error {
 	addr, display := listenInfo(host, port)
@@ -439,7 +438,7 @@ func Watch(
 
 func watchVault(
 	vaultPath, outputDir string,
-	staticFS embed.FS,
+	staticFS fs.FS,
 	parseVault func(string) (*vault.VaultData, error),
 	broker *sseBroker,
 ) error {
