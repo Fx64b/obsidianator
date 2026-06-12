@@ -36,6 +36,7 @@ export interface Folder {
 
 export interface VaultData {
 	name: string;
+	appVersion?: string;
 	notes: Note[];
 	tags: string[];
 	folders: Folder[];
