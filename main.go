@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const version = "0.1.0-beta"
+const version = "0.1.0" // x-release-please-version
 
 //go:embed static
 var staticFS embed.FS
