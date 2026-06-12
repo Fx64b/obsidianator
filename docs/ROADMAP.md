@@ -19,12 +19,12 @@ Quick, visible wins that close gaps users hit in the first five minutes.
 
 - ✅ **Mermaid diagram rendering** — ` ```mermaid ` blocks render as diagrams
   (lazy-loaded, theme-aware).
-- 🚧 **Hover preview popovers on wikilinks** — the single most
+- ✅ **Hover preview popovers on wikilinks** — the single most
   "feels-like-Obsidian" feature. Floating card preview of the target note on
   link hover; anchor-aware (previews the linked section or block).
-- 🚧 **Heading transclusion** — `![[Note#Heading]]` embeds just that section
+- ✅ **Heading transclusion** — `![[Note#Heading]]` embeds just that section
   (until the next heading of the same or higher level).
-- 🚧 **Block references** — `![[Note#^block-id]]` embeds the referenced block;
+- ✅ **Block references** — `![[Note#^block-id]]` embeds the referenced block;
   `[[Note#^block-id]]` links navigate to it; `^block-id` markers are invisible
   in reading view, exactly like Obsidian.
 
@@ -33,16 +33,19 @@ Quick, visible wins that close gaps users hit in the first five minutes.
 The differentiator: turns "demo my vault" into "publish my vault", a credible
 free alternative to Obsidian Publish.
 
-- ⬜ **`publish:` frontmatter gating** — a flag (e.g. `--published-only`) that
-  exports only notes with `publish: true`. Must also strip links, edges,
-  backlinks, and graph nodes pointing at unpublished notes so private content
-  never leaks into `vault-data.json`.
-- ⬜ **Real per-note URLs + pre-rendered HTML** — export a static HTML page per
-  note instead of `#noteId` hash routing only. Server-side render the note
-  content in Go into the shell for SEO, then hydrate.
-- ⬜ **SEO metadata** — `sitemap.xml`, OpenGraph/`<meta>` tags from
-  frontmatter.
-- ⬜ **RSS/Atom feed** — generated from note `created` dates, opt-in flag.
+- ✅ **`publish:` frontmatter gating** — `--published-only` exports only notes
+  with `publish: true`. Links, edges, backlinks, graph nodes and attachments
+  referencing unpublished notes are stripped so private content never leaks
+  into `vault-data.json`.
+- ✅ **Real per-note URLs + pre-rendered HTML** — every export writes a static
+  `<note-id>.html` page per note with the content pre-rendered in Go
+  (crawlable text + followable internal links); the React app hydrates on top
+  and switches to path-based routing. `serve` mode serves the same pages from
+  memory.
+- ✅ **SEO metadata** — per-page `<title>`, meta description,
+  OpenGraph/article tags; `--base-url` adds canonical URLs, `sitemap.xml` and
+  `robots.txt`.
+- ✅ **RSS feed** — `--feed` writes `feed.xml` from note `created` dates.
 
 ## Phase 3 — Headline features
 

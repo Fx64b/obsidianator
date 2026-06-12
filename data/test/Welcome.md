@@ -3,6 +3,7 @@ title: Welcome
 tags:
   - getting-started
   - obsidianator
+publish: true
 ---
 
 # Welcome to Obsidianator

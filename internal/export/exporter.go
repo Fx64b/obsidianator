@@ -33,7 +33,10 @@ var banner = `
 // Export writes vault-data.json and the embedded static assets to outputDir.
 // Attachment files are copied to outputDir/files/<vault-relative-path>.
 // vault-data.json is written LAST to ensure it is never overwritten by stale embedded copy.
-func Export(data *vault.VaultData, vaultPath, outputDir string, staticFS fs.FS) error {
+// A pre-rendered <id>.html page is written per note (plus sitemap.xml,
+// robots.txt and feed.xml depending on seo) when the embedded frontend build
+// is present.
+func Export(data *vault.VaultData, vaultPath, outputDir string, staticFS fs.FS, seo SEOOptions) error {
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
 		return fmt.Errorf("creating output dir: %w", err)
 	}
@@ -104,6 +107,51 @@ func Export(data *vault.VaultData, vaultPath, outputDir string, staticFS fs.FS) 
 		return fmt.Errorf("writing vault-data.json: %w", err)
 	}
 
+	return writeSEOFiles(data, outputDir, sub, seo)
+}
+
+// writeSEOFiles writes the publishing-grade artifacts: one pre-rendered
+// .html page per note, and (when a base URL is configured) sitemap.xml,
+// robots.txt and optionally feed.xml. Skipped silently when the embedded
+// frontend build is absent (placeholder-only builds, e.g. plain `go test`).
+func writeSEOFiles(data *vault.VaultData, outputDir string, staticDir fs.FS, seo SEOOptions) error {
+	indexHTML, err := fs.ReadFile(staticDir, "index.html")
+	if err != nil {
+		return nil
+	}
+
+	res := newNoteResolver(data)
+	for i := range data.Notes {
+		note := &data.Notes[i]
+		page := BuildNotePage(indexHTML, note, data, res, seo.BaseURL)
+		dst := filepath.Join(outputDir, NotePageFilename(note.ID))
+		if err := os.WriteFile(dst, page, 0644); err != nil {
+			return fmt.Errorf("writing note page %s: %w", NotePageFilename(note.ID), err)
+		}
+	}
+
+	if seo.BaseURL == "" {
+		return nil
+	}
+	sitemap, err := Sitemap(data, seo.BaseURL)
+	if err != nil {
+		return fmt.Errorf("building sitemap: %w", err)
+	}
+	if err := os.WriteFile(filepath.Join(outputDir, "sitemap.xml"), sitemap, 0644); err != nil {
+		return fmt.Errorf("writing sitemap.xml: %w", err)
+	}
+	if err := os.WriteFile(filepath.Join(outputDir, "robots.txt"), RobotsTxt(seo.BaseURL), 0644); err != nil {
+		return fmt.Errorf("writing robots.txt: %w", err)
+	}
+	if seo.Feed {
+		feed, err := Feed(data, seo.BaseURL)
+		if err != nil {
+			return fmt.Errorf("building feed: %w", err)
+		}
+		if err := os.WriteFile(filepath.Join(outputDir, "feed.xml"), feed, 0644); err != nil {
+			return fmt.Errorf("writing feed.xml: %w", err)
+		}
+	}
 	return nil
 }
 
@@ -195,8 +243,8 @@ func ServeInMemory(
 		return fmt.Errorf("marshaling vault data: %w", err)
 	}
 
-	var mu sync.RWMutex
-	currentJSON := jsonBytes
+	live := &liveVault{}
+	live.set(data, jsonBytes)
 
 	sub, err := fs.Sub(staticFS, "static")
 	if err != nil {
@@ -208,9 +256,9 @@ func ServeInMemory(
 
 	// vault-data.json served from memory (no disk write)
 	mux.HandleFunc("/vault-data.json", func(w http.ResponseWriter, r *http.Request) {
-		mu.RLock()
-		j := currentJSON
-		mu.RUnlock()
+		live.mu.RLock()
+		j := live.json
+		live.mu.RUnlock()
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Cache-Control", "no-store")
 		w.Write(j) //nolint:errcheck
@@ -274,7 +322,7 @@ func ServeInMemory(
 
 		// Start watcher that updates in-memory JSON on vault changes
 		go func() {
-			if err := watchVaultInMemory(vaultPath, parseVault, broker, &mu, &currentJSON); err != nil {
+			if err := watchVaultInMemory(vaultPath, parseVault, broker, live); err != nil {
 				fmt.Fprintf(os.Stderr, "watcher error: %v\n", err)
 			}
 		}()
@@ -289,18 +337,63 @@ func ServeInMemory(
 		fmt.Printf("Serving at %s\n", display)
 	}
 
-	// Embedded static assets (index.html, JS, CSS)
-	mux.Handle("/", http.FileServer(http.FS(sub)))
+	// Embedded static assets (index.html, JS, CSS), with per-note page shells
+	// generated on the fly so path-routed note URLs (/<id>.html) work in
+	// serve mode exactly like in an export.
+	fileServer := http.FileServer(http.FS(sub))
+	indexHTML, indexErr := fs.ReadFile(sub, "index.html")
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if indexErr == nil {
+			name := strings.TrimPrefix(r.URL.Path, "/")
+			if strings.HasSuffix(name, ".html") && !strings.Contains(name, "/") && name != "index.html" {
+				live.mu.RLock()
+				note, ok := live.pages[name]
+				d, res := live.data, live.resolver
+				live.mu.RUnlock()
+				if ok {
+					w.Header().Set("Content-Type", "text/html; charset=utf-8")
+					w.Header().Set("Cache-Control", "no-store")
+					w.Write(BuildNotePage(indexHTML, note, d, res, "")) //nolint:errcheck
+					return
+				}
+			}
+		}
+		fileServer.ServeHTTP(w, r)
+	})
 
 	return newServer(addr, mux).ListenAndServe()
+}
+
+// liveVault holds the current in-memory parse result for serve mode: the
+// marshaled JSON, the structured data, and derived lookups for the per-note
+// page shells. Updated atomically by the watcher on re-parse.
+type liveVault struct {
+	mu       sync.RWMutex
+	json     []byte
+	data     *vault.VaultData
+	resolver *noteResolver
+	pages    map[string]*vault.Note // page filename → note
+}
+
+func (l *liveVault) set(data *vault.VaultData, jsonBytes []byte) {
+	pages := make(map[string]*vault.Note, len(data.Notes))
+	for i := range data.Notes {
+		pages[NotePageFilename(data.Notes[i].ID)] = &data.Notes[i]
+	}
+	resolver := newNoteResolver(data)
+	l.mu.Lock()
+	l.json = jsonBytes
+	l.data = data
+	l.resolver = resolver
+	l.pages = pages
+	l.mu.Unlock()
 }
 
 func watchVaultInMemory(
 	vaultPath string,
 	parseVault func(string) (*vault.VaultData, error),
 	broker *sseBroker,
-	mu *sync.RWMutex,
-	currentJSON *[]byte,
+	live *liveVault,
 ) error {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -354,9 +447,7 @@ func watchVaultInMemory(
 						fmt.Fprintf(os.Stderr, "marshal error: %v\n", err)
 						return
 					}
-					mu.Lock()
-					*currentJSON = j
-					mu.Unlock()
+					live.set(data, j)
 					fmt.Printf("Re-parsed: %d notes\n", len(data.Notes))
 					broker.broadcast("reload")
 				})
@@ -377,6 +468,7 @@ func Watch(
 	port int,
 	staticFS fs.FS,
 	parseVault func(string) (*vault.VaultData, error),
+	seo SEOOptions,
 ) error {
 	addr, display := listenInfo(host, port)
 
@@ -426,7 +518,7 @@ func Watch(
 
 	// Start watcher in background
 	go func() {
-		if err := watchVault(vaultPath, outputDir, staticFS, parseVault, broker); err != nil {
+		if err := watchVault(vaultPath, outputDir, staticFS, parseVault, broker, seo); err != nil {
 			fmt.Fprintf(os.Stderr, "watcher error: %v\n", err)
 		}
 	}()
@@ -441,6 +533,7 @@ func watchVault(
 	staticFS fs.FS,
 	parseVault func(string) (*vault.VaultData, error),
 	broker *sseBroker,
+	seo SEOOptions,
 ) error {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -491,7 +584,7 @@ func watchVault(
 						fmt.Fprintf(os.Stderr, "re-parse error: %v\n", err)
 						return
 					}
-					if err := Export(data, vaultPath, outputDir, staticFS); err != nil {
+					if err := Export(data, vaultPath, outputDir, staticFS, seo); err != nil {
 						fmt.Fprintf(os.Stderr, "re-export error: %v\n", err)
 						return
 					}

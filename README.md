@@ -56,6 +56,31 @@ obsidianator export ./my-vault --output ./dist --watch   # export, watch, serve
 obsidianator serve ./my-vault --include Notes --include Diary/2024.md
 ```
 
+### Publish to the web (SEO-ready)
+
+Every export writes a real, pre-rendered HTML page per note (`<note-id>.html`)
+with meta/OpenGraph tags and a crawlable internal link graph — so published
+notes are indexable and shareable, not locked inside an SPA.
+
+```sh
+obsidianator export ./my-vault --output ./dist \
+  --published-only \
+  --base-url https://notes.example.com \
+  --feed
+```
+
+- `--published-only` — export only notes with `publish: true` in their
+  frontmatter. Links, backlinks, graph edges and attachments referencing
+  unpublished notes are stripped, so private content never leaks.
+- `--base-url <url>` — the absolute URL the site will be hosted at. Enables
+  canonical URLs and OpenGraph `og:url` on every page, plus `sitemap.xml` and
+  `robots.txt`.
+- `--feed` — write an RSS `feed.xml` of the most recently created notes
+  (requires `--base-url`).
+
+`serve` mode supports `--published-only` too, for previewing exactly what a
+published export will contain.
+
 ### Other flags
 ```sh
 obsidianator --version    # print version

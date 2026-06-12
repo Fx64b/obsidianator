@@ -19,7 +19,7 @@ func TestMakeFilteredParser(t *testing.T) {
 	}
 
 	t.Run("no includes returns full vault", func(t *testing.T) {
-		full, err := makeFilteredParser(nil)(vaultPath)
+		full, err := makeFilteredParser(nil, false)(vaultPath)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -29,7 +29,7 @@ func TestMakeFilteredParser(t *testing.T) {
 	})
 
 	t.Run("includes restrict to folder", func(t *testing.T) {
-		filtered, err := makeFilteredParser([]string{"Graph"})(vaultPath)
+		filtered, err := makeFilteredParser([]string{"Graph"}, false)(vaultPath)
 		if err != nil {
 			t.Fatal(err)
 		}

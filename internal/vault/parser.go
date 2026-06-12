@@ -495,16 +495,11 @@ func FilterVaultData(data *VaultData, includes []string) *VaultData {
 	}
 
 	// Filter notes
-	noteSet := map[string]struct{}{}
 	var filteredNotes []Note
 	for _, note := range data.Notes {
 		if matchesAnyInclude(note.Path, normalized) {
 			filteredNotes = append(filteredNotes, note)
-			noteSet[note.ID] = struct{}{}
 		}
-	}
-	if filteredNotes == nil {
-		filteredNotes = []Note{}
 	}
 
 	// Filter attachments to those inside included folders/paths
@@ -513,6 +508,21 @@ func FilterVaultData(data *VaultData, includes []string) *VaultData {
 		if matchesAnyInclude(relPath, normalized) {
 			filteredAttachments[key] = relPath
 		}
+	}
+
+	return rebuildVaultData(data, filteredNotes, filteredAttachments)
+}
+
+// rebuildVaultData reconstructs the derived structures (edges, backlinks,
+// per-note links, tags, folders) for a filtered subset of notes, so that
+// nothing references a note outside the subset.
+func rebuildVaultData(data *VaultData, filteredNotes []Note, attachments map[string]string) *VaultData {
+	if filteredNotes == nil {
+		filteredNotes = []Note{}
+	}
+	noteSet := map[string]struct{}{}
+	for _, note := range filteredNotes {
+		noteSet[note.ID] = struct{}{}
 	}
 
 	// Rebuild edges (only between included notes)
@@ -574,7 +584,7 @@ func FilterVaultData(data *VaultData, includes []string) *VaultData {
 		Tags:        tags,
 		Folders:     buildFolders(filteredNotes),
 		Edges:       edges,
-		Attachments: filteredAttachments,
+		Attachments: attachments,
 	}
 }
 

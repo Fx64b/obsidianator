@@ -28,9 +28,20 @@ import {
 } from "@/components/ui/tooltip";
 import { useVaultData } from "@/hooks/useVaultData";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import {
+	getPageContext,
+	noteIdFromLocation,
+	notePageFilename,
+	noteUrl,
+} from "@/lib/routing";
 import { cn } from "@/lib/utils";
 
 type View = "notes" | "graph";
+
+// Resolved once at startup: pre-rendered note pages stamp data attributes on
+// #root before React mounts, switching the app from hash to path routing.
+const page = getPageContext();
+const routing = page.routing;
 
 export default function App() {
 	const { vault, loading, error } = useVaultData();
@@ -133,16 +144,16 @@ export default function App() {
 		style.textContent = dark ? githubDarkCss : githubCss;
 	}, [dark]);
 
-	// Sync active note from URL hash on vault load (initial mount + live reload).
-	// Must NOT depend on activeNoteId — otherwise it fights the hash-writer effect
+	// Sync active note from the URL on vault load (initial mount + live reload).
+	// Must NOT depend on activeNoteId — otherwise it fights the URL-writer effect
 	// below and creates an infinite A↔B loop on in-app back/forward navigation,
-	// where the hash and activeNoteId are briefly out of sync.
+	// where the URL and activeNoteId are briefly out of sync.
 	useEffect(() => {
 		if (!vault || vault.notes.length === 0) return;
-		const hashId = location.hash.slice(1);
-		const fromHash = hashId ? vault.notes.find((n) => n.id === hashId) : null;
-		if (fromHash) {
-			setActiveNoteId(fromHash.id);
+		const urlId = noteIdFromLocation(routing) ?? page.initialNoteId;
+		const fromUrl = urlId ? vault.notes.find((n) => n.id === urlId) : null;
+		if (fromUrl) {
+			setActiveNoteId(fromUrl.id);
 		} else if (
 			!activeNoteId ||
 			!vault.notes.find((n) => n.id === activeNoteId)
@@ -152,22 +163,40 @@ export default function App() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [vault]);
 
-	// Keep hash in sync whenever activeNoteId changes
+	// Keep the URL in sync whenever activeNoteId changes. Gated on the vault
+	// being loaded: before that, activeNoteId is whatever localStorage restored
+	// and writing it would clobber the requested URL before the sync effect
+	// above has had a chance to read it.
 	useEffect(() => {
-		if (!activeNoteId) return;
-		const desired = `#${activeNoteId}`;
-		if (location.hash !== desired) history.replaceState(null, "", desired);
-	}, [activeNoteId]);
+		if (!vault || !activeNoteId) return;
+		if (routing === "path") {
+			if (noteIdFromLocation("path") !== activeNoteId) {
+				history.replaceState(null, "", `./${notePageFilename(activeNoteId)}`);
+			}
+		} else {
+			const desired = `#${activeNoteId}`;
+			if (location.hash !== desired) history.replaceState(null, "", desired);
+		}
+	}, [vault, activeNoteId]);
 
-	// Handle browser back/forward (hash change from browser chrome or external link)
+	// Keep the document title in sync with the active note
 	useEffect(() => {
 		if (!vault) return;
-		const onHash = () => {
-			const id = location.hash.slice(1);
+		const siteName = vault.name || "Obsidianator";
+		const note = vault.notes.find((n) => n.id === activeNoteId);
+		document.title = note ? `${note.title} — ${siteName}` : siteName;
+	}, [vault, activeNoteId]);
+
+	// Handle browser back/forward (URL change from browser chrome or external link)
+	useEffect(() => {
+		if (!vault) return;
+		const onNav = () => {
+			const id = noteIdFromLocation(routing);
 			if (id && vault.notes.find((n) => n.id === id)) setActiveNoteId(id);
 		};
-		window.addEventListener("hashchange", onHash);
-		return () => window.removeEventListener("hashchange", onHash);
+		const event = routing === "path" ? "popstate" : "hashchange";
+		window.addEventListener(event, onNav);
+		return () => window.removeEventListener(event, onNav);
 	}, [vault, setActiveNoteId]);
 
 	useEffect(() => {
@@ -382,7 +411,7 @@ export default function App() {
 						setView("notes");
 						pushHistory(noteId, anchor);
 						// Push a real browser history entry so the browser's own back button works
-						history.pushState(null, "", `#${noteId}`);
+						history.pushState(null, "", noteUrl(noteId, routing));
 						return anchor;
 					}}
 					activeTag={activeTag}
