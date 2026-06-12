@@ -18,9 +18,26 @@ Embed an entire note inline:
 
 ## Partial Transclusion (Heading Anchor)
 
-Embed just a section of a note (renders full note with attribution):
+Embed just one section of a note — subsections included, with a deep-linked
+attribution:
 
-![[Features]]
+![[Welcome#What it does]]
+
+![[Transclusion#A Reusable Section]]
+
+## Block Transclusion
+
+Embed a single block tagged with a `^block-id`:
+
+![[Transclusion#^key-fact]]
+
+![[Transclusion#^tagged-quote]]
+
+![[Transclusion#^table-block]]
+
+Link (rather than embed) a block: [[Transclusion#^key-fact|the key fact]].
+
+An anchor that doesn't resolve falls back gracefully: ![[Welcome#No Such Section]]
 
 ## Image Embeds
 

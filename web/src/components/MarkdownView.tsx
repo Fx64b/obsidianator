@@ -3,52 +3,10 @@ import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
-import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-
-// Allow callout sentinel attributes produced by the Go parser, plus elements
-// needed by GFM (mark, task-list checkboxes) and syntax highlighting (className).
-// `clobberPrefix: ""` disables the default `user-content-` prefix — remark-gfm
-// already emits footnote ids with that prefix, and re-prefixing would break the
-// matching `#user-content-fn-N` hrefs.
-const sanitizeSchema = {
-	...defaultSchema,
-	clobberPrefix: "",
-	tagNames: [...(defaultSchema.tagNames ?? []), "mark"],
-	protocols: {
-		...defaultSchema.protocols,
-		href: [
-			...((defaultSchema.protocols?.href ?? []) as string[]),
-			"wiki",
-			"wiki-missing",
-			"tag",
-		],
-	},
-	attributes: {
-		...defaultSchema.attributes,
-		// hast-util-sanitize matches camelCase *property* names, not HTML
-		// attribute names: data-callout → dataCallout, class → className.
-		span: [
-			...((defaultSchema.attributes?.span ?? []) as string[]),
-			"dataCallout",
-			"dataCalloutTitle",
-			"dataCalloutCollapsed",
-			[
-				"className",
-				"cb-state",
-				"cb-progress",
-				"cb-cancelled",
-				"cb-important",
-				"cb-question",
-				"cb-star",
-				"cb-forward",
-			],
-		],
-		mark: [],
-		input: ["type", "checked", "disabled"],
-	},
-};
+import { sanitizeSchema } from "@/lib/sanitizeSchema";
 
 import {
 	AlertCircle,
@@ -80,6 +38,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { WikilinkPreview } from "@/components/WikilinkPreview";
 import { isCalloutSentinel, preprocessContent, slugify } from "@/lib/markdown";
 import { cn } from "@/lib/utils";
 import type { Note, VaultData } from "@/types";
@@ -459,15 +418,17 @@ export function MarkdownView({
 					const rest = href.slice(5);
 					const [noteId, anchor] = rest.split("#");
 					return (
-						<button
-							type="button"
-							className="wikilink cursor-pointer"
-							onClick={() =>
-								onSelectNote(noteId, anchor ? `#${anchor}` : undefined)
-							}
-						>
-							{children}
-						</button>
+						<WikilinkPreview noteId={noteId} anchor={anchor} vault={vault}>
+							<button
+								type="button"
+								className="wikilink cursor-pointer"
+								onClick={() =>
+									onSelectNote(noteId, anchor ? `#${anchor}` : undefined)
+								}
+							>
+								{children}
+							</button>
+						</WikilinkPreview>
 					);
 				}
 				if (href?.startsWith("wiki-missing:")) {
@@ -596,7 +557,7 @@ export function MarkdownView({
 				<td className="border border-border px-3 py-2">{children}</td>
 			),
 		}),
-		[onSelectNote, onTagClick],
+		[onSelectNote, onTagClick, vault],
 	);
 
 	return (

@@ -190,4 +190,43 @@ describe("MarkdownView inline Obsidian syntax", () => {
 		renderNote(host, makeVault({ notes: [target, host] }));
 		expect(screen.getByText("Transcluded body content.")).toBeInTheDocument();
 	});
+
+	it("heading embeds render only the linked section", () => {
+		const target = makeNote({
+			id: "target",
+			title: "Target",
+			content: "## One\n\nFirst section.\n\n## Two\n\nSecond section.",
+		});
+		const host = makeNote({
+			id: "host",
+			title: "Host",
+			content: "![[Target#Two]]",
+		});
+		renderNote(host, makeVault({ notes: [target, host] }));
+		expect(screen.getByText("Second section.")).toBeInTheDocument();
+		expect(screen.queryByText("First section.")).not.toBeInTheDocument();
+	});
+
+	it("block embeds render the tagged block without its marker", () => {
+		const target = makeNote({
+			id: "target",
+			title: "Target",
+			content: "Other paragraph.\n\nKey insight here. ^insight",
+		});
+		const host = makeNote({
+			id: "host",
+			title: "Host",
+			content: "![[Target#^insight]]",
+		});
+		renderNote(host, makeVault({ notes: [target, host] }));
+		expect(screen.getByText("Key insight here.")).toBeInTheDocument();
+		expect(screen.queryByText(/\^insight/)).not.toBeInTheDocument();
+		expect(screen.queryByText("Other paragraph.")).not.toBeInTheDocument();
+	});
+
+	it("block id markers render as invisible anchor spans", () => {
+		const { container } = renderContent("A tagged paragraph. ^anchor-me");
+		expect(container.querySelector('span[id="anchor-me"]')).toBeInTheDocument();
+		expect(screen.queryByText(/\^anchor-me/)).not.toBeInTheDocument();
+	});
 });

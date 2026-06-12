@@ -1,11 +1,46 @@
 import { describe, expect, it } from "vitest";
 import {
+	extractBlock,
+	extractSection,
 	findNote,
 	preprocessContent,
 	resolveEmbedsInBody,
 	slugify,
 } from "@/lib/markdown";
 import { makeNote, makeVault } from "@/test/fixture";
+
+const sectionsContent = [
+	"---",
+	"title: Sections",
+	"---",
+	"Intro paragraph. ^intro",
+	"",
+	"## Alpha",
+	"",
+	"Alpha body.",
+	"",
+	"### Alpha Child",
+	"",
+	"Child body.",
+	"",
+	"## Beta",
+	"",
+	"Beta body. ^beta-fact",
+	"",
+	"| a | b |",
+	"| - | - |",
+	"| 1 | 2 |",
+	"",
+	"^table-1",
+	"",
+	"```",
+	"## Not A Heading",
+	"```",
+	"",
+	"## Gamma",
+	"",
+	"Gamma body.",
+].join("\n");
 
 const vault = makeVault({
 	notes: [
@@ -20,6 +55,7 @@ const vault = makeVault({
 			aliases: ["DN", "The Deep One"],
 		}),
 		makeNote({ id: "notes-readme", title: "ReadMe" }),
+		makeNote({ id: "sections", title: "Sections", content: sectionsContent }),
 	],
 	attachments: {
 		"image.png": "assets/Image.png",
@@ -69,6 +105,68 @@ describe("findNote", () => {
 
 	it("returns undefined for unknown targets", () => {
 		expect(findNote("Nonexistent", vault)).toBeUndefined();
+	});
+});
+
+// ── extractSection ────────────────────────────────────────────────────────────
+
+describe("extractSection", () => {
+	it("returns the heading and its body up to the next same-level heading", () => {
+		const out = extractSection(sectionsContent, "Alpha");
+		expect(out).toContain("## Alpha");
+		expect(out).toContain("Alpha body.");
+		expect(out).not.toContain("## Beta");
+	});
+
+	it("includes nested subsections", () => {
+		const out = extractSection(sectionsContent, "Alpha");
+		expect(out).toContain("### Alpha Child");
+		expect(out).toContain("Child body.");
+	});
+
+	it("matches by slug, case-insensitively", () => {
+		expect(extractSection(sectionsContent, "alpha-child")).toContain(
+			"Child body.",
+		);
+		expect(extractSection(sectionsContent, "ALPHA CHILD")).toContain(
+			"Child body.",
+		);
+	});
+
+	it("last section runs to end of note", () => {
+		expect(extractSection(sectionsContent, "Gamma")).toContain("Gamma body.");
+	});
+
+	it("ignores headings inside code fences", () => {
+		expect(extractSection(sectionsContent, "Not A Heading")).toBeNull();
+	});
+
+	it("returns null for unknown headings", () => {
+		expect(extractSection(sectionsContent, "Nope")).toBeNull();
+	});
+});
+
+// ── extractBlock ──────────────────────────────────────────────────────────────
+
+describe("extractBlock", () => {
+	it("extracts the line chunk ending at an end-of-line marker", () => {
+		expect(extractBlock(sectionsContent, "beta-fact")).toBe("Beta body.");
+	});
+
+	it("a marker alone on a line tags the previous block", () => {
+		const out = extractBlock(sectionsContent, "table-1");
+		expect(out).toContain("| a | b |");
+		expect(out).toContain("| 1 | 2 |");
+		expect(out).not.toContain("^table-1");
+	});
+
+	it("works on the first paragraph after frontmatter", () => {
+		expect(extractBlock(sectionsContent, "intro")).toBe("Intro paragraph.");
+	});
+
+	it("returns null for unknown or invalid block ids", () => {
+		expect(extractBlock(sectionsContent, "missing")).toBeNull();
+		expect(extractBlock(sectionsContent, "not valid!")).toBeNull();
 	});
 });
 
@@ -166,6 +264,51 @@ describe("preprocessContent", () => {
 			expect(pre("![[whatever.xyz]]")).toContain(
 				"`![whatever.xyz](wiki-missing:whatever.xyz)`",
 			);
+		});
+
+		it("heading embeds quote only that section, with deep-linked attribution", () => {
+			const out = pre("![[Sections#Alpha]]");
+			expect(out).toContain("> ## Alpha");
+			expect(out).toContain("> Alpha body.");
+			expect(out).toContain("> ### Alpha Child");
+			expect(out).not.toContain("Beta body.");
+			expect(out).toContain("— *[Sections › Alpha](wiki:sections#alpha)*");
+		});
+
+		it("block embeds quote the tagged block, marker stripped", () => {
+			const out = pre("![[Sections#^beta-fact]]");
+			expect(out).toContain("> Beta body.");
+			expect(out).not.toContain("^beta-fact");
+			expect(out).not.toContain("Alpha body.");
+			expect(out).toContain("— *[Sections](wiki:sections#beta-fact)*");
+		});
+
+		it("embeds with unresolvable anchors degrade to inline code", () => {
+			expect(pre("![[Sections#No Such Heading]]")).toContain(
+				"`![Sections](wiki:sections#no-such-heading)`",
+			);
+		});
+	});
+
+	describe("block id anchors", () => {
+		it("end-of-line markers become invisible anchor spans", () => {
+			const out = pre("A tagged fact. ^fact-1");
+			expect(out).toContain(
+				'A tagged fact. <span id="fact-1" data-block-anchor="fact-1"></span>',
+			);
+			expect(out).not.toMatch(/\^fact-1/);
+		});
+
+		it("marker-only lines become standalone anchor spans", () => {
+			const out = pre("Paragraph one.\n\n^solo");
+			expect(out).toContain('<span id="solo" data-block-anchor="solo"></span>');
+			expect(out).not.toMatch(/\^solo/);
+		});
+
+		it("markers inside code fences are untouched", () => {
+			const out = pre("```\nx ^not-an-anchor\n```");
+			expect(out).toContain("x ^not-an-anchor");
+			expect(out).not.toContain("data-block-anchor");
 		});
 	});
 
@@ -272,6 +415,35 @@ describe("preprocessContent", () => {
 		it("code blocks restored verbatim", () => {
 			const code = "```go\nfunc main() {}\n```";
 			expect(pre(`before\n\n${code}\n\nafter`)).toContain(code);
+		});
+
+		it("inline code is protected from all transforms", () => {
+			const out = pre(
+				"Use `![[Welcome]]` or `[[Welcome]]` with `#tag` and `==marked==`.",
+			);
+			expect(out).toContain("`![[Welcome]]`");
+			expect(out).toContain("`[[Welcome]]`");
+			expect(out).toContain("`#tag`");
+			expect(out).toContain("`==marked==`");
+			expect(out).not.toContain("wiki:welcome");
+		});
+
+		it("inline code with block-id markers stays literal", () => {
+			const out = pre("Tag it with `^my-id` at the end. ^real-id");
+			expect(out).toContain("`^my-id`");
+			expect(out).toContain('data-block-anchor="real-id"');
+		});
+
+		it("inline code inside transcluded bodies is protected too", () => {
+			const target = makeNote({
+				id: "lit",
+				title: "Literal",
+				content: "Example: `![[Welcome]]` inline.",
+			});
+			const v = { ...vault, notes: [...vault.notes, target] };
+			const out = preprocessContent("![[Literal]]", v);
+			expect(out).toContain("`![[Welcome]]`");
+			expect(out).not.toContain("wiki:welcome");
 		});
 	});
 });

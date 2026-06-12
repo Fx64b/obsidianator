@@ -1,5 +1,6 @@
 {
   "name": "test",
+  "appVersion": "0.2.0",
   "notes": [
     {
       "id": "advanced-footnotes",
@@ -17,7 +18,8 @@
         "formatting-basic-formatting"
       ],
       "backlinks": [
-        "graph-hub-note"
+        "graph-hub-note",
+        "links-embeds"
       ],
       "frontmatter": {
         "tags": [
@@ -417,7 +419,6 @@
         "advanced-long-document",
         "getting-started",
         "graph-hub-note",
-        "links-embeds",
         "links-wikilinks",
         "welcome"
       ],
@@ -499,6 +500,8 @@
       "backlinks": [
         "folders-level-1-level-2-deep-note",
         "graph-hub-note",
+        "links-embeds",
+        "links-transclusion",
         "links-wikilinks"
       ],
       "frontmatter": {
@@ -924,8 +927,7 @@
         "formatting-basic-formatting",
         "formatting-code-blocks",
         "formatting-lists",
-        "graph-hub-note",
-        "links-embeds"
+        "graph-hub-note"
       ],
       "frontmatter": {
         "tags": [
@@ -1140,8 +1142,7 @@
         "graph-hub-note"
       ],
       "backlinks": [
-        "graph-hub-note",
-        "links-embeds"
+        "graph-hub-note"
       ],
       "frontmatter": {
         "tags": [
@@ -1181,24 +1182,25 @@
       "title": "Embeds",
       "aliases": [],
       "path": "Links/Embeds.md",
-      "content": "---\ntitle: Embeds\ntags:\n  - links\n  - embeds\n  - transclusion\n---\n\n# Embeds\n\nObsidianator supports `![[...]]` embed syntax.\n\n## Note Transclusion\n\nEmbed an entire note inline:\n\n![[Welcome]]\n\n## Partial Transclusion (Heading Anchor)\n\nEmbed just a section of a note (renders full note with attribution):\n\n![[Features]]\n\n## Image Embeds\n\nIf image files are present in the vault, they render inline:\n\n![[example.png]]\n\n![[screenshot.jpg]]\n\n## PDF Embeds\n\nPDF files render as an iframe with an \"Open PDF\" button:\n\n![[document.pdf]]\n\n## Non-Existent Embed\n\nEmbedding a file that doesn't exist falls back gracefully:\n\n![[nonexistent-file.png]]\n\n![[missing-note]]\n\n## Wikilink vs Embed\n\n- `[[Note]]` → wikilink (navigates to note on click)\n- `![[Note]]` → embed (renders note content inline)\n\nSee also: [[Wikilinks]], [[External Links]].\n",
-      "plainText": "Embeds\n\nObsidianator supports embed syntax.\n\nNote Transclusion\n\nEmbed an entire note inline:\n\n!Welcome\n\nPartial Transclusion (Heading Anchor)\n\nEmbed just a section of a note (renders full note with attribution):\n\n!Features\n\nImage Embeds\n\nIf image files are present in the vault, they render inline:\n\n!example.png\n\n!screenshot.jpg\n\nPDF Embeds\n\nPDF files render as an iframe with an \"Open PDF\" button:\n\n!document.pdf\n\nNon-Existent Embed\n\nEmbedding a file that doesn't exist falls back gracefully:\n\n!nonexistent-file.png\n\n!missing-note\n\nWikilink vs Embed\n\n- → wikilink (navigates to note on click)\n- → embed (renders note content inline)\n\nSee also: Wikilinks, External Links.",
+      "content": "---\ntitle: Embeds\ntags:\n  - links\n  - embeds\n  - transclusion\n---\n\n# Embeds\n\nObsidianator supports `![[...]]` embed syntax.\n\n## Note Transclusion\n\nEmbed an entire note inline:\n\n![[Welcome]]\n\n## Partial Transclusion (Heading Anchor)\n\nEmbed just one section of a note — subsections included, with a deep-linked\nattribution:\n\n![[Welcome#What it does]]\n\n![[Transclusion#A Reusable Section]]\n\n## Block Transclusion\n\nEmbed a single block tagged with a `^block-id`:\n\n![[Transclusion#^key-fact]]\n\n![[Transclusion#^tagged-quote]]\n\n![[Transclusion#^table-block]]\n\nLink (rather than embed) a block: [[Transclusion#^key-fact|the key fact]].\n\nAn anchor that doesn't resolve falls back gracefully: ![[Welcome#No Such Section]]\n\n## Image Embeds\n\nIf image files are present in the vault, they render inline:\n\n![[example.png]]\n\n![[screenshot.jpg]]\n\n## PDF Embeds\n\nPDF files render as an iframe with an \"Open PDF\" button:\n\n![[document.pdf]]\n\n## Non-Existent Embed\n\nEmbedding a file that doesn't exist falls back gracefully:\n\n![[nonexistent-file.png]]\n\n![[missing-note]]\n\n## Wikilink vs Embed\n\n- `[[Note]]` → wikilink (navigates to note on click)\n- `![[Note]]` → embed (renders note content inline)\n\nSee also: [[Wikilinks]], [[External Links]].\n",
+      "plainText": "Embeds\n\nObsidianator supports embed syntax.\n\nNote Transclusion\n\nEmbed an entire note inline:\n\n!Welcome\n\nPartial Transclusion (Heading Anchor)\n\nEmbed just one section of a note — subsections included, with a deep-linked\nattribution:\n\n!Welcome#What it does\n\n!Transclusion#A Reusable Section\n\nBlock Transclusion\n\nEmbed a single block tagged with a :\n\n!Transclusion#^key-fact\n\n!Transclusion#^tagged-quote\n\n!Transclusion#^table-block\n\nLink (rather than embed) a block: the key fact.\n\nAn anchor that doesn't resolve falls back gracefully: !Welcome#No Such Section\n\nImage Embeds\n\nIf image files are present in the vault, they render inline:\n\n!example.png\n\n!screenshot.jpg\n\nPDF Embeds\n\nPDF files render as an iframe with an \"Open PDF\" button:\n\n!document.pdf\n\nNon-Existent Embed\n\nEmbedding a file that doesn't exist falls back gracefully:\n\n!nonexistent-file.png\n\n!missing-note\n\nWikilink vs Embed\n\n- → wikilink (navigates to note on click)\n- → embed (renders note content inline)\n\nSee also: Wikilinks, External Links.",
       "tags": [
         "links",
         "embeds",
         "transclusion"
       ],
       "links": [
-        "formatting-tables",
+        "advanced-footnotes",
         "welcome",
-        "features",
-        "graph-orphan-note",
+        "links-transclusion",
+        "folders-level-1-level-2-deep-note",
         "links-wikilinks",
         "links-external-links"
       ],
       "backlinks": [
         "graph-hub-note",
         "links-external-links",
+        "links-transclusion",
         "links-wikilinks"
       ],
       "frontmatter": {
@@ -1227,6 +1229,11 @@
         },
         {
           "level": 2,
+          "text": "Block Transclusion",
+          "slug": "block-transclusion"
+        },
+        {
+          "level": 2,
           "text": "Image Embeds",
           "slug": "image-embeds"
         },
@@ -1247,8 +1254,8 @@
         }
       ],
       "folder": "Links",
-      "modified": "2026-06-11T20:57:13Z",
-      "created": "2026-06-11T20:57:13Z"
+      "modified": "2026-06-12T16:43:07Z",
+      "created": "2026-06-12T16:43:07Z"
     },
     {
       "id": "links-external-links",
@@ -1327,6 +1334,66 @@
       "folder": "Links",
       "modified": "2026-06-11T20:57:13Z",
       "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "links-transclusion",
+      "title": "Transclusion",
+      "aliases": [],
+      "path": "Links/Transclusion.md",
+      "content": "---\ntitle: Transclusion\ntags:\n  - links\n  - transclusion\n  - blocks\n---\n\n# Transclusion\n\nTargets for heading and block transclusion. See [[Embeds]] for embeds that\nreference this note.\n\n## A Reusable Section\n\nThis whole section can be embedded elsewhere with\n`![[Transclusion#A Reusable Section]]`.\n\n### Nested Subsection\n\nSubsections are included when their parent heading is embedded.\n\n## Block Targets\n\nThis paragraph has a block ID and can be embedded from any note with\n`![[Transclusion#^key-fact]]`. The `^key-fact` marker at the end of the line is\ninvisible in reading view. ^key-fact\n\n\u003e Quoted blocks can be tagged too. ^tagged-quote\n\n| Syntax                | Result           |\n| --------------------- | ---------------- |\n| `![[Note#Heading]]`   | embeds a section |\n| `![[Note#^block-id]]` | embeds a block   |\n\n^table-block\n\nA standalone `^block-id` on its own line (like above) tags the block before it.\n\n## Linking to Blocks\n\nA regular wikilink with a block anchor navigates and scrolls to the block:\n[[Transclusion#^key-fact|jump to the key fact]].\n",
+      "plainText": "Transclusion\n\nTargets for heading and block transclusion. See Embeds for embeds that\nreference this note.\n\nA Reusable Section\n\nThis whole section can be embedded elsewhere with\n .\n\nNested Subsection\n\nSubsections are included when their parent heading is embedded.\n\nBlock Targets\n\nThis paragraph has a block ID and can be embedded from any note with\n . The marker at the end of the line is\ninvisible in reading view. ^key-fact\n\nQuoted blocks can be tagged too. ^tagged-quote\n\n| Syntax | Result |\n| --------------------- | ---------------- |\n| | embeds a section |\n| | embeds a block |\n\n^table-block\n\nA standalone on its own line (like above) tags the block before it.\n\nLinking to Blocks\n\nA regular wikilink with a block anchor navigates and scrolls to the block:\njump to the key fact.",
+      "tags": [
+        "links",
+        "transclusion",
+        "blocks"
+      ],
+      "links": [
+        "links-embeds",
+        "links-transclusion",
+        "folders-level-1-level-2-deep-note"
+      ],
+      "backlinks": [
+        "links-embeds",
+        "links-transclusion"
+      ],
+      "frontmatter": {
+        "tags": [
+          "links",
+          "transclusion",
+          "blocks"
+        ],
+        "title": "Transclusion"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Transclusion",
+          "slug": "transclusion"
+        },
+        {
+          "level": 2,
+          "text": "A Reusable Section",
+          "slug": "a-reusable-section"
+        },
+        {
+          "level": 3,
+          "text": "Nested Subsection",
+          "slug": "nested-subsection"
+        },
+        {
+          "level": 2,
+          "text": "Block Targets",
+          "slug": "block-targets"
+        },
+        {
+          "level": 2,
+          "text": "Linking to Blocks",
+          "slug": "linking-to-blocks"
+        }
+      ],
+      "folder": "Links",
+      "modified": "2026-06-12T16:42:59Z",
+      "created": "2026-06-12T16:42:59Z"
     },
     {
       "id": "links-wikilinks",
@@ -1948,74 +2015,87 @@
     }
   ],
   "tags": [
-    "footnotes",
-    "transclusion",
-    "tag/subtag",
-    "mermaid",
-    "test",
-    "syntax-highlighting",
-    "tables",
-    "getting-started",
-    "project/obsidianator",
-    "tag",
-    "scroll-spy",
-    "status/done",
+    "orphan",
+    "tools/vite",
     "status/in-progress",
-    "lists",
-    "tags/frontmatter",
-    "organization",
-    "obsidianator",
-    "cli",
-    "hub",
-    "another-tag",
-    "math",
-    "formatting",
-    "graph",
-    "tools/obsidian",
-    "my_tag",
-    "tag123",
-    "katex",
-    "folders",
-    "nesting",
-    "project/obsidianator/frontend",
-    "latex",
+    "priority/high",
+    "connectivity",
+    "features",
     "example-inline-tag",
-    "inline",
-    "tag1",
-    "type/note",
-    "tags",
+    "links",
+    "wikilinks",
+    "tools/cli",
+    "project/obsidianator",
+    "hub",
+    "my-tag",
+    "project/obsidianator/frontend",
+    "obsidianator",
     "advanced",
     "diagrams",
-    "callouts",
-    "yaml",
-    "blockquotes",
-    "orphan",
-    "links",
-    "external",
-    "my-tag",
-    "test/nested",
-    "workflow-tag",
-    "scattered",
-    "toc",
-    "features",
-    "markdown",
+    "blocks",
+    "type/note",
+    "mermaid",
     "code",
-    "frontmatter",
-    "priority/high",
-    "multiple",
-    "connectivity",
-    "embeds",
-    "obsidian/plugins",
-    "TAG_NAME",
-    "obsidian",
+    "blockquotes",
     "admonitions",
-    "tools/cli",
+    "obsidian/plugins",
+    "tag/subtag",
+    "scattered",
+    "scroll-spy",
+    "folders",
+    "formatting",
+    "inline",
+    "graph",
+    "tag",
+    "TAG_NAME",
+    "tag1",
+    "embeds",
+    "frontmatter",
+    "nesting",
+    "callouts",
+    "status/done",
+    "workflow-tag",
+    "organization",
+    "getting-started",
+    "tags/frontmatter",
     "workflow/daily",
+    "test/nested",
+    "katex",
+    "tables",
+    "cli",
+    "tools/obsidian",
+    "lists",
+    "markdown",
+    "test",
+    "obsidian",
+    "tag123",
+    "syntax-highlighting",
+    "transclusion",
+    "external",
+    "yaml",
+    "another-tag",
+    "footnotes",
+    "toc",
+    "math",
+    "latex",
+    "tags",
     "inline-tag",
-    "wikilinks",
-    "tools/vite"
+    "my_tag",
+    "multiple"
   ],
   "folders": [
+    {
+      "name": "Advanced",
+      "path": "Advanced",
+      "parent": "",
+      "children": [],
+      "notes": [
+        "advanced-footnotes",
+        "advanced-long-document",
+        "advanced-math",
+        "advanced-mermaid"
+      ]
+    },
     {
       "name": "Folders",
       "path": "Folders",
@@ -2044,6 +2124,18 @@
       ]
     },
     {
+      "name": "Links",
+      "path": "Links",
+      "parent": "",
+      "children": [],
+      "notes": [
+        "links-embeds",
+        "links-external-links",
+        "links-transclusion",
+        "links-wikilinks"
+      ]
+    },
+    {
       "name": "Formatting",
       "path": "Formatting",
       "parent": "",
@@ -2057,18 +2149,6 @@
       ]
     },
     {
-      "name": "Advanced",
-      "path": "Advanced",
-      "parent": "",
-      "children": [],
-      "notes": [
-        "advanced-footnotes",
-        "advanced-long-document",
-        "advanced-math",
-        "advanced-mermaid"
-      ]
-    },
-    {
       "name": "Graph",
       "path": "Graph",
       "parent": "",
@@ -2076,17 +2156,6 @@
       "notes": [
         "graph-hub-note",
         "graph-orphan-note"
-      ]
-    },
-    {
-      "name": "Links",
-      "path": "Links",
-      "parent": "",
-      "children": [],
-      "notes": [
-        "links-embeds",
-        "links-external-links",
-        "links-wikilinks"
       ]
     },
     {
@@ -2299,7 +2368,7 @@
     },
     {
       "source": "links-embeds",
-      "target": "formatting-tables"
+      "target": "advanced-footnotes"
     },
     {
       "source": "links-embeds",
@@ -2307,11 +2376,11 @@
     },
     {
       "source": "links-embeds",
-      "target": "features"
+      "target": "links-transclusion"
     },
     {
       "source": "links-embeds",
-      "target": "graph-orphan-note"
+      "target": "folders-level-1-level-2-deep-note"
     },
     {
       "source": "links-embeds",
@@ -2328,6 +2397,18 @@
     {
       "source": "links-external-links",
       "target": "links-embeds"
+    },
+    {
+      "source": "links-transclusion",
+      "target": "links-embeds"
+    },
+    {
+      "source": "links-transclusion",
+      "target": "links-transclusion"
+    },
+    {
+      "source": "links-transclusion",
+      "target": "folders-level-1-level-2-deep-note"
     },
     {
       "source": "links-wikilinks",
