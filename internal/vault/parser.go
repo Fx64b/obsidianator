@@ -13,12 +13,12 @@ import (
 )
 
 var (
-	frontmatterRe   = regexp.MustCompile(`(?s)^---\r?\n(.*?)\r?\n---\r?\n?`)
-	wikilinkRe      = regexp.MustCompile(`\[\[([^\]|]+?)(?:\|[^\]]+?)?\]\]`)
-	inlineTagRe     = regexp.MustCompile(`(?:^|\s)#([a-zA-Z][a-zA-Z0-9_/-]*)`)
-	headerRe        = regexp.MustCompile(`(?m)^(#{1,6})\s+(.+)$`)
-	fencedTickRe    = regexp.MustCompile("(?m)^`{3,}[^\\n]*\\n[\\s\\S]*?\\n`{3,}[ \\t]*$")
-	fencedTildeRe   = regexp.MustCompile("(?m)^~{3,}[^\\n]*\\n[\\s\\S]*?\\n~{3,}[ \\t]*$")
+	frontmatterRe = regexp.MustCompile(`(?s)^---\r?\n(.*?)\r?\n---\r?\n?`)
+	wikilinkRe    = regexp.MustCompile(`\[\[([^\]|]+?)(?:\|[^\]]+?)?\]\]`)
+	inlineTagRe   = regexp.MustCompile(`(?:^|\s)#([a-zA-Z][a-zA-Z0-9_/-]*)`)
+	headerRe      = regexp.MustCompile(`(?m)^(#{1,6})\s+(.+)$`)
+	fencedTickRe  = regexp.MustCompile("(?m)^`{3,}[^\\n]*\\n[\\s\\S]*?\\n`{3,}[ \\t]*$")
+	fencedTildeRe = regexp.MustCompile("(?m)^~{3,}[^\\n]*\\n[\\s\\S]*?\\n~{3,}[ \\t]*$")
 
 	// stripMarkdown regexes
 	stripWikilinkRe  = regexp.MustCompile(`\[\[(?:[^\]|]+\|)?([^\]|]+)\]\]`)
@@ -73,8 +73,8 @@ func ParseVault(vaultPath string) (*VaultData, error) {
 	vaultName := filepath.Base(vaultPath)
 
 	var notes []Note
-	attachments := map[string]string{} // lowercase-basename → vault-relative-slash-path
-	titleToID := map[string]string{}   // exact title → id
+	attachments := map[string]string{}    // lowercase-basename → vault-relative-slash-path
+	titleToID := map[string]string{}      // exact title → id
 	lowerTitleToID := map[string]string{} // lowercase title → id
 
 	// --- Walk: parse notes and collect attachments ---
@@ -453,13 +453,14 @@ func resolveLinks(links []string, titleToID, lowerTitleToID map[string]string) [
 			}
 		}
 
-		// Tier 3: basename match — check if any note ID ends with the slugified target
+		// Tier 3: basename match — check if any note ID ends with the slugified target.
+		// Several IDs may match; pick the lexicographically smallest so resolution
+		// is deterministic (map iteration order is randomized).
 		if id == "" {
 			slugTarget := pathToID(target)
 			for _, noteID := range titleToID {
-				if strings.HasSuffix(noteID, slugTarget) {
+				if strings.HasSuffix(noteID, slugTarget) && (id == "" || noteID < id) {
 					id = noteID
-					break
 				}
 			}
 		}
