@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function useMobile(breakpoint = 768) {
 	const [isMobile, setIsMobile] = useState(

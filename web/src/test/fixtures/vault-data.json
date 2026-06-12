@@ -1,0 +1,2450 @@
+{
+  "name": "test",
+  "notes": [
+    {
+      "id": "advanced-footnotes",
+      "title": "Footnotes",
+      "aliases": [],
+      "path": "Advanced/Footnotes.md",
+      "content": "---\ntitle: Footnotes\ntags:\n  - advanced\n  - footnotes\n---\n\n# Footnotes\n\nMarkdown supports footnotes via the GFM extension.\n\n## Inline Footnotes\n\nThis sentence has a footnote[^1] at the end of it.\n\nHere is another sentence with a second footnote[^2] for testing.\n\n## Named Footnotes\n\nYou can use descriptive names instead of numbers[^named] for better readability.\n\nThis references the same footnote again[^named].\n\n## Multi-Paragraph Footnote\n\nThis sentence uses a longer footnote[^long] that spans multiple paragraphs.\n\n## Footnote Definitions\n\n[^1]: This is the first footnote. It contains a single sentence.\n\n[^2]: This is the second footnote. It can contain **bold text**, *italic text*, and `inline code`.\n\n[^named]: Named footnotes make the source more readable even if they render with numbers.\n\n[^long]: This is the first paragraph of a long footnote.\n\n    This is the second paragraph. Footnotes can span multiple paragraphs when you indent the continuation.\n\n    - They can also contain lists\n    - Like this one\n\n## Footnotes with Links\n\nThis footnote[^link] contains a link.\n\n[^link]: See the [GitHub repository](https://github.com/Fx64b/obsidianator) for source code.\n\n## Inline Style (if supported)\n\nSome parsers support inline footnote syntax: ^[This is an inline footnote without a separate definition.] — support varies by renderer.\n\nSee also: [[Long Document]], [[Basic Formatting]].\n",
+      "plainText": "Footnotes\n\nMarkdown supports footnotes via the GFM extension.\n\nInline Footnotes\n\nThis sentence has a footnote[^1] at the end of it.\n\nHere is another sentence with a second footnote[^2] for testing.\n\nNamed Footnotes\n\nYou can use descriptive names instead of numbers[^named] for better readability.\n\nThis references the same footnote again[^named].\n\nMulti-Paragraph Footnote\n\nThis sentence uses a longer footnote[^long] that spans multiple paragraphs.\n\nFootnote Definitions\n\n[^1]: This is the first footnote. It contains a single sentence.\n\n[^2]: This is the second footnote. It can contain bold text, italic text, and .\n\n[^named]: Named footnotes make the source more readable even if they render with numbers.\n\n[^long]: This is the first paragraph of a long footnote.\n\n This is the second paragraph. Footnotes can span multiple paragraphs when you indent the continuation.\n\n - They can also contain lists\n - Like this one\n\nFootnotes with Links\n\nThis footnote[^link] contains a link.\n\n[^link]: See the GitHub repository for source code.\n\nInline Style (if supported)\n\nSome parsers support inline footnote syntax: ^[This is an inline footnote without a separate definition.] — support varies by renderer.\n\nSee also: Long Document, Basic Formatting.",
+      "tags": [
+        "advanced",
+        "footnotes"
+      ],
+      "links": [
+        "advanced-long-document",
+        "formatting-basic-formatting"
+      ],
+      "backlinks": [
+        "graph-hub-note"
+      ],
+      "frontmatter": {
+        "tags": [
+          "advanced",
+          "footnotes"
+        ],
+        "title": "Footnotes"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Footnotes",
+          "slug": "footnotes"
+        },
+        {
+          "level": 2,
+          "text": "Inline Footnotes",
+          "slug": "inline-footnotes"
+        },
+        {
+          "level": 2,
+          "text": "Named Footnotes",
+          "slug": "named-footnotes"
+        },
+        {
+          "level": 2,
+          "text": "Multi-Paragraph Footnote",
+          "slug": "multi-paragraph-footnote"
+        },
+        {
+          "level": 2,
+          "text": "Footnote Definitions",
+          "slug": "footnote-definitions"
+        },
+        {
+          "level": 2,
+          "text": "Footnotes with Links",
+          "slug": "footnotes-with-links"
+        },
+        {
+          "level": 2,
+          "text": "Inline Style (if supported)",
+          "slug": "inline-style-if-supported"
+        }
+      ],
+      "folder": "Advanced",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "advanced-long-document",
+      "title": "Long Document",
+      "aliases": [],
+      "path": "Advanced/Long Document.md",
+      "content": "---\ntitle: Long Document\ntags:\n  - advanced\n  - toc\n  - scroll-spy\n---\n\n# Long Document\n\nThis document exists to test the Table of Contents panel and scroll-spy heading detection. Scroll through it while watching the TOC in the right panel highlight the active heading.\n\n---\n\n## Section One: Introduction\n\n### 1.1 Background\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.\n\n### 1.2 Motivation\n\nSunt in culpa qui officia deserunt mollit anim id est laborum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\n\nCras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.\n\n### 1.3 Scope\n\nNullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\n\n---\n\n## Section Two: Core Concepts\n\n### 2.1 Architecture Overview\n\nVestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.\n\n```\n┌─────────────────────────────────────────┐\n│              Go CLI Binary              │\n│  ┌──────────────┐  ┌─────────────────┐  │\n│  │ Vault Parser │  │ Static Exporter │  │\n│  └──────────────┘  └─────────────────┘  │\n│           │                │            │\n│           └────────────────┘            │\n│                    │                    │\n│              vault-data.json            │\n└─────────────────────────────────────────┘\n```\n\n### 2.2 Data Model\n\nAenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.\n\n- **VaultData** — root structure exported as JSON\n- **Note** — individual markdown file with parsed metadata\n- **Edge** — directed link between two notes\n- **Folder** — directory with parent/child relationships\n\n### 2.3 Parsing Pipeline\n\nDonec sed odio dui. Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.\n\n1. Walk vault directory, skip hidden folders\n2. Parse YAML frontmatter from each `.md` file\n3. Extract wikilinks, tags, and headers\n4. Resolve wikilink targets with 3-tier fallback\n5. Build backlink index from resolved links\n\n---\n\n## Section Three: Frontend\n\n### 3.1 Component Structure\n\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n| Component | Purpose |\n|-----------|---------|\n| `App.tsx` | Root shell, state management |\n| `Layout.tsx` | 3-panel layout, scroll-spy |\n| `Sidebar.tsx` | File tree, tag browser |\n| `MarkdownView.tsx` | Note renderer |\n| `RightPanel.tsx` | TOC, graph, backlinks |\n\n### 3.2 Markdown Rendering\n\nCras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis. Donec ullamcorper nulla non metus auctor fringilla.\n\nThe preprocessing pipeline runs before ReactMarkdown:\n\n1. Strip frontmatter from content\n2. Process `![[embed]]` blocks\n3. Convert `ad-*` admonitions to callout markers\n4. Convert Obsidian callout syntax `\u003e [!TYPE]`\n5. Replace wikilinks with `wiki:` pseudo-URLs\n\n### 3.3 State Management\n\nNullam id dolor id nibh ultricies vehicula ut id elit. Nullam quis risus eget urna mollis ornare vel eu leo.\n\nState is persisted to `localStorage`:\n\n- Active note ID\n- Dark/light mode preference\n- Sidebar open/closed\n- Right panel active tab\n\n---\n\n## Section Four: Build System\n\n### 4.1 Makefile Targets\n\nInteger posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam.\n\n```bash\nmake all          # build web app + Go binary\nmake web          # build Vite frontend only\nmake build        # compile Go binary only\nmake dev-export   # export + watch + serve at :3000\nmake dev-web      # Vite dev server at :5173\nmake release      # cross-compile for all platforms\nmake clean        # remove build artifacts\n```\n\n### 4.2 Embedding\n\nPellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.\n\nThe Go binary embeds the built Vite app using `//go:embed static`. This means:\n\n- Single binary deployment\n- No Node.js required at runtime\n- Vault data is the only external dependency\n\n### 4.3 Watch Mode\n\nVestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna.\n\n```bash\n./obsidianator export ./vault --watch --port 3000\n```\n\nThe `--watch` flag:\n1. Starts `fsnotify` watcher on vault directory\n2. Debounces changes by 400ms\n3. Re-parses and re-exports on `.md` change\n4. Broadcasts `data: reload` via SSE\n5. Browser receives event and calls `location.reload()`\n\n---\n\n## Section Five: Deployment\n\n### 5.1 Static Hosting\n\nCum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur.\n\nThe output directory is a standard static site:\n\n```\ndist/\n├── index.html\n├── vault-data.json\n├── assets/\n│   ├── index-[hash].js\n│   └── index-[hash].css\n└── files/          ← vault attachments\n```\n\n### 5.2 GitHub Pages\n\nCras justo odio, dapibus ac facilisis in, egestas eget quam. Cras mattis consectetur purus sit amet fermentum.\n\n```yaml\n# .github/workflows/deploy.yml\n- name: Export vault\n  run: ./obsidianator export ./vault --output ./dist\n\n- name: Deploy to Pages\n  uses: actions/upload-pages-artifact@v2\n  with:\n    path: dist\n```\n\n### 5.3 Self-Hosting\n\nSed posuere consectetur est at lobortis. Donec ullamcorper nulla non metus auctor fringilla. Maecenas sed diam eget risus varius blandit.\n\nAny static file server works:\n\n```bash\n# Python\npython3 -m http.server 8080 --directory dist\n\n# Node.js\nnpx serve dist\n\n# Go binary\n./obsidianator export ./vault --serve --port 8080\n```\n\n---\n\n## Section Six: Contributing\n\n### 6.1 Development Setup\n\nAenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec id elit non mi porta gravida at eget metus.\n\n```bash\ngit clone https://github.com/Fx64b/obsidianator\ncd obsidianator\nmake all\nmake dev-export  # opens http://localhost:3000\n```\n\n### 6.2 Project Structure\n\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n```\nobsidianator/\n├── main.go\n├── internal/\n│   ├── vault/\n│   │   ├── types.go\n│   │   └── parser.go\n│   └── export/\n│       └── exporter.go\n├── web/\n│   └── src/\n│       ├── App.tsx\n│       ├── components/\n│       └── hooks/\n└── data/test/   ← test vault\n```\n\n### 6.3 Testing\n\nNullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes.\n\n```bash\n# Export test vault and verify output\n./obsidianator export data/test --output /tmp/test-out\n# Expected: Found 19+ notes, X tags, Y edges\n\n# Full build test\nmake all\n```\n\n---\n\n## Section Seven: Roadmap\n\n### 7.1 Planned Features\n\nCras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod.\n\n- [ ] Mermaid diagram rendering\n- [ ] LaTeX / KaTeX math support\n- [ ] Dataview query rendering\n- [ ] Note hover preview (link preview on mouseover)\n- [ ] Full-text search indexing at export time\n- [ ] RSS feed generation\n\n### 7.2 Known Limitations\n\nAenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.\n\n- Note IDs are derived from file paths — renaming a file breaks existing links until re-exported\n- Very large vaults (1000+ notes) may produce a large `vault-data.json` — chunking is not yet implemented\n- Attachment files must be inside the vault directory to be copied to the output\n\n### 7.3 Performance\n\nNullam id dolor id nibh ultricies vehicula ut id elit. Cras mattis consectetur purus sit amet fermentum.\n\nOn a mid-range laptop, export times are approximately:\n\n| Vault Size | Export Time |\n|------------|------------|\n| 100 notes | \u003c 1 second |\n| 500 notes | ~2 seconds |\n| 1000 notes | ~5 seconds |\n\n---\n\n## Section Eight: License\n\n### 8.1 MIT License\n\nCopyright © 2026 Fx64b. Released under the MIT License.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction.\n\n### 8.2 Third-Party Licenses\n\n- React — MIT\n- Vite — MIT\n- shadcn/ui — MIT\n- react-force-graph-2d — MIT\n- fsnotify — BSD-3-Clause\n- Cobra — Apache 2.0\n- gopkg.in/yaml.v3 — MIT and Apache 2.0\n\n### 8.3 Acknowledgements\n\nThanks to the Obsidian team for building a great note-taking application, and to all the open-source maintainers whose libraries make this project possible.\n\nSee also: [[Welcome]], [[Getting Started]], [[Features]].\n",
+      "plainText": "Long Document\n\nThis document exists to test the Table of Contents panel and scroll-spy heading detection. Scroll through it while watching the TOC in the right panel highlight the active heading.\n\n---\n\nSection One: Introduction\n\n1.1 Background\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.\n\n1.2 Motivation\n\nSunt in culpa qui officia deserunt mollit anim id est laborum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\n\nCras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.\n\n1.3 Scope\n\nNullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\n\n---\n\nSection Two: Core Concepts\n\n2.1 Architecture Overview\n\nVestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.\n\n \n\n2.2 Data Model\n\nAenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.\n\n- VaultData — root structure exported as JSON\n- Note — individual markdown file with parsed metadata\n- Edge — directed link between two notes\n- Folder — directory with parent/child relationships\n\n2.3 Parsing Pipeline\n\nDonec sed odio dui. Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.\n\n1. Walk vault directory, skip hidden folders\n2. Parse YAML frontmatter from each file\n3. Extract wikilinks, tags, and headers\n4. Resolve wikilink targets with 3-tier fallback\n5. Build backlink index from resolved links\n\n---\n\nSection Three: Frontend\n\n3.1 Component Structure\n\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n| Component | Purpose |\n|-----------|---------|\n| | Root shell, state management |\n| | 3-panel layout, scroll-spy |\n| | File tree, tag browser |\n| | Note renderer |\n| | TOC, graph, backlinks |\n\n3.2 Markdown Rendering\n\nCras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis. Donec ullamcorper nulla non metus auctor fringilla.\n\nThe preprocessing pipeline runs before ReactMarkdown:\n\n1. Strip frontmatter from content\n2. Process blocks\n3. Convert admonitions to callout markers\n4. Convert Obsidian callout syntax \n5. Replace wikilinks with pseudo-URLs\n\n3.3 State Management\n\nNullam id dolor id nibh ultricies vehicula ut id elit. Nullam quis risus eget urna mollis ornare vel eu leo.\n\nState is persisted to :\n\n- Active note ID\n- Dark/light mode preference\n- Sidebar open/closed\n- Right panel active tab\n\n---\n\nSection Four: Build System\n\n4.1 Makefile Targets\n\nInteger posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam.\n\n \n\n4.2 Embedding\n\nPellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.\n\nThe Go binary embeds the built Vite app using . This means:\n\n- Single binary deployment\n- No Node.js required at runtime\n- Vault data is the only external dependency\n\n4.3 Watch Mode\n\nVestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna.\n\n \n\nThe flag:\n1. Starts watcher on vault directory\n2. Debounces changes by 400ms\n3. Re-parses and re-exports on change\n4. Broadcasts via SSE\n5. Browser receives event and calls \n\n---\n\nSection Five: Deployment\n\n5.1 Static Hosting\n\nCum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur.\n\nThe output directory is a standard static site:\n\n \n\n5.2 GitHub Pages\n\nCras justo odio, dapibus ac facilisis in, egestas eget quam. Cras mattis consectetur purus sit amet fermentum.\n\n \n\n5.3 Self-Hosting\n\nSed posuere consectetur est at lobortis. Donec ullamcorper nulla non metus auctor fringilla. Maecenas sed diam eget risus varius blandit.\n\nAny static file server works:\n\n \n\n---\n\nSection Six: Contributing\n\n6.1 Development Setup\n\nAenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec id elit non mi porta gravida at eget metus.\n\n \n\n6.2 Project Structure\n\nFusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.\n\n \n\n6.3 Testing\n\nNullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes.\n\n \n\n---\n\nSection Seven: Roadmap\n\n7.1 Planned Features\n\nCras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod.\n\n- [ ] Mermaid diagram rendering\n- [ ] LaTeX / KaTeX math support\n- [ ] Dataview query rendering\n- [ ] Note hover preview (link preview on mouseover)\n- [ ] Full-text search indexing at export time\n- [ ] RSS feed generation\n\n7.2 Known Limitations\n\nAenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.\n\n- Note IDs are derived from file paths — renaming a file breaks existing links until re-exported\n- Very large vaults (1000+ notes) may produce a large — chunking is not yet implemented\n- Attachment files must be inside the vault directory to be copied to the output\n\n7.3 Performance\n\nNullam id dolor id nibh ultricies vehicula ut id elit. Cras mattis consectetur purus sit amet fermentum.\n\nOn a mid-range laptop, export times are approximately:\n\n| Vault Size | Export Time |\n|------------|------------|\n| 100 notes | \u003c 1 second |\n| 500 notes | ~2 seconds |\n| 1000 notes | ~5 seconds |\n\n---\n\nSection Eight: License\n\n8.1 MIT License\n\nCopyright © 2026 Fx64b. Released under the MIT License.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction.\n\n8.2 Third-Party Licenses\n\n- React — MIT\n- Vite — MIT\n- shadcn/ui — MIT\n- react-force-graph-2d — MIT\n- fsnotify — BSD-3-Clause\n- Cobra — Apache 2.0\n- gopkg.in/yaml.v3 — MIT and Apache 2.0\n\n8.3 Acknowledgements\n\nThanks to the Obsidian team for building a great note-taking application, and to all the open-source maintainers whose libraries make this project possible.\n\nSee also: Welcome, Getting Started, Features.",
+      "tags": [
+        "advanced",
+        "toc",
+        "scroll-spy"
+      ],
+      "links": [
+        "welcome",
+        "getting-started",
+        "features"
+      ],
+      "backlinks": [
+        "advanced-footnotes",
+        "advanced-mermaid",
+        "graph-hub-note"
+      ],
+      "frontmatter": {
+        "tags": [
+          "advanced",
+          "toc",
+          "scroll-spy"
+        ],
+        "title": "Long Document"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Long Document",
+          "slug": "long-document"
+        },
+        {
+          "level": 2,
+          "text": "Section One: Introduction",
+          "slug": "section-one-introduction"
+        },
+        {
+          "level": 3,
+          "text": "1.1 Background",
+          "slug": "11-background"
+        },
+        {
+          "level": 3,
+          "text": "1.2 Motivation",
+          "slug": "12-motivation"
+        },
+        {
+          "level": 3,
+          "text": "1.3 Scope",
+          "slug": "13-scope"
+        },
+        {
+          "level": 2,
+          "text": "Section Two: Core Concepts",
+          "slug": "section-two-core-concepts"
+        },
+        {
+          "level": 3,
+          "text": "2.1 Architecture Overview",
+          "slug": "21-architecture-overview"
+        },
+        {
+          "level": 3,
+          "text": "2.2 Data Model",
+          "slug": "22-data-model"
+        },
+        {
+          "level": 3,
+          "text": "2.3 Parsing Pipeline",
+          "slug": "23-parsing-pipeline"
+        },
+        {
+          "level": 2,
+          "text": "Section Three: Frontend",
+          "slug": "section-three-frontend"
+        },
+        {
+          "level": 3,
+          "text": "3.1 Component Structure",
+          "slug": "31-component-structure"
+        },
+        {
+          "level": 3,
+          "text": "3.2 Markdown Rendering",
+          "slug": "32-markdown-rendering"
+        },
+        {
+          "level": 3,
+          "text": "3.3 State Management",
+          "slug": "33-state-management"
+        },
+        {
+          "level": 2,
+          "text": "Section Four: Build System",
+          "slug": "section-four-build-system"
+        },
+        {
+          "level": 3,
+          "text": "4.1 Makefile Targets",
+          "slug": "41-makefile-targets"
+        },
+        {
+          "level": 3,
+          "text": "4.2 Embedding",
+          "slug": "42-embedding"
+        },
+        {
+          "level": 3,
+          "text": "4.3 Watch Mode",
+          "slug": "43-watch-mode"
+        },
+        {
+          "level": 2,
+          "text": "Section Five: Deployment",
+          "slug": "section-five-deployment"
+        },
+        {
+          "level": 3,
+          "text": "5.1 Static Hosting",
+          "slug": "51-static-hosting"
+        },
+        {
+          "level": 3,
+          "text": "5.2 GitHub Pages",
+          "slug": "52-github-pages"
+        },
+        {
+          "level": 3,
+          "text": "5.3 Self-Hosting",
+          "slug": "53-self-hosting"
+        },
+        {
+          "level": 2,
+          "text": "Section Six: Contributing",
+          "slug": "section-six-contributing"
+        },
+        {
+          "level": 3,
+          "text": "6.1 Development Setup",
+          "slug": "61-development-setup"
+        },
+        {
+          "level": 3,
+          "text": "6.2 Project Structure",
+          "slug": "62-project-structure"
+        },
+        {
+          "level": 3,
+          "text": "6.3 Testing",
+          "slug": "63-testing"
+        },
+        {
+          "level": 2,
+          "text": "Section Seven: Roadmap",
+          "slug": "section-seven-roadmap"
+        },
+        {
+          "level": 3,
+          "text": "7.1 Planned Features",
+          "slug": "71-planned-features"
+        },
+        {
+          "level": 3,
+          "text": "7.2 Known Limitations",
+          "slug": "72-known-limitations"
+        },
+        {
+          "level": 3,
+          "text": "7.3 Performance",
+          "slug": "73-performance"
+        },
+        {
+          "level": 2,
+          "text": "Section Eight: License",
+          "slug": "section-eight-license"
+        },
+        {
+          "level": 3,
+          "text": "8.1 MIT License",
+          "slug": "81-mit-license"
+        },
+        {
+          "level": 3,
+          "text": "8.2 Third-Party Licenses",
+          "slug": "82-third-party-licenses"
+        },
+        {
+          "level": 3,
+          "text": "8.3 Acknowledgements",
+          "slug": "83-acknowledgements"
+        }
+      ],
+      "folder": "Advanced",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "advanced-math",
+      "title": "Math",
+      "aliases": [],
+      "path": "Advanced/Math.md",
+      "content": "---\ntitle: Math\ntags: [math, latex, katex]\n---\n\n# Math\n\nObsidianator renders math using KaTeX. Use `$...$` for inline math and `$$...$$` for display (block) math.\n\n## Inline Math\n\nEinstein's mass-energy equivalence: $E = mc^2$\n\nThe quadratic formula gives roots $x = \\dfrac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$ for $ax^2 + bx + c = 0$.\n\nEuler's identity is often called the most beautiful equation in mathematics: $e^{i\\pi} + 1 = 0$\n\nThe probability density of a normal distribution: $f(x) = \\dfrac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}$\n\n## Display Math\n\n### Calculus\n\nThe fundamental theorem of calculus:\n\n$$\\int_a^b f(x)\\,dx = F(b) - F(a)$$\n\nFourier transform:\n\n$$\\hat{f}(\\xi) = \\int_{-\\infty}^{\\infty} f(x)\\, e^{-2\\pi i x \\xi}\\, dx$$\n\n### Linear Algebra\n\nA system of equations $A\\mathbf{x} = \\mathbf{b}$ where $A$ is an $n \\times n$ matrix:\n\n$$\\begin{pmatrix} a_{11} \u0026 a_{12} \u0026 \\cdots \u0026 a_{1n} \\\\ a_{21} \u0026 a_{22} \u0026 \\cdots \u0026 a_{2n} \\\\ \\vdots \u0026 \\vdots \u0026 \\ddots \u0026 \\vdots \\\\ a_{n1} \u0026 a_{n2} \u0026 \\cdots \u0026 a_{nn} \\end{pmatrix} \\begin{pmatrix} x_1 \\\\ x_2 \\\\ \\vdots \\\\ x_n \\end{pmatrix} = \\begin{pmatrix} b_1 \\\\ b_2 \\\\ \\vdots \\\\ b_n \\end{pmatrix}$$\n\nDeterminant of a $2 \\times 2$ matrix:\n\n$$\\det(A) = \\begin{vmatrix} a \u0026 b \\\\ c \u0026 d \\end{vmatrix} = ad - bc$$\n\n### Series \u0026 Summations\n\nTaylor series expansion of $e^x$:\n\n$$e^x = \\sum_{n=0}^{\\infty} \\frac{x^n}{n!} = 1 + x + \\frac{x^2}{2!} + \\frac{x^3}{3!} + \\cdots$$\n\nThe Basel problem:\n\n$$\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$$\n\n### Limits \u0026 Derivatives\n\nDefinition of the derivative:\n\n$$f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$\n\nL'Hôpital's rule applies when $\\lim_{x \\to c} f(x) = \\lim_{x \\to c} g(x) = 0$:\n\n$$\\lim_{x \\to c} \\frac{f(x)}{g(x)} = \\lim_{x \\to c} \\frac{f'(x)}{g'(x)}$$\n\n### Physics\n\nMaxwell's equations in differential form:\n\n$$\\nabla \\cdot \\mathbf{E} = \\frac{\\rho}{\\varepsilon_0} \\qquad \\nabla \\cdot \\mathbf{B} = 0$$\n\n$$\\nabla \\times \\mathbf{E} = -\\frac{\\partial \\mathbf{B}}{\\partial t} \\qquad \\nabla \\times \\mathbf{B} = \\mu_0\\left(\\mathbf{J} + \\varepsilon_0 \\frac{\\partial \\mathbf{E}}{\\partial t}\\right)$$\n\nSchrödinger equation:\n\n$$i\\hbar \\frac{\\partial}{\\partial t}\\Psi(\\mathbf{r},t) = \\left[-\\frac{\\hbar^2}{2m}\\nabla^2 + V(\\mathbf{r},t)\\right]\\Psi(\\mathbf{r},t)$$\n\n### Greek Letters \u0026 Symbols\n\nCommon symbols: $\\alpha, \\beta, \\gamma, \\delta, \\epsilon, \\zeta, \\eta, \\theta, \\lambda, \\mu, \\nu, \\xi, \\pi, \\rho, \\sigma, \\tau, \\phi, \\chi, \\psi, \\omega$\n\nSet notation: $x \\in \\mathbb{R}$, $A \\subseteq B$, $A \\cup B$, $A \\cap B$, $\\forall x \\in \\mathbb{N},\\ \\exists y \u003e x$\n",
+      "plainText": "Math\n\nObsidianator renders math using KaTeX. Use for inline math and for display (block) math.\n\nInline Math\n\nEinstein's mass-energy equivalence: $E = mc^2$\n\nThe quadratic formula gives roots $x = \\dfrac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$ for $ax^2 + bx + c = 0$.\n\nEuler's identity is often called the most beautiful equation in mathematics: $e^{i\\pi} + 1 = 0$\n\nThe probability density of a normal distribution: $f(x) = \\dfrac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x-\\mu}{\\sigma}\\right)^2}$\n\nDisplay Math\n\nCalculus\n\nThe fundamental theorem of calculus:\n\n$$\\int_a^b f(x)\\,dx = F(b) - F(a)$$\n\nFourier transform:\n\n$$\\hat{f}(\\xi) = \\int_{-\\infty}^{\\infty} f(x)\\, e^{-2\\pi i x \\xi}\\, dx$$\n\nLinear Algebra\n\nA system of equations $A\\mathbf{x} = \\mathbf{b}$ where $A$ is an $n \\times n$ matrix:\n\n$$\\begin{pmatrix} a_{11} \u0026 a_{12} \u0026 \\cdots \u0026 a_{1n} \\\\ a_{21} \u0026 a_{22} \u0026 \\cdots \u0026 a_{2n} \\\\ \\vdots \u0026 \\vdots \u0026 \\ddots \u0026 \\vdots \\\\ a_{n1} \u0026 a_{n2} \u0026 \\cdots \u0026 a_{nn} \\end{pmatrix} \\begin{pmatrix} x_1 \\\\ x_2 \\\\ \\vdots \\\\ x_n \\end{pmatrix} = \\begin{pmatrix} b_1 \\\\ b_2 \\\\ \\vdots \\\\ b_n \\end{pmatrix}$$\n\nDeterminant of a $2 \\times 2$ matrix:\n\n$$\\det(A) = \\begin{vmatrix} a \u0026 b \\\\ c \u0026 d \\end{vmatrix} = ad - bc$$\n\nSeries \u0026 Summations\n\nTaylor series expansion of $e^x$:\n\n$$e^x = \\sum_{n=0}^{\\infty} \\frac{x^n}{n!} = 1 + x + \\frac{x^2}{2!} + \\frac{x^3}{3!} + \\cdots$$\n\nThe Basel problem:\n\n$$\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$$\n\nLimits \u0026 Derivatives\n\nDefinition of the derivative:\n\n$$f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$\n\nL'Hôpital's rule applies when $\\lim_{x \\to c} f(x) = \\lim_{x \\to c} g(x) = 0$:\n\n$$\\lim_{x \\to c} \\frac{f(x)}{g(x)} = \\lim_{x \\to c} \\frac{f'(x)}{g'(x)}$$\n\nPhysics\n\nMaxwell's equations in differential form:\n\n$$\\nabla \\cdot \\mathbf{E} = \\frac{\\rho}{\\varepsilon_0} \\qquad \\nabla \\cdot \\mathbf{B} = 0$$\n\n$$\\nabla \\times \\mathbf{E} = -\\frac{\\partial \\mathbf{B}}{\\partial t} \\qquad \\nabla \\times \\mathbf{B} = \\mu_0\\left(\\mathbf{J} + \\varepsilon_0 \\frac{\\partial \\mathbf{E}}{\\partial t}\\right)$$\n\nSchrödinger equation:\n\n$$i\\hbar \\frac{\\partial}{\\partial t}\\Psi(\\mathbf{r},t) = \\left[-\\frac{\\hbar^2}{2m}\\nabla^2 + V(\\mathbf{r},t)\\right]\\Psi(\\mathbf{r},t)$$\n\nGreek Letters \u0026 Symbols\n\nCommon symbols: $\\alpha, \\beta, \\gamma, \\delta, \\epsilon, \\zeta, \\eta, \\theta, \\lambda, \\mu, \\nu, \\xi, \\pi, \\rho, \\sigma, \\tau, \\phi, \\chi, \\psi, \\omega$\n\nSet notation: $x \\in \\mathbb{R}$, $A \\subseteq B$, $A \\cup B$, $A \\cap B$, $\\forall x \\in \\mathbb{N},\\ \\exists y \u003e x$",
+      "tags": [
+        "math",
+        "latex",
+        "katex"
+      ],
+      "links": [],
+      "backlinks": [],
+      "frontmatter": {
+        "tags": [
+          "math",
+          "latex",
+          "katex"
+        ],
+        "title": "Math"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Math",
+          "slug": "math"
+        },
+        {
+          "level": 2,
+          "text": "Inline Math",
+          "slug": "inline-math"
+        },
+        {
+          "level": 2,
+          "text": "Display Math",
+          "slug": "display-math"
+        },
+        {
+          "level": 3,
+          "text": "Calculus",
+          "slug": "calculus"
+        },
+        {
+          "level": 3,
+          "text": "Linear Algebra",
+          "slug": "linear-algebra"
+        },
+        {
+          "level": 3,
+          "text": "Series \u0026 Summations",
+          "slug": "series-summations"
+        },
+        {
+          "level": 3,
+          "text": "Limits \u0026 Derivatives",
+          "slug": "limits-derivatives"
+        },
+        {
+          "level": 3,
+          "text": "Physics",
+          "slug": "physics"
+        },
+        {
+          "level": 3,
+          "text": "Greek Letters \u0026 Symbols",
+          "slug": "greek-letters-symbols"
+        }
+      ],
+      "folder": "Advanced",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "advanced-mermaid",
+      "title": "Mermaid Diagrams",
+      "aliases": [],
+      "path": "Advanced/Mermaid.md",
+      "content": "---\ntitle: Mermaid Diagrams\ntags:\n  - advanced\n  - mermaid\n  - diagrams\n---\n\n# Mermaid Diagrams\n\nMermaid lets you create diagrams from text. Obsidian renders `mermaid` fenced code blocks natively.\n\n\u003e [!WARNING] Not yet rendered\n\u003e Obsidianator does not yet render Mermaid diagrams — the code block will display as raw text until Mermaid support is added (see TODO.md).\n\n## Flowchart\n\n```mermaid\nflowchart TD\n    A[Start] --\u003e B{Is it working?}\n    B -- Yes --\u003e C[Ship it!]\n    B -- No --\u003e D[Debug]\n    D --\u003e B\n```\n\n## Sequence Diagram\n\n```mermaid\nsequenceDiagram\n    participant User\n    participant CLI\n    participant Vault\n\n    User-\u003e\u003eCLI: obsidianator serve ./vault\n    CLI-\u003e\u003eVault: ParseVault()\n    Vault--\u003e\u003eCLI: VaultData\n    CLI--\u003e\u003eUser: Serving on :3000\n```\n\n## Class Diagram\n\n```mermaid\nclassDiagram\n    class VaultData {\n        +string Name\n        +Note[] Notes\n        +Folder[] Folders\n        +Edge[] Edges\n    }\n    class Note {\n        +string ID\n        +string Title\n        +string[] Tags\n        +string[] Links\n        +string[] Backlinks\n    }\n    VaultData --\u003e Note : contains\n```\n\n## Pie Chart\n\n```mermaid\npie title File Types in Vault\n    \"Markdown\" : 80\n    \"Images\" : 15\n    \"PDFs\" : 5\n```\n\nSee also: [[Long Document]], [[Code Blocks]].\n",
+      "plainText": "Mermaid Diagrams\n\nMermaid lets you create diagrams from text. Obsidian renders fenced code blocks natively.\n\n[!WARNING] Not yet rendered\nObsidianator does not yet render Mermaid diagrams — the code block will display as raw text until Mermaid support is added (see TODO.md).\n\nFlowchart\n\n \n\nSequence Diagram\n\n \n\nClass Diagram\n\n \n\nPie Chart\n\n \n\nSee also: Long Document, Code Blocks.",
+      "tags": [
+        "advanced",
+        "mermaid",
+        "diagrams"
+      ],
+      "links": [
+        "advanced-long-document",
+        "formatting-code-blocks"
+      ],
+      "backlinks": [],
+      "frontmatter": {
+        "tags": [
+          "advanced",
+          "mermaid",
+          "diagrams"
+        ],
+        "title": "Mermaid Diagrams"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Mermaid Diagrams",
+          "slug": "mermaid-diagrams"
+        },
+        {
+          "level": 2,
+          "text": "Flowchart",
+          "slug": "flowchart"
+        },
+        {
+          "level": 2,
+          "text": "Sequence Diagram",
+          "slug": "sequence-diagram"
+        },
+        {
+          "level": 2,
+          "text": "Class Diagram",
+          "slug": "class-diagram"
+        },
+        {
+          "level": 2,
+          "text": "Pie Chart",
+          "slug": "pie-chart"
+        }
+      ],
+      "folder": "Advanced",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "features",
+      "title": "Features",
+      "aliases": [],
+      "path": "Features.md",
+      "content": "---\ntitle: Features\ntags:\n  - features\n  - markdown\n---\n\n# Features\n\n## Markdown Support\n\nObsidianator renders your notes with full GitHub Flavored Markdown support.\n\n### Supported elements\n\n- **Bold** and *italic* text\n- `inline code` and fenced code blocks with syntax highlighting\n- Tables (like the one in [[Getting Started]])\n- Blockquotes\n- Task lists\n- Images\n\n### Code blocks\n\n```typescript\nconst greeting = (name: string): string =\u003e {\n  return `Hello, ${name}!`\n}\n```\n\n## Wikilinks\n\nLink between notes using Obsidian's `[[wikilink]]` syntax:\n\n- `[[Note Title]]` — links to a note by title\n- `[[Note Title|Alias]]` — links with a custom display name\n\n## Tags\n\nTags can be defined in frontmatter or inline with `#tag-name`.\n\n#example-inline-tag\n\n## Graph View\n\nThe graph view shows all notes as nodes and wikilinks as edges. Larger nodes have more backlinks.\n\n- Click a node to open the note\n- Scroll to zoom, drag to pan\n\n## Search\n\nPress `⌘K` (or `Ctrl+K`) to open the search dialog. Notes are indexed by title, content, and tags using fuzzy search.\n\n## Back to basics\n\nStart from [[Welcome]] or follow the [[Getting Started]] guide.\n",
+      "plainText": "Features\n\nMarkdown Support\n\nObsidianator renders your notes with full GitHub Flavored Markdown support.\n\nSupported elements\n\n- Bold and italic text\n- and fenced code blocks with syntax highlighting\n- Tables (like the one in Getting Started)\n- Blockquotes\n- Task lists\n- Images\n\nCode blocks\n\n \n\nWikilinks\n\nLink between notes using Obsidian's syntax:\n\n- — links to a note by title\n- — links with a custom display name\n\nTags\n\nTags can be defined in frontmatter or inline with .\n\n#example-inline-tag\n\nGraph View\n\nThe graph view shows all notes as nodes and wikilinks as edges. Larger nodes have more backlinks.\n\n- Click a node to open the note\n- Scroll to zoom, drag to pan\n\nSearch\n\nPress (or ) to open the search dialog. Notes are indexed by title, content, and tags using fuzzy search.\n\nBack to basics\n\nStart from Welcome or follow the Getting Started guide.",
+      "tags": [
+        "features",
+        "markdown",
+        "example-inline-tag"
+      ],
+      "links": [
+        "getting-started",
+        "welcome"
+      ],
+      "backlinks": [
+        "advanced-long-document",
+        "getting-started",
+        "graph-hub-note",
+        "links-embeds",
+        "links-wikilinks",
+        "welcome"
+      ],
+      "frontmatter": {
+        "tags": [
+          "features",
+          "markdown"
+        ],
+        "title": "Features"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Features",
+          "slug": "features"
+        },
+        {
+          "level": 2,
+          "text": "Markdown Support",
+          "slug": "markdown-support"
+        },
+        {
+          "level": 3,
+          "text": "Supported elements",
+          "slug": "supported-elements"
+        },
+        {
+          "level": 3,
+          "text": "Code blocks",
+          "slug": "code-blocks"
+        },
+        {
+          "level": 2,
+          "text": "Wikilinks",
+          "slug": "wikilinks"
+        },
+        {
+          "level": 2,
+          "text": "Tags",
+          "slug": "tags"
+        },
+        {
+          "level": 2,
+          "text": "Graph View",
+          "slug": "graph-view"
+        },
+        {
+          "level": 2,
+          "text": "Search",
+          "slug": "search"
+        },
+        {
+          "level": 2,
+          "text": "Back to basics",
+          "slug": "back-to-basics"
+        }
+      ],
+      "folder": "",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "folders-level-1-level-2-deep-note",
+      "title": "Deep Note",
+      "aliases": [],
+      "path": "Folders/Level 1/Level 2/Deep Note.md",
+      "content": "---\ntitle: Deep Note\ntags:\n  - folders\n  - nesting\n  - test\n---\n\n# Deep Note\n\nThis note is located at `Folders/Level 1/Level 2/Deep Note.md` — three levels deep in the folder hierarchy.\n\nIt tests that the 4-pass folder algorithm correctly creates all ancestor folders:\n\n1. `Folders/` — top-level folder\n2. `Folders/Level 1/` — second-level folder\n3. `Folders/Level 1/Level 2/` — third-level folder (immediate parent)\n\n## Expected Sidebar Behaviour\n\nIn the left sidebar, this note should appear like:\n\n```\n▾ Folders\n  ▾ Level 1\n    ▾ Level 2\n        Deep Note        ← this note\n```\n\nEach level is independently collapsible.\n\n## Expected Graph Behaviour\n\nThis note appears as a small node in the graph view. It receives a backlink from [[Hub Note]], which links to it explicitly.\n\n## Path-Based ID\n\nThis note's ID is derived from its vault-relative path:\n\n- Path: `Folders/Level 1/Level 2/Deep Note.md`\n- ID: `folders-level-1-level-2-deep-note`\n\nWikilinks like `[[Deep Note]]` resolve via the basename-match fallback (tier 3).\n\nSee also: [[Hub Note]], [[Welcome]].\n",
+      "plainText": "Deep Note\n\nThis note is located at — three levels deep in the folder hierarchy.\n\nIt tests that the 4-pass folder algorithm correctly creates all ancestor folders:\n\n1. — top-level folder\n2. — second-level folder\n3. — third-level folder (immediate parent)\n\nExpected Sidebar Behaviour\n\nIn the left sidebar, this note should appear like:\n\n \n\nEach level is independently collapsible.\n\nExpected Graph Behaviour\n\nThis note appears as a small node in the graph view. It receives a backlink from Hub Note, which links to it explicitly.\n\nPath-Based ID\n\nThis note's ID is derived from its vault-relative path:\n\n- Path: \n- ID: \n\nWikilinks like resolve via the basename-match fallback (tier 3).\n\nSee also: Hub Note, Welcome.",
+      "tags": [
+        "folders",
+        "nesting",
+        "test"
+      ],
+      "links": [
+        "graph-hub-note",
+        "folders-level-1-level-2-deep-note",
+        "welcome"
+      ],
+      "backlinks": [
+        "folders-level-1-level-2-deep-note",
+        "graph-hub-note",
+        "links-wikilinks"
+      ],
+      "frontmatter": {
+        "tags": [
+          "folders",
+          "nesting",
+          "test"
+        ],
+        "title": "Deep Note"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Deep Note",
+          "slug": "deep-note"
+        },
+        {
+          "level": 2,
+          "text": "Expected Sidebar Behaviour",
+          "slug": "expected-sidebar-behaviour"
+        },
+        {
+          "level": 2,
+          "text": "Expected Graph Behaviour",
+          "slug": "expected-graph-behaviour"
+        },
+        {
+          "level": 2,
+          "text": "Path-Based ID",
+          "slug": "path-based-id"
+        }
+      ],
+      "folder": "Folders/Level 1/Level 2",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "formatting-basic-formatting",
+      "title": "Basic Formatting",
+      "aliases": [],
+      "path": "Formatting/Basic Formatting.md",
+      "content": "---\ntitle: Basic Formatting\ntags:\n  - formatting\n  - test\n---\n\n# Basic Formatting\n\nThis note tests all basic inline and block formatting elements.\n\n## Headings\n\n# H1 Heading\n## H2 Heading\n### H3 Heading\n#### H4 Heading\n##### H5 Heading\n###### H6 Heading\n\n## Emphasis\n\n**Bold text** and __also bold__\n\n*Italic text* and _also italic_\n\n***Bold and italic***\n\n~~Strikethrough text~~\n\n## Horizontal Rule\n\n---\n\n## Inline Elements\n\nThis is `inline code` in a sentence.\n\nThis is a ==highlighted== word (Obsidian-style).\n\nSuperscript: E = mc^2^\n\nSubscript: H~2~O\n\n## Paragraphs and Line Breaks\n\nThis is the first paragraph. It has multiple sentences. They flow together naturally.\n\nThis is a second paragraph after a blank line.\n\nThis line has a hard break  \n(two trailing spaces before the newline).\n\n## Unicode and Symbols\n\nArrows: → ← ↑ ↓ ↔ ⇒ ⇐\n\nMath: ∑ ∏ ∫ ∂ √ ∞ ≈ ≠ ≤ ≥\n\nEmoji: 🚀 🌙 ⭐ 📝 🔗\n\nCurrency: € £ ¥ ₿\n\nQuotes: \"curly quotes\" and 'single curly'\n\n## Escaped Characters\n\n\\*not italic\\*\n\n\\`not code\\`\n\n\\# not a heading\n\n## Links to other notes\n\nSee [[Basic Formatting]] (self-link), [[Lists]], [[Tables]], and [[Code Blocks]] for more formatting tests.\n",
+      "plainText": "Basic Formatting\n\nThis note tests all basic inline and block formatting elements.\n\nHeadings\n\nH1 Heading\nH2 Heading\nH3 Heading\nH4 Heading\nH5 Heading\nH6 Heading\n\nEmphasis\n\nBold text and __also bold__\n\nItalic text and also italic\n\nBold and italic\n\n~~Strikethrough text~~\n\nHorizontal Rule\n\n---\n\nInline Elements\n\nThis is in a sentence.\n\nThis is a ==highlighted== word (Obsidian-style).\n\nSuperscript: E = mc^2^\n\nSubscript: H~2~O\n\nParagraphs and Line Breaks\n\nThis is the first paragraph. It has multiple sentences. They flow together naturally.\n\nThis is a second paragraph after a blank line.\n\nThis line has a hard break \n(two trailing spaces before the newline).\n\nUnicode and Symbols\n\nArrows: → ← ↑ ↓ ↔ ⇒ ⇐\n\nMath: ∑ ∏ ∫ ∂ √ ∞ ≈ ≠ ≤ ≥\n\nEmoji: 🚀 🌙 ⭐ 📝 🔗\n\nCurrency: € £ ¥ ₿\n\nQuotes: \"curly quotes\" and 'single curly'\n\nEscaped Characters\n\n\\not italic\\\n\n\\ \n\n\\# not a heading\n\nLinks to other notes\n\nSee Basic Formatting (self-link), Lists, Tables, and Code Blocks for more formatting tests.",
+      "tags": [
+        "formatting",
+        "test"
+      ],
+      "links": [
+        "formatting-basic-formatting",
+        "formatting-lists",
+        "formatting-tables",
+        "formatting-code-blocks"
+      ],
+      "backlinks": [
+        "advanced-footnotes",
+        "formatting-basic-formatting",
+        "formatting-code-blocks",
+        "formatting-lists",
+        "formatting-obsidian-inline",
+        "formatting-tables",
+        "graph-hub-note",
+        "links-wikilinks",
+        "obsidian-blockquotes"
+      ],
+      "frontmatter": {
+        "tags": [
+          "formatting",
+          "test"
+        ],
+        "title": "Basic Formatting"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Basic Formatting",
+          "slug": "basic-formatting"
+        },
+        {
+          "level": 2,
+          "text": "Headings",
+          "slug": "headings"
+        },
+        {
+          "level": 1,
+          "text": "H1 Heading",
+          "slug": "h1-heading"
+        },
+        {
+          "level": 2,
+          "text": "H2 Heading",
+          "slug": "h2-heading"
+        },
+        {
+          "level": 3,
+          "text": "H3 Heading",
+          "slug": "h3-heading"
+        },
+        {
+          "level": 4,
+          "text": "H4 Heading",
+          "slug": "h4-heading"
+        },
+        {
+          "level": 5,
+          "text": "H5 Heading",
+          "slug": "h5-heading"
+        },
+        {
+          "level": 6,
+          "text": "H6 Heading",
+          "slug": "h6-heading"
+        },
+        {
+          "level": 2,
+          "text": "Emphasis",
+          "slug": "emphasis"
+        },
+        {
+          "level": 2,
+          "text": "Horizontal Rule",
+          "slug": "horizontal-rule"
+        },
+        {
+          "level": 2,
+          "text": "Inline Elements",
+          "slug": "inline-elements"
+        },
+        {
+          "level": 2,
+          "text": "Paragraphs and Line Breaks",
+          "slug": "paragraphs-and-line-breaks"
+        },
+        {
+          "level": 2,
+          "text": "Unicode and Symbols",
+          "slug": "unicode-and-symbols"
+        },
+        {
+          "level": 2,
+          "text": "Escaped Characters",
+          "slug": "escaped-characters"
+        },
+        {
+          "level": 2,
+          "text": "Links to other notes",
+          "slug": "links-to-other-notes"
+        }
+      ],
+      "folder": "Formatting",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "formatting-code-blocks",
+      "title": "Code Blocks",
+      "aliases": [],
+      "path": "Formatting/Code Blocks.md",
+      "content": "---\ntitle: Code Blocks\ntags:\n  - formatting\n  - code\n  - syntax-highlighting\n---\n\n# Code Blocks\n\n## Inline Code\n\nUse `console.log(\"hello\")` for debugging.\n\nInstall with `npm install react` or `yarn add react`.\n\nThe `--watch` flag enables live reload.\n\n## Fenced Code Blocks\n\n### TypeScript\n\n```typescript\ninterface User {\n  id: string\n  name: string\n  email: string\n  createdAt: Date\n}\n\nasync function fetchUser(id: string): Promise\u003cUser | null\u003e {\n  try {\n    const response = await fetch(`/api/users/${id}`)\n    if (!response.ok) return null\n    return response.json()\n  } catch (error) {\n    console.error('Failed to fetch user:', error)\n    return null\n  }\n}\n```\n\n### Go\n\n```go\npackage main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n)\n\nfunc handler(w http.ResponseWriter, r *http.Request) {\n\tfmt.Fprintf(w, \"Hello, %s!\", r.URL.Path[1:])\n}\n\nfunc main() {\n\thttp.HandleFunc(\"/\", handler)\n\tfmt.Println(\"Listening on :8080\")\n\thttp.ListenAndServe(\":8080\", nil)\n}\n```\n\n### Python\n\n```python\nfrom dataclasses import dataclass\nfrom typing import Optional\nimport httpx\n\n@dataclass\nclass Config:\n    base_url: str\n    timeout: float = 30.0\n    retries: int = 3\n\nasync def fetch_data(config: Config, path: str) -\u003e Optional[dict]:\n    async with httpx.AsyncClient(base_url=config.base_url) as client:\n        response = await client.get(path, timeout=config.timeout)\n        response.raise_for_status()\n        return response.json()\n```\n\n### Bash\n\n```bash\n#!/usr/bin/env bash\nset -euo pipefail\n\nBUILD_DIR=\"./dist\"\nBINARY=\"obsidianator\"\n\necho \"Building...\"\ngo build -o \"$BINARY\" .\n\necho \"Running tests...\"\ngo test ./... -v\n\necho \"Build complete: $BUILD_DIR/$BINARY\"\n```\n\n### SQL\n\n```sql\nSELECT\n    u.id,\n    u.name,\n    u.email,\n    COUNT(p.id) AS post_count,\n    MAX(p.created_at) AS last_post\nFROM users u\nLEFT JOIN posts p ON p.user_id = u.id\nWHERE u.created_at \u003e '2024-01-01'\nGROUP BY u.id, u.name, u.email\nHAVING COUNT(p.id) \u003e 0\nORDER BY last_post DESC\nLIMIT 50;\n```\n\n### JSON\n\n```json\n{\n  \"name\": \"obsidianator\",\n  \"version\": \"0.1.0\",\n  \"description\": \"Export Obsidian vaults to static sites\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"tsc \u0026\u0026 vite build\"\n  },\n  \"dependencies\": {\n    \"react\": \"^18.3.1\",\n    \"react-dom\": \"^18.3.1\"\n  }\n}\n```\n\n### YAML\n\n```yaml\nname: obsidianator\nversion: \"0.1.0\"\nservices:\n  web:\n    image: nginx:alpine\n    ports:\n      - \"80:80\"\n    volumes:\n      - ./dist:/usr/share/nginx/html:ro\n    environment:\n      - NGINX_HOST=localhost\n      - NGINX_PORT=80\n```\n\n### CSS\n\n```css\n:root {\n  --primary: hsl(263, 70%, 50%);\n  --background: hsl(0, 0%, 100%);\n  --foreground: hsl(222, 84%, 5%);\n  --radius: 0.5rem;\n}\n\n.markdown-body h1 {\n  font-size: 2rem;\n  font-weight: 700;\n  margin-top: 2rem;\n  margin-bottom: 1rem;\n  border-bottom: 1px solid var(--border);\n}\n```\n\n## Code Block Edge Case: Hash in Code\n\n```bash\n# This is a comment, not a heading\necho \"# Also a comment\"\ngit log --oneline # inline comment\n```\n\nSee also: [[Basic Formatting]], [[Lists]], [[Tables]].\n",
+      "plainText": "Code Blocks\n\nInline Code\n\nUse for debugging.\n\nInstall with or .\n\nThe flag enables live reload.\n\nFenced Code Blocks\n\nTypeScript\n\n \n\nGo\n\n \n\nPython\n\n \n\nBash\n\n \n\nSQL\n\n \n\nJSON\n\n \n\nYAML\n\n \n\nCSS\n\n \n\nCode Block Edge Case: Hash in Code\n\n \n\nSee also: Basic Formatting, Lists, Tables.",
+      "tags": [
+        "formatting",
+        "code",
+        "syntax-highlighting"
+      ],
+      "links": [
+        "formatting-basic-formatting",
+        "formatting-lists",
+        "formatting-tables"
+      ],
+      "backlinks": [
+        "advanced-mermaid",
+        "formatting-basic-formatting",
+        "formatting-lists",
+        "formatting-tables",
+        "graph-hub-note",
+        "links-wikilinks"
+      ],
+      "frontmatter": {
+        "tags": [
+          "formatting",
+          "code",
+          "syntax-highlighting"
+        ],
+        "title": "Code Blocks"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Code Blocks",
+          "slug": "code-blocks"
+        },
+        {
+          "level": 2,
+          "text": "Inline Code",
+          "slug": "inline-code"
+        },
+        {
+          "level": 2,
+          "text": "Fenced Code Blocks",
+          "slug": "fenced-code-blocks"
+        },
+        {
+          "level": 3,
+          "text": "TypeScript",
+          "slug": "typescript"
+        },
+        {
+          "level": 3,
+          "text": "Go",
+          "slug": "go"
+        },
+        {
+          "level": 3,
+          "text": "Python",
+          "slug": "python"
+        },
+        {
+          "level": 3,
+          "text": "Bash",
+          "slug": "bash"
+        },
+        {
+          "level": 3,
+          "text": "SQL",
+          "slug": "sql"
+        },
+        {
+          "level": 3,
+          "text": "JSON",
+          "slug": "json"
+        },
+        {
+          "level": 3,
+          "text": "YAML",
+          "slug": "yaml"
+        },
+        {
+          "level": 3,
+          "text": "CSS",
+          "slug": "css"
+        },
+        {
+          "level": 2,
+          "text": "Code Block Edge Case: Hash in Code",
+          "slug": "code-block-edge-case-hash-in-code"
+        }
+      ],
+      "folder": "Formatting",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "formatting-lists",
+      "title": "Lists",
+      "aliases": [],
+      "path": "Formatting/Lists.md",
+      "content": "---\ntitle: Lists\ntags:\n  - formatting\n  - lists\n---\n\n# Lists\n\n## Unordered Lists\n\n- Item one\n- Item two\n- Item three\n\nDashes, asterisks, and pluses all work:\n\n* Asterisk item\n* Another asterisk item\n\n+ Plus item\n+ Another plus item\n\n## Nested Unordered Lists\n\n- Level 1\n  - Level 2\n    - Level 3\n      - Level 4\n  - Back to level 2\n- Back to level 1\n\n## Ordered Lists\n\n1. First item\n2. Second item\n3. Third item\n\nNumbering doesn't have to be sequential in markdown:\n\n1. First\n1. Second (still renders as 2)\n1. Third (still renders as 3)\n\n## Nested Ordered Lists\n\n1. First\n   1. First sub-item\n   2. Second sub-item\n      1. Deep sub-item\n2. Second\n3. Third\n\n## Mixed Nested Lists\n\n1. Ordered item\n   - Unordered nested\n   - Another unordered nested\n     1. Ordered inside unordered\n     2. Second ordered inside\n2. Back to ordered\n\n## Task Lists\n\n- [x] Completed task\n- [x] Another completed task\n- [ ] Incomplete task\n- [ ] Another incomplete task\n  - [x] Nested completed\n  - [ ] Nested incomplete\n\n## Lists with Continuation Paragraphs\n\n1. First item\n\n   This paragraph continues the first item. It is indented to match.\n\n2. Second item\n\n   Another continuation paragraph. Lists can contain multiple paragraphs.\n\n   Even a third paragraph for the same item.\n\n3. Third item has just one line.\n\n## Lists with Code\n\n- Run `npm install` to install dependencies\n- Then `npm run build` to build\n- Finally `npm start` to run\n\n## Lists with Links\n\n- See [[Basic Formatting]] for inline styles\n- See [[Tables]] for table formatting\n- See [[Code Blocks]] for code examples\n\n#lists #test\n",
+      "plainText": "Lists\n\nUnordered Lists\n\n- Item one\n- Item two\n- Item three\n\nDashes, asterisks, and pluses all work:\n\n* Asterisk item\n* Another asterisk item\n\n+ Plus item\n+ Another plus item\n\nNested Unordered Lists\n\n- Level 1\n - Level 2\n - Level 3\n - Level 4\n - Back to level 2\n- Back to level 1\n\nOrdered Lists\n\n1. First item\n2. Second item\n3. Third item\n\nNumbering doesn't have to be sequential in markdown:\n\n1. First\n1. Second (still renders as 2)\n1. Third (still renders as 3)\n\nNested Ordered Lists\n\n1. First\n 1. First sub-item\n 2. Second sub-item\n 1. Deep sub-item\n2. Second\n3. Third\n\nMixed Nested Lists\n\n1. Ordered item\n - Unordered nested\n - Another unordered nested\n 1. Ordered inside unordered\n 2. Second ordered inside\n2. Back to ordered\n\nTask Lists\n\n- [x] Completed task\n- [x] Another completed task\n- [ ] Incomplete task\n- [ ] Another incomplete task\n - [x] Nested completed\n - [ ] Nested incomplete\n\nLists with Continuation Paragraphs\n\n1. First item\n\n This paragraph continues the first item. It is indented to match.\n\n2. Second item\n\n Another continuation paragraph. Lists can contain multiple paragraphs.\n\n Even a third paragraph for the same item.\n\n3. Third item has just one line.\n\nLists with Code\n\n- Run to install dependencies\n- Then to build\n- Finally to run\n\nLists with Links\n\n- See Basic Formatting for inline styles\n- See Tables for table formatting\n- See Code Blocks for code examples\n\n#lists #test",
+      "tags": [
+        "formatting",
+        "lists",
+        "test"
+      ],
+      "links": [
+        "formatting-basic-formatting",
+        "formatting-tables",
+        "formatting-code-blocks"
+      ],
+      "backlinks": [
+        "formatting-basic-formatting",
+        "formatting-code-blocks",
+        "formatting-obsidian-inline",
+        "formatting-tables",
+        "graph-hub-note",
+        "obsidian-blockquotes"
+      ],
+      "frontmatter": {
+        "tags": [
+          "formatting",
+          "lists"
+        ],
+        "title": "Lists"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Lists",
+          "slug": "lists"
+        },
+        {
+          "level": 2,
+          "text": "Unordered Lists",
+          "slug": "unordered-lists"
+        },
+        {
+          "level": 2,
+          "text": "Nested Unordered Lists",
+          "slug": "nested-unordered-lists"
+        },
+        {
+          "level": 2,
+          "text": "Ordered Lists",
+          "slug": "ordered-lists"
+        },
+        {
+          "level": 2,
+          "text": "Nested Ordered Lists",
+          "slug": "nested-ordered-lists"
+        },
+        {
+          "level": 2,
+          "text": "Mixed Nested Lists",
+          "slug": "mixed-nested-lists"
+        },
+        {
+          "level": 2,
+          "text": "Task Lists",
+          "slug": "task-lists"
+        },
+        {
+          "level": 2,
+          "text": "Lists with Continuation Paragraphs",
+          "slug": "lists-with-continuation-paragraphs"
+        },
+        {
+          "level": 2,
+          "text": "Lists with Code",
+          "slug": "lists-with-code"
+        },
+        {
+          "level": 2,
+          "text": "Lists with Links",
+          "slug": "lists-with-links"
+        }
+      ],
+      "folder": "Formatting",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "formatting-obsidian-inline",
+      "title": "Obsidian Inline Syntax",
+      "aliases": [],
+      "path": "Formatting/Obsidian Inline.md",
+      "content": "---\ntitle: Obsidian Inline Syntax\ntags:\n  - formatting\n  - obsidian\n  - inline\n---\n\n# Obsidian Inline Syntax\n\nThis note tests Obsidian-specific inline formatting that goes beyond standard markdown.\n\n## Highlight\n\nUse `==text==` to highlight text in Obsidian:\n\nThe ==highlighted word== stands out in the text.\n\nYou can highlight ==multiple words in a row== without issue.\n\nHighlights inside a sentence: this is ==very important== and should be noticed.\n\n## Superscript\n\nUse `^text^` for superscript:\n\nEinstein's famous equation: E = mc^2^\n\nChemical notation: CO^2^ and H^+^\n\nFootnote-style: see note^1^ for details.\n\n## Subscript\n\nUse `~text~ ` for subscript:\n\nWater molecule: H~2~O\n\nCarbon dioxide: CO~2~\n\nCaffeine: C~8~H~10~N~4~O~2~\n\n## Combined\n\nA note^1^ with H~2~O and ==highlighted== content and mc^2^ equations.\n\n## Image Sizing\n\nEmbed images with a custom width using `![[image.png|200]]`:\n\n- `![[image.png|300]]` — sets width to 300px\n- `![[image.png|200x150]]` — sets width × height\n- `![[image.png]]` — natural size (default)\n\n## Custom Checkbox States\n\nObsidian supports additional task states beyond `[ ]` and `[x]`:\n\n- [x] Completed task (standard GFM)\n- [ ] Incomplete task (standard GFM)\n- [-] Cancelled task\n- [/] In-progress task\n- [!] Important task\n- [?] Question / needs clarification\n- [*] Starred / bookmarked\n- [\u003e] Forwarded / delegated\n\nSee also: [[Basic Formatting]], [[Lists]].\n",
+      "plainText": "Obsidian Inline Syntax\n\nThis note tests Obsidian-specific inline formatting that goes beyond standard markdown.\n\nHighlight\n\nUse to highlight text in Obsidian:\n\nThe ==highlighted word== stands out in the text.\n\nYou can highlight ==multiple words in a row== without issue.\n\nHighlights inside a sentence: this is ==very important== and should be noticed.\n\nSuperscript\n\nUse for superscript:\n\nEinstein's famous equation: E = mc^2^\n\nChemical notation: CO^2^ and H^+^\n\nFootnote-style: see note^1^ for details.\n\nSubscript\n\nUse for subscript:\n\nWater molecule: H~2~O\n\nCarbon dioxide: CO~2~\n\nCaffeine: C~8~H~10~N~4~O~2~\n\nCombined\n\nA note^1^ with H~2~O and ==highlighted== content and mc^2^ equations.\n\nImage Sizing\n\nEmbed images with a custom width using :\n\n- — sets width to 300px\n- — sets width × height\n- — natural size (default)\n\nCustom Checkbox States\n\nObsidian supports additional task states beyond and :\n\n- [x] Completed task (standard GFM)\n- [ ] Incomplete task (standard GFM)\n- [-] Cancelled task\n- [/] In-progress task\n- [!] Important task\n- [?] Question / needs clarification\n- [*] Starred / bookmarked\n- [\u003e] Forwarded / delegated\n\nSee also: Basic Formatting, Lists.",
+      "tags": [
+        "formatting",
+        "obsidian",
+        "inline"
+      ],
+      "links": [
+        "formatting-basic-formatting",
+        "formatting-lists"
+      ],
+      "backlinks": [],
+      "frontmatter": {
+        "tags": [
+          "formatting",
+          "obsidian",
+          "inline"
+        ],
+        "title": "Obsidian Inline Syntax"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Obsidian Inline Syntax",
+          "slug": "obsidian-inline-syntax"
+        },
+        {
+          "level": 2,
+          "text": "Highlight",
+          "slug": "highlight"
+        },
+        {
+          "level": 2,
+          "text": "Superscript",
+          "slug": "superscript"
+        },
+        {
+          "level": 2,
+          "text": "Subscript",
+          "slug": "subscript"
+        },
+        {
+          "level": 2,
+          "text": "Combined",
+          "slug": "combined"
+        },
+        {
+          "level": 2,
+          "text": "Image Sizing",
+          "slug": "image-sizing"
+        },
+        {
+          "level": 2,
+          "text": "Custom Checkbox States",
+          "slug": "custom-checkbox-states"
+        }
+      ],
+      "folder": "Formatting",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "formatting-tables",
+      "title": "Tables",
+      "aliases": [],
+      "path": "Formatting/Tables.md",
+      "content": "---\ntitle: Tables\ntags:\n  - formatting\n  - tables\n---\n\n# Tables\n\n## Basic Table\n\n| Name | Age | City |\n|------|-----|------|\n| Alice | 30 | London |\n| Bob | 25 | Berlin |\n| Carol | 35 | Tokyo |\n\n## Column Alignment\n\n| Left | Center | Right |\n|:-----|:------:|------:|\n| left | center | right |\n| text | text   | text  |\n| 1    | 2      | 3     |\n\n## Table with Formatted Cells\n\n| Feature | Status | Notes |\n|---------|--------|-------|\n| **Bold** | ✅ Done | *working* |\n| `code` | ✅ Done | inline only |\n| ~~strike~~ | ✅ Done | strikethrough |\n| [Link](https://example.com) | ✅ Done | external links |\n\n## Table with Long Content\n\n| Column A | Column B | Column C | Column D |\n|----------|----------|----------|----------|\n| This is a fairly long cell that might cause the table to scroll horizontally on narrow screens | Short | Medium length content | Another long cell with more text than usual |\n| Normal | Normal | Normal | Normal |\n\n## Table with Empty Cells\n\n| Name | Email | Phone |\n|------|-------|-------|\n| Alice | alice@example.com | |\n| Bob | | +49 123 456 |\n| Carol | | |\n\n## Wide Table (scroll test)\n\n| ID | Name | Email | Role | Department | Location | Start Date | Status |\n|----|------|-------|------|------------|----------|------------|--------|\n| 1 | Alice Smith | alice@co.com | Admin | Engineering | London | 2020-01-15 | Active |\n| 2 | Bob Jones | bob@co.com | User | Design | Berlin | 2021-03-22 | Active |\n| 3 | Carol Lee | carol@co.com | Manager | Product | Tokyo | 2019-07-01 | Active |\n\nSee also: [[Basic Formatting]], [[Lists]], [[Code Blocks]].\n",
+      "plainText": "Tables\n\nBasic Table\n\n| Name | Age | City |\n|------|-----|------|\n| Alice | 30 | London |\n| Bob | 25 | Berlin |\n| Carol | 35 | Tokyo |\n\nColumn Alignment\n\n| Left | Center | Right |\n|:-----|:------:|------:|\n| left | center | right |\n| text | text | text |\n| 1 | 2 | 3 |\n\nTable with Formatted Cells\n\n| Feature | Status | Notes |\n|---------|--------|-------|\n| Bold | ✅ Done | working |\n| | ✅ Done | inline only |\n| ~~strike~~ | ✅ Done | strikethrough |\n| Link | ✅ Done | external links |\n\nTable with Long Content\n\n| Column A | Column B | Column C | Column D |\n|----------|----------|----------|----------|\n| This is a fairly long cell that might cause the table to scroll horizontally on narrow screens | Short | Medium length content | Another long cell with more text than usual |\n| Normal | Normal | Normal | Normal |\n\nTable with Empty Cells\n\n| Name | Email | Phone |\n|------|-------|-------|\n| Alice | alice@example.com | |\n| Bob | | +49 123 456 |\n| Carol | | |\n\nWide Table (scroll test)\n\n| ID | Name | Email | Role | Department | Location | Start Date | Status |\n|----|------|-------|------|------------|----------|------------|--------|\n| 1 | Alice Smith | alice@co.com | Admin | Engineering | London | 2020-01-15 | Active |\n| 2 | Bob Jones | bob@co.com | User | Design | Berlin | 2021-03-22 | Active |\n| 3 | Carol Lee | carol@co.com | Manager | Product | Tokyo | 2019-07-01 | Active |\n\nSee also: Basic Formatting, Lists, Code Blocks.",
+      "tags": [
+        "formatting",
+        "tables"
+      ],
+      "links": [
+        "formatting-basic-formatting",
+        "formatting-lists",
+        "formatting-code-blocks"
+      ],
+      "backlinks": [
+        "formatting-basic-formatting",
+        "formatting-code-blocks",
+        "formatting-lists",
+        "graph-hub-note",
+        "links-embeds"
+      ],
+      "frontmatter": {
+        "tags": [
+          "formatting",
+          "tables"
+        ],
+        "title": "Tables"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Tables",
+          "slug": "tables"
+        },
+        {
+          "level": 2,
+          "text": "Basic Table",
+          "slug": "basic-table"
+        },
+        {
+          "level": 2,
+          "text": "Column Alignment",
+          "slug": "column-alignment"
+        },
+        {
+          "level": 2,
+          "text": "Table with Formatted Cells",
+          "slug": "table-with-formatted-cells"
+        },
+        {
+          "level": 2,
+          "text": "Table with Long Content",
+          "slug": "table-with-long-content"
+        },
+        {
+          "level": 2,
+          "text": "Table with Empty Cells",
+          "slug": "table-with-empty-cells"
+        },
+        {
+          "level": 2,
+          "text": "Wide Table (scroll test)",
+          "slug": "wide-table-scroll-test"
+        }
+      ],
+      "folder": "Formatting",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "getting-started",
+      "title": "Getting Started",
+      "aliases": [],
+      "path": "Getting Started.md",
+      "content": "---\ntitle: Getting Started\ntags:\n  - getting-started\n  - cli\n---\n\n# Getting Started\n\n## Installation\n\nBuild the binary from source:\n\n```bash\ngit clone https://github.com/Fx64b/obsidianator\ncd obsidianator\nmake all\n```\n\n## Usage\n\nExport your vault to a static site:\n\n```bash\n./obsidianator export /path/to/your/vault --output ./dist\n```\n\nExport and serve immediately:\n\n```bash\n./obsidianator export /path/to/your/vault --output ./dist --serve --port 8080\n```\n\n## Options\n\n| Flag | Default | Description |\n|------|---------|-------------|\n| `--output`, `-o` | `./dist` | Output directory |\n| `--serve` | false | Serve the output after export |\n| `--port` | 3000 | Port to serve on |\n\n## Development\n\nRun the Vite dev server against the test vault:\n\n```bash\nmake copy-vault-data  # exports test vault to web/public/\nmake dev-web          # starts Vite at http://localhost:5173\n```\n\nSee [[Welcome]] to go back to the introduction, or [[Features]] for what's supported.\n",
+      "plainText": "Getting Started\n\nInstallation\n\nBuild the binary from source:\n\n \n\nUsage\n\nExport your vault to a static site:\n\n \n\nExport and serve immediately:\n\n \n\nOptions\n\n| Flag | Default | Description |\n|------|---------|-------------|\n| , | | Output directory |\n| | false | Serve the output after export |\n| | 3000 | Port to serve on |\n\nDevelopment\n\nRun the Vite dev server against the test vault:\n\n \n\nSee Welcome to go back to the introduction, or Features for what's supported.",
+      "tags": [
+        "getting-started",
+        "cli"
+      ],
+      "links": [
+        "welcome",
+        "features"
+      ],
+      "backlinks": [
+        "advanced-long-document",
+        "features",
+        "graph-hub-note",
+        "links-wikilinks",
+        "welcome"
+      ],
+      "frontmatter": {
+        "tags": [
+          "getting-started",
+          "cli"
+        ],
+        "title": "Getting Started"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Getting Started",
+          "slug": "getting-started"
+        },
+        {
+          "level": 2,
+          "text": "Installation",
+          "slug": "installation"
+        },
+        {
+          "level": 2,
+          "text": "Usage",
+          "slug": "usage"
+        },
+        {
+          "level": 2,
+          "text": "Options",
+          "slug": "options"
+        },
+        {
+          "level": 2,
+          "text": "Development",
+          "slug": "development"
+        }
+      ],
+      "folder": "",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "graph-hub-note",
+      "title": "Hub Note",
+      "aliases": [],
+      "path": "Graph/Hub Note.md",
+      "content": "---\ntitle: Hub Note\ntags:\n  - graph\n  - hub\n  - connectivity\n---\n\n# Hub Note\n\nThis note links to every other note in the vault. In the graph view, it should appear as the largest node (highest degree centrality).\n\n## Root Notes\n\n- [[Welcome]]\n- [[Getting Started]]\n- [[Features]]\n\n## Formatting\n\n- [[Basic Formatting]]\n- [[Lists]]\n- [[Tables]]\n- [[Code Blocks]]\n\n## Links\n\n- [[Wikilinks]]\n- [[External Links]]\n- [[Embeds]]\n\n## Obsidian\n\n- [[Frontmatter]]\n- [[Tags]]\n- [[Callouts]]\n- [[Blockquotes]]\n\n## Advanced\n\n- [[Footnotes]]\n- [[Long Document]]\n\n## Graph\n\n- [[Orphan Note]]\n\n## Folders\n\n- [[Deep Note]]\n\nThis note has no backlinks from other notes, but it links to all others — making it a **hub** with high out-degree but low in-degree.\n",
+      "plainText": "Hub Note\n\nThis note links to every other note in the vault. In the graph view, it should appear as the largest node (highest degree centrality).\n\nRoot Notes\n\n- Welcome\n- Getting Started\n- Features\n\nFormatting\n\n- Basic Formatting\n- Lists\n- Tables\n- Code Blocks\n\nLinks\n\n- Wikilinks\n- External Links\n- Embeds\n\nObsidian\n\n- Frontmatter\n- Tags\n- Callouts\n- Blockquotes\n\nAdvanced\n\n- Footnotes\n- Long Document\n\nGraph\n\n- Orphan Note\n\nFolders\n\n- Deep Note\n\nThis note has no backlinks from other notes, but it links to all others — making it a hub with high out-degree but low in-degree.",
+      "tags": [
+        "graph",
+        "hub",
+        "connectivity"
+      ],
+      "links": [
+        "welcome",
+        "getting-started",
+        "features",
+        "formatting-basic-formatting",
+        "formatting-lists",
+        "formatting-tables",
+        "formatting-code-blocks",
+        "links-wikilinks",
+        "links-external-links",
+        "links-embeds",
+        "obsidian-frontmatter",
+        "obsidian-tags",
+        "obsidian-callouts",
+        "obsidian-blockquotes",
+        "advanced-footnotes",
+        "advanced-long-document",
+        "graph-orphan-note",
+        "folders-level-1-level-2-deep-note"
+      ],
+      "backlinks": [
+        "folders-level-1-level-2-deep-note",
+        "graph-orphan-note"
+      ],
+      "frontmatter": {
+        "tags": [
+          "graph",
+          "hub",
+          "connectivity"
+        ],
+        "title": "Hub Note"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Hub Note",
+          "slug": "hub-note"
+        },
+        {
+          "level": 2,
+          "text": "Root Notes",
+          "slug": "root-notes"
+        },
+        {
+          "level": 2,
+          "text": "Formatting",
+          "slug": "formatting"
+        },
+        {
+          "level": 2,
+          "text": "Links",
+          "slug": "links"
+        },
+        {
+          "level": 2,
+          "text": "Obsidian",
+          "slug": "obsidian"
+        },
+        {
+          "level": 2,
+          "text": "Advanced",
+          "slug": "advanced"
+        },
+        {
+          "level": 2,
+          "text": "Graph",
+          "slug": "graph"
+        },
+        {
+          "level": 2,
+          "text": "Folders",
+          "slug": "folders"
+        }
+      ],
+      "folder": "Graph",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "graph-orphan-note",
+      "title": "Orphan Note",
+      "aliases": [],
+      "path": "Graph/Orphan Note.md",
+      "content": "---\ntitle: Orphan Note\ntags:\n  - graph\n  - orphan\n---\n\n# Orphan Note\n\nThis note has no outgoing wikilinks and no other note links to it (except Hub Note).\n\nIn the graph view, it should appear as a small, relatively isolated node.\n\n## Why Orphan Notes Exist\n\nIn a real vault, orphan notes are common:\n\n- Quick captures that haven't been connected yet\n- Reference material that stands alone\n- Temporary notes that will be deleted\n- Notes in early draft state\n\n## What to Do with Orphans\n\n1. **Connect them** — find related notes and add wikilinks\n2. **Archive them** — move to an archive folder\n3. **Delete them** — if the content is no longer useful\n4. **Leave them** — some notes genuinely stand alone\n\n## This Note's State\n\n- **Outgoing links:** 0 (none)\n- **Incoming links:** 1 (from [[Hub Note]])\n- **Graph appearance:** small node, single edge\n\nThis makes it a useful test case for:\n- Rendering isolated nodes correctly\n- Handling notes with minimal connectivity\n- The `val` calculation in graph node sizing\n",
+      "plainText": "Orphan Note\n\nThis note has no outgoing wikilinks and no other note links to it (except Hub Note).\n\nIn the graph view, it should appear as a small, relatively isolated node.\n\nWhy Orphan Notes Exist\n\nIn a real vault, orphan notes are common:\n\n- Quick captures that haven't been connected yet\n- Reference material that stands alone\n- Temporary notes that will be deleted\n- Notes in early draft state\n\nWhat to Do with Orphans\n\n1. Connect them — find related notes and add wikilinks\n2. Archive them — move to an archive folder\n3. Delete them — if the content is no longer useful\n4. Leave them — some notes genuinely stand alone\n\nThis Note's State\n\n- Outgoing links: 0 (none)\n- Incoming links: 1 (from Hub Note)\n- Graph appearance: small node, single edge\n\nThis makes it a useful test case for:\n- Rendering isolated nodes correctly\n- Handling notes with minimal connectivity\n- The calculation in graph node sizing",
+      "tags": [
+        "graph",
+        "orphan"
+      ],
+      "links": [
+        "graph-hub-note"
+      ],
+      "backlinks": [
+        "graph-hub-note",
+        "links-embeds"
+      ],
+      "frontmatter": {
+        "tags": [
+          "graph",
+          "orphan"
+        ],
+        "title": "Orphan Note"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Orphan Note",
+          "slug": "orphan-note"
+        },
+        {
+          "level": 2,
+          "text": "Why Orphan Notes Exist",
+          "slug": "why-orphan-notes-exist"
+        },
+        {
+          "level": 2,
+          "text": "What to Do with Orphans",
+          "slug": "what-to-do-with-orphans"
+        },
+        {
+          "level": 2,
+          "text": "This Note's State",
+          "slug": "this-notes-state"
+        }
+      ],
+      "folder": "Graph",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "links-embeds",
+      "title": "Embeds",
+      "aliases": [],
+      "path": "Links/Embeds.md",
+      "content": "---\ntitle: Embeds\ntags:\n  - links\n  - embeds\n  - transclusion\n---\n\n# Embeds\n\nObsidianator supports `![[...]]` embed syntax.\n\n## Note Transclusion\n\nEmbed an entire note inline:\n\n![[Welcome]]\n\n## Partial Transclusion (Heading Anchor)\n\nEmbed just a section of a note (renders full note with attribution):\n\n![[Features]]\n\n## Image Embeds\n\nIf image files are present in the vault, they render inline:\n\n![[example.png]]\n\n![[screenshot.jpg]]\n\n## PDF Embeds\n\nPDF files render as an iframe with an \"Open PDF\" button:\n\n![[document.pdf]]\n\n## Non-Existent Embed\n\nEmbedding a file that doesn't exist falls back gracefully:\n\n![[nonexistent-file.png]]\n\n![[missing-note]]\n\n## Wikilink vs Embed\n\n- `[[Note]]` → wikilink (navigates to note on click)\n- `![[Note]]` → embed (renders note content inline)\n\nSee also: [[Wikilinks]], [[External Links]].\n",
+      "plainText": "Embeds\n\nObsidianator supports embed syntax.\n\nNote Transclusion\n\nEmbed an entire note inline:\n\n!Welcome\n\nPartial Transclusion (Heading Anchor)\n\nEmbed just a section of a note (renders full note with attribution):\n\n!Features\n\nImage Embeds\n\nIf image files are present in the vault, they render inline:\n\n!example.png\n\n!screenshot.jpg\n\nPDF Embeds\n\nPDF files render as an iframe with an \"Open PDF\" button:\n\n!document.pdf\n\nNon-Existent Embed\n\nEmbedding a file that doesn't exist falls back gracefully:\n\n!nonexistent-file.png\n\n!missing-note\n\nWikilink vs Embed\n\n- → wikilink (navigates to note on click)\n- → embed (renders note content inline)\n\nSee also: Wikilinks, External Links.",
+      "tags": [
+        "links",
+        "embeds",
+        "transclusion"
+      ],
+      "links": [
+        "formatting-tables",
+        "welcome",
+        "features",
+        "graph-orphan-note",
+        "links-wikilinks",
+        "links-external-links"
+      ],
+      "backlinks": [
+        "graph-hub-note",
+        "links-external-links",
+        "links-wikilinks"
+      ],
+      "frontmatter": {
+        "tags": [
+          "links",
+          "embeds",
+          "transclusion"
+        ],
+        "title": "Embeds"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Embeds",
+          "slug": "embeds"
+        },
+        {
+          "level": 2,
+          "text": "Note Transclusion",
+          "slug": "note-transclusion"
+        },
+        {
+          "level": 2,
+          "text": "Partial Transclusion (Heading Anchor)",
+          "slug": "partial-transclusion-heading-anchor"
+        },
+        {
+          "level": 2,
+          "text": "Image Embeds",
+          "slug": "image-embeds"
+        },
+        {
+          "level": 2,
+          "text": "PDF Embeds",
+          "slug": "pdf-embeds"
+        },
+        {
+          "level": 2,
+          "text": "Non-Existent Embed",
+          "slug": "non-existent-embed"
+        },
+        {
+          "level": 2,
+          "text": "Wikilink vs Embed",
+          "slug": "wikilink-vs-embed"
+        }
+      ],
+      "folder": "Links",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "links-external-links",
+      "title": "External Links",
+      "aliases": [],
+      "path": "Links/External Links.md",
+      "content": "---\ntitle: External Links\ntags:\n  - links\n  - external\n---\n\n# External Links\n\n## Inline Links\n\n[GitHub](https://github.com)\n\n[Obsidian](https://obsidian.md) — the note-taking app this tool is built for.\n\n[React documentation](https://react.dev)\n\n## Links with Titles\n\n[Go language](https://go.dev \"The Go programming language\")\n\n[Vite](https://vitejs.dev \"Next generation frontend tooling\")\n\n## Bare URLs\n\nhttps://github.com/Fx64b/obsidianator\n\nhttps://obsidian.md\n\n## Reference-Style Links\n\nThis is a link to [GitHub][gh] and another to [Obsidian][obs].\n\n[gh]: https://github.com\n[obs]: https://obsidian.md\n\n## Formatted Link Text\n\n[**Bold link**](https://example.com)\n\n[*Italic link*](https://example.com)\n\n[`code link`](https://example.com)\n\n## Links in Lists\n\n- [GitHub](https://github.com) — code hosting\n- [MDN Web Docs](https://developer.mozilla.org) — web reference\n- [Go Packages](https://pkg.go.dev) — Go library docs\n\n## Links in Tables\n\n| Resource | URL |\n|----------|-----|\n| GitHub | [github.com](https://github.com) |\n| Obsidian | [obsidian.md](https://obsidian.md) |\n| React | [react.dev](https://react.dev) |\n\n## Email Links\n\nContact: [hello@example.com](mailto:hello@example.com)\n\nSee also: [[Wikilinks]], [[Embeds]].\n",
+      "plainText": "External Links\n\nInline Links\n\nGitHub\n\nObsidian — the note-taking app this tool is built for.\n\nReact documentation\n\nLinks with Titles\n\nGo language\n\nVite\n\nBare URLs\n\nhttps://github.com/Fx64b/obsidianator\n\nhttps://obsidian.md\n\nReference-Style Links\n\nThis is a link to [GitHub][gh] and another to [Obsidian][obs].\n\n[gh]: https://github.com\n[obs]: https://obsidian.md\n\nFormatted Link Text\n\nBold link\n\nItalic link\n\n \n\nLinks in Lists\n\n- GitHub — code hosting\n- MDN Web Docs — web reference\n- Go Packages — Go library docs\n\nLinks in Tables\n\n| Resource | URL |\n|----------|-----|\n| GitHub | github.com |\n| Obsidian | obsidian.md |\n| React | react.dev |\n\nEmail Links\n\nContact: hello@example.com\n\nSee also: Wikilinks, Embeds.",
+      "tags": [
+        "links",
+        "external"
+      ],
+      "links": [
+        "links-wikilinks",
+        "links-embeds"
+      ],
+      "backlinks": [
+        "graph-hub-note",
+        "links-embeds",
+        "links-wikilinks"
+      ],
+      "frontmatter": {
+        "tags": [
+          "links",
+          "external"
+        ],
+        "title": "External Links"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "External Links",
+          "slug": "external-links"
+        },
+        {
+          "level": 2,
+          "text": "Inline Links",
+          "slug": "inline-links"
+        },
+        {
+          "level": 2,
+          "text": "Links with Titles",
+          "slug": "links-with-titles"
+        },
+        {
+          "level": 2,
+          "text": "Bare URLs",
+          "slug": "bare-urls"
+        },
+        {
+          "level": 2,
+          "text": "Reference-Style Links",
+          "slug": "reference-style-links"
+        },
+        {
+          "level": 2,
+          "text": "Formatted Link Text",
+          "slug": "formatted-link-text"
+        },
+        {
+          "level": 2,
+          "text": "Links in Lists",
+          "slug": "links-in-lists"
+        },
+        {
+          "level": 2,
+          "text": "Links in Tables",
+          "slug": "links-in-tables"
+        },
+        {
+          "level": 2,
+          "text": "Email Links",
+          "slug": "email-links"
+        }
+      ],
+      "folder": "Links",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "links-wikilinks",
+      "title": "Wikilinks",
+      "aliases": [],
+      "path": "Links/Wikilinks.md",
+      "content": "---\ntitle: Wikilinks\ntags:\n  - links\n  - wikilinks\n---\n\n# Wikilinks\n\nObsidianator supports all forms of Obsidian wikilink syntax.\n\n## Basic Wikilinks\n\nPlain link: [[Welcome]]\n\nLink to a note in a subfolder: [[Basic Formatting]]\n\nLink using full path title: [[Code Blocks]]\n\n## Aliased Wikilinks\n\nLink with custom display text: [[Welcome|Start here]]\n\nLink with alias to subfolder note: [[Basic Formatting|Formatting guide]]\n\n## Wikilinks with Anchors\n\nLink to a specific heading: [[Code Blocks#Go]]\n\nLink with anchor and alias: [[Code Blocks#TypeScript|TypeScript example]]\n\n## Case-Insensitive Links\n\nThese should all resolve to the same note:\n\n- [[welcome]]\n- [[WELCOME]]\n- [[Welcome]]\n\n## Wikilinks in Different Contexts\n\n### In a List\n\n- [[Welcome]] — start here\n- [[Getting Started]] — installation guide\n- [[Features]] — full feature list\n\n### In a Table\n\n| Note | Description |\n|------|-------------|\n| [[Welcome]] | Introduction |\n| [[Getting Started]] | How to use |\n| [[Features]] | Feature overview |\n\n### In a Blockquote\n\n\u003e See [[Welcome]] for an overview and [[Getting Started]] for setup instructions.\n\n## Broken / Non-Existent Wikilinks\n\nThese links should render as broken (strikethrough):\n\n- [[This Note Does Not Exist]]\n- [[Also Missing]]\n- [[NonExistentNote|with alias]]\n\n## Self-Link\n\n[[Wikilinks]] (link to this very note)\n\n## Links to Deep Notes\n\n[[Deep Note]] — note in a deeply nested folder\n\nSee also: [[External Links]], [[Embeds]].\n",
+      "plainText": "Wikilinks\n\nObsidianator supports all forms of Obsidian wikilink syntax.\n\nBasic Wikilinks\n\nPlain link: Welcome\n\nLink to a note in a subfolder: Basic Formatting\n\nLink using full path title: Code Blocks\n\nAliased Wikilinks\n\nLink with custom display text: Start here\n\nLink with alias to subfolder note: Formatting guide\n\nWikilinks with Anchors\n\nLink to a specific heading: Code Blocks#Go\n\nLink with anchor and alias: TypeScript example\n\nCase-Insensitive Links\n\nThese should all resolve to the same note:\n\n- welcome\n- WELCOME\n- Welcome\n\nWikilinks in Different Contexts\n\nIn a List\n\n- Welcome — start here\n- Getting Started — installation guide\n- Features — full feature list\n\nIn a Table\n\n| Note | Description |\n|------|-------------|\n| Welcome | Introduction |\n| Getting Started | How to use |\n| Features | Feature overview |\n\nIn a Blockquote\n\nSee Welcome for an overview and Getting Started for setup instructions.\n\nBroken / Non-Existent Wikilinks\n\nThese links should render as broken (strikethrough):\n\n- This Note Does Not Exist\n- Also Missing\n- with alias\n\nSelf-Link\n\nWikilinks (link to this very note)\n\nLinks to Deep Notes\n\nDeep Note — note in a deeply nested folder\n\nSee also: External Links, Embeds.",
+      "tags": [
+        "links",
+        "wikilinks"
+      ],
+      "links": [
+        "welcome",
+        "formatting-basic-formatting",
+        "formatting-code-blocks",
+        "getting-started",
+        "features",
+        "links-wikilinks",
+        "folders-level-1-level-2-deep-note",
+        "links-external-links",
+        "links-embeds"
+      ],
+      "backlinks": [
+        "graph-hub-note",
+        "links-embeds",
+        "links-external-links",
+        "links-wikilinks",
+        "welcome"
+      ],
+      "frontmatter": {
+        "tags": [
+          "links",
+          "wikilinks"
+        ],
+        "title": "Wikilinks"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Wikilinks",
+          "slug": "wikilinks"
+        },
+        {
+          "level": 2,
+          "text": "Basic Wikilinks",
+          "slug": "basic-wikilinks"
+        },
+        {
+          "level": 2,
+          "text": "Aliased Wikilinks",
+          "slug": "aliased-wikilinks"
+        },
+        {
+          "level": 2,
+          "text": "Wikilinks with Anchors",
+          "slug": "wikilinks-with-anchors"
+        },
+        {
+          "level": 2,
+          "text": "Case-Insensitive Links",
+          "slug": "case-insensitive-links"
+        },
+        {
+          "level": 2,
+          "text": "Wikilinks in Different Contexts",
+          "slug": "wikilinks-in-different-contexts"
+        },
+        {
+          "level": 3,
+          "text": "In a List",
+          "slug": "in-a-list"
+        },
+        {
+          "level": 3,
+          "text": "In a Table",
+          "slug": "in-a-table"
+        },
+        {
+          "level": 3,
+          "text": "In a Blockquote",
+          "slug": "in-a-blockquote"
+        },
+        {
+          "level": 2,
+          "text": "Broken / Non-Existent Wikilinks",
+          "slug": "broken-non-existent-wikilinks"
+        },
+        {
+          "level": 2,
+          "text": "Self-Link",
+          "slug": "self-link"
+        },
+        {
+          "level": 2,
+          "text": "Links to Deep Notes",
+          "slug": "links-to-deep-notes"
+        }
+      ],
+      "folder": "Links",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "obsidian-blockquotes",
+      "title": "Blockquotes",
+      "aliases": [],
+      "path": "Obsidian/Blockquotes.md",
+      "content": "---\ntitle: Blockquotes\ntags:\n  - obsidian\n  - blockquotes\n  - formatting\n---\n\n# Blockquotes\n\nStandard markdown blockquotes (distinct from callouts).\n\n## Simple Blockquote\n\n\u003e This is a simple blockquote.\n\n\u003e \"The best way to predict the future is to invent it.\"\n\u003e — Alan Kay\n\n## Multi-Paragraph Blockquote\n\n\u003e This is the first paragraph of the blockquote. It contains several sentences to make the paragraph a reasonable length.\n\u003e\n\u003e This is the second paragraph inside the same blockquote. A blank `\u003e` line separates paragraphs within a blockquote.\n\n## Nested Blockquotes\n\n\u003e This is an outer blockquote.\n\u003e\n\u003e \u003e This is a nested blockquote inside the outer one.\n\u003e \u003e\n\u003e \u003e \u003e This is triply nested.\n\n## Blockquote with Markdown\n\n\u003e **Bold text** and *italic text* inside a blockquote.\n\u003e\n\u003e - List item one\n\u003e - List item two\n\u003e - List item three\n\n## Blockquote with Code\n\n\u003e Here's an example command:\n\u003e\n\u003e ```bash\n\u003e obsidianator export ./vault --output ./dist\n\u003e ```\n\u003e\n\u003e Run it from your project root.\n\n## Blockquote with Heading\n\n\u003e ### Heading Inside Blockquote\n\u003e\n\u003e Content following the heading inside the same blockquote.\n\n## Long Quoted Passage\n\n\u003e In the beginning God created the heaven and the earth. And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.\n\u003e\n\u003e And God said, Let there be light: and there was light.\n\n## Attribution Style\n\n\u003e \"Design is not just what it looks like and feels like. Design is how it works.\"\n\u003e\n\u003e — Steve Jobs\n\nSee also: [[Callouts]], [[Basic Formatting]], [[Lists]].\n",
+      "plainText": "Blockquotes\n\nStandard markdown blockquotes (distinct from callouts).\n\nSimple Blockquote\n\nThis is a simple blockquote.\n\n\"The best way to predict the future is to invent it.\"\n— Alan Kay\n\nMulti-Paragraph Blockquote\n\nThis is the first paragraph of the blockquote. It contains several sentences to make the paragraph a reasonable length.\nThis is the second paragraph inside the same blockquote. A blank line separates paragraphs within a blockquote.\n\nNested Blockquotes\n\nThis is an outer blockquote.\n\u003e This is a nested blockquote inside the outer one.\n\u003e\n\u003e \u003e This is triply nested.\n\nBlockquote with Markdown\n\nBold text and italic text inside a blockquote.\n- List item one\n- List item two\n- List item three\n\nBlockquote with Code\n\nHere's an example command:\n```bash\nobsidianator export ./vault --output ./dist\n```\nRun it from your project root.\n\nBlockquote with Heading\n\n### Heading Inside Blockquote\nContent following the heading inside the same blockquote.\n\nLong Quoted Passage\n\nIn the beginning God created the heaven and the earth. And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.\nAnd God said, Let there be light: and there was light.\n\nAttribution Style\n\n\"Design is not just what it looks like and feels like. Design is how it works.\"\n— Steve Jobs\n\nSee also: Callouts, Basic Formatting, Lists.",
+      "tags": [
+        "obsidian",
+        "blockquotes",
+        "formatting"
+      ],
+      "links": [
+        "obsidian-callouts",
+        "formatting-basic-formatting",
+        "formatting-lists"
+      ],
+      "backlinks": [
+        "graph-hub-note",
+        "obsidian-callouts",
+        "obsidian-frontmatter",
+        "obsidian-tags"
+      ],
+      "frontmatter": {
+        "tags": [
+          "obsidian",
+          "blockquotes",
+          "formatting"
+        ],
+        "title": "Blockquotes"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Blockquotes",
+          "slug": "blockquotes"
+        },
+        {
+          "level": 2,
+          "text": "Simple Blockquote",
+          "slug": "simple-blockquote"
+        },
+        {
+          "level": 2,
+          "text": "Multi-Paragraph Blockquote",
+          "slug": "multi-paragraph-blockquote"
+        },
+        {
+          "level": 2,
+          "text": "Nested Blockquotes",
+          "slug": "nested-blockquotes"
+        },
+        {
+          "level": 2,
+          "text": "Blockquote with Markdown",
+          "slug": "blockquote-with-markdown"
+        },
+        {
+          "level": 2,
+          "text": "Blockquote with Code",
+          "slug": "blockquote-with-code"
+        },
+        {
+          "level": 2,
+          "text": "Blockquote with Heading",
+          "slug": "blockquote-with-heading"
+        },
+        {
+          "level": 2,
+          "text": "Long Quoted Passage",
+          "slug": "long-quoted-passage"
+        },
+        {
+          "level": 2,
+          "text": "Attribution Style",
+          "slug": "attribution-style"
+        }
+      ],
+      "folder": "Obsidian",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "obsidian-callouts",
+      "title": "Callouts",
+      "aliases": [],
+      "path": "Obsidian/Callouts.md",
+      "content": "---\ntitle: Callouts\ntags:\n  - obsidian\n  - callouts\n  - admonitions\n---\n\n# Callouts\n\nObsidian supports callout blocks using the `\u003e [!TYPE]` syntax.\n\n## Standard Callout Types\n\n\u003e [!NOTE]\n\u003e This is a **note** callout. Use it for general information that is helpful but not critical.\n\n\u003e [!INFO]\n\u003e This is an **info** callout. Similar to NOTE, used for informational content.\n\n\u003e [!WARNING]\n\u003e This is a **warning** callout. Use it to alert readers to potential issues or things to be careful about.\n\n\u003e [!DANGER]\n\u003e This is a **danger** callout. Use it for critical warnings about destructive or irreversible actions.\n\n\u003e [!ERROR]\n\u003e This is an **error** callout. Use it to describe error conditions.\n\n\u003e [!TIP]\n\u003e This is a **tip** callout. Use it for helpful hints and best practices.\n\n\u003e [!HINT]\n\u003e This is a **hint** callout. Similar to TIP.\n\n\u003e [!SUCCESS]\n\u003e This is a **success** callout. Use it to indicate a positive outcome or completed action.\n\n\u003e [!BUG]\n\u003e This is a **bug** callout. Use it to describe known bugs or unexpected behavior.\n\n\u003e [!EXAMPLE]\n\u003e This is an **example** callout. Use it to show practical examples.\n\n\u003e [!QUOTE]\n\u003e This is a **quote** callout. Use it for notable quotations or references.\n\n## Callouts with Custom Titles\n\n\u003e [!NOTE] Custom Title Here\n\u003e The title after the type overrides the default.\n\n\u003e [!WARNING] Destructive Action\n\u003e This will permanently delete your data. Make sure you have a backup.\n\n\u003e [!TIP] Pro Tip\n\u003e Use `make dev-export` during development — it watches for vault changes and auto-reloads.\n\n## Collapsed Callouts\n\nThe `-` suffix makes a callout collapsed by default (click the title to expand):\n\n\u003e [!NOTE]- Collapsed by default\n\u003e This content is hidden until the user clicks the title. Useful for spoilers or supplementary info.\n\n\u003e [!WARNING]- Click to see the warning\n\u003e This is a potentially scary warning that you might want to hide by default.\n\n## Multi-Paragraph Callouts\n\n\u003e [!INFO] Multi-paragraph example\n\u003e This is the first paragraph of the callout body.\n\u003e\n\u003e This is the second paragraph. Callouts can contain multiple paragraphs.\n\u003e\n\u003e - They can also have lists\n\u003e - And other markdown elements\n\n## Callouts with Code\n\n\u003e [!EXAMPLE] Running the exporter\n\u003e Install and run with:\n\u003e\n\u003e ```bash\n\u003e go install github.com/Fx64b/obsidianator@latest\n\u003e obsidianator export ./my-vault --output ./dist --serve\n\u003e ```\n\n## ad-* Admonition Syntax\n\nThe `ad-*` fenced block syntax is also supported (alternative format):\n\n```ad-note\ntitle: Alternative Syntax\nThis is written using the ad-note fenced block syntax, which some Obsidian plugins use.\n```\n\n```ad-warning\ntitle: Another Format\nThe ad-* syntax also supports all callout types.\n```\n\nSee also: [[Blockquotes]], [[Frontmatter]], [[Tags]].\n",
+      "plainText": "Callouts\n\nObsidian supports callout blocks using the syntax.\n\nStandard Callout Types\n\n[!NOTE]\nThis is a note callout. Use it for general information that is helpful but not critical.\n\n[!INFO]\nThis is an info callout. Similar to NOTE, used for informational content.\n\n[!WARNING]\nThis is a warning callout. Use it to alert readers to potential issues or things to be careful about.\n\n[!DANGER]\nThis is a danger callout. Use it for critical warnings about destructive or irreversible actions.\n\n[!ERROR]\nThis is an error callout. Use it to describe error conditions.\n\n[!TIP]\nThis is a tip callout. Use it for helpful hints and best practices.\n\n[!HINT]\nThis is a hint callout. Similar to TIP.\n\n[!SUCCESS]\nThis is a success callout. Use it to indicate a positive outcome or completed action.\n\n[!BUG]\nThis is a bug callout. Use it to describe known bugs or unexpected behavior.\n\n[!EXAMPLE]\nThis is an example callout. Use it to show practical examples.\n\n[!QUOTE]\nThis is a quote callout. Use it for notable quotations or references.\n\nCallouts with Custom Titles\n\n[!NOTE] Custom Title Here\nThe title after the type overrides the default.\n\n[!WARNING] Destructive Action\nThis will permanently delete your data. Make sure you have a backup.\n\n[!TIP] Pro Tip\nUse during development — it watches for vault changes and auto-reloads.\n\nCollapsed Callouts\n\nThe suffix makes a callout collapsed by default (click the title to expand):\n\n[!NOTE]- Collapsed by default\nThis content is hidden until the user clicks the title. Useful for spoilers or supplementary info.\n\n[!WARNING]- Click to see the warning\nThis is a potentially scary warning that you might want to hide by default.\n\nMulti-Paragraph Callouts\n\n[!INFO] Multi-paragraph example\nThis is the first paragraph of the callout body.\nThis is the second paragraph. Callouts can contain multiple paragraphs.\n- They can also have lists\n- And other markdown elements\n\nCallouts with Code\n\n[!EXAMPLE] Running the exporter\nInstall and run with:\n```bash\ngo install github.com/Fx64b/obsidianator@latest\nobsidianator export ./my-vault --output ./dist --serve\n```\n\nad-* Admonition Syntax\n\nThe fenced block syntax is also supported (alternative format):\n\n \n\n \n\nSee also: Blockquotes, Frontmatter, Tags.",
+      "tags": [
+        "obsidian",
+        "callouts",
+        "admonitions"
+      ],
+      "links": [
+        "obsidian-blockquotes",
+        "obsidian-frontmatter",
+        "obsidian-tags"
+      ],
+      "backlinks": [
+        "graph-hub-note",
+        "obsidian-blockquotes",
+        "obsidian-frontmatter",
+        "obsidian-tags"
+      ],
+      "frontmatter": {
+        "tags": [
+          "obsidian",
+          "callouts",
+          "admonitions"
+        ],
+        "title": "Callouts"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Callouts",
+          "slug": "callouts"
+        },
+        {
+          "level": 2,
+          "text": "Standard Callout Types",
+          "slug": "standard-callout-types"
+        },
+        {
+          "level": 2,
+          "text": "Callouts with Custom Titles",
+          "slug": "callouts-with-custom-titles"
+        },
+        {
+          "level": 2,
+          "text": "Collapsed Callouts",
+          "slug": "collapsed-callouts"
+        },
+        {
+          "level": 2,
+          "text": "Multi-Paragraph Callouts",
+          "slug": "multi-paragraph-callouts"
+        },
+        {
+          "level": 2,
+          "text": "Callouts with Code",
+          "slug": "callouts-with-code"
+        },
+        {
+          "level": 2,
+          "text": "ad-* Admonition Syntax",
+          "slug": "ad-admonition-syntax"
+        }
+      ],
+      "folder": "Obsidian",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "obsidian-frontmatter-advanced",
+      "title": "Frontmatter Advanced",
+      "aliases": [
+        "Properties Advanced",
+        "Metadata Test"
+      ],
+      "path": "Obsidian/Frontmatter Advanced.md",
+      "content": "---\ntitle: Frontmatter Advanced\ntags:\n  - obsidian\n  - frontmatter\ndate: 2024-03-15\ncreated: 2024-01-01T09:00:00\nauthor: Fx64b\nstatus: published\npriority: 2\nis_draft: false\nreviewed: true\nsource: https://obsidian.md\nrelated:\n  - Frontmatter\n  - Tags\nrating: 4.5\nword_count: 1250\naliases:\n  - Properties Advanced\n  - Metadata Test\n---\n\n# Frontmatter Advanced\n\nThis note tests all frontmatter field types that the FrontmatterPanel should render correctly.\n\n## Field Types Tested\n\n| Field | Type | Expected Rendering |\n|-------|------|--------------------|\n| `date` | date string | formatted date |\n| `created` | ISO timestamp | formatted date |\n| `author` | plain string | plain text |\n| `status` | plain string | plain text |\n| `priority` | integer | number |\n| `is_draft` | boolean false | \"No\" badge |\n| `reviewed` | boolean true | \"Yes\" badge |\n| `source` | URL | clickable link |\n| `related` | string array | badges (note links) |\n| `rating` | float | number |\n| `word_count` | integer | number |\n| `aliases` | string array | badges |\n\n## Aliases\n\nThe `aliases` field (`- Properties Advanced`, `- Metadata Test`) should allow wikilinks like `[[Properties Advanced]]` to resolve to this note.\n\nSee also: [[Frontmatter]], [[Tags]].\n",
+      "plainText": "Frontmatter Advanced\n\nThis note tests all frontmatter field types that the FrontmatterPanel should render correctly.\n\nField Types Tested\n\n| Field | Type | Expected Rendering |\n|-------|------|--------------------|\n| | date string | formatted date |\n| | ISO timestamp | formatted date |\n| | plain string | plain text |\n| | plain string | plain text |\n| | integer | number |\n| | boolean false | \"No\" badge |\n| | boolean true | \"Yes\" badge |\n| | URL | clickable link |\n| | string array | badges (note links) |\n| | float | number |\n| | integer | number |\n| | string array | badges |\n\nAliases\n\nThe field ( , ) should allow wikilinks like to resolve to this note.\n\nSee also: Frontmatter, Tags.",
+      "tags": [
+        "obsidian",
+        "frontmatter"
+      ],
+      "links": [
+        "obsidian-frontmatter-advanced",
+        "obsidian-frontmatter",
+        "obsidian-tags"
+      ],
+      "backlinks": [
+        "obsidian-frontmatter-advanced"
+      ],
+      "frontmatter": {
+        "aliases": [
+          "Properties Advanced",
+          "Metadata Test"
+        ],
+        "author": "Fx64b",
+        "created": "2024-01-01T09:00:00",
+        "date": "2024-03-15T00:00:00Z",
+        "is_draft": false,
+        "priority": 2,
+        "rating": 4.5,
+        "related": [
+          "Frontmatter",
+          "Tags"
+        ],
+        "reviewed": true,
+        "source": "https://obsidian.md",
+        "status": "published",
+        "tags": [
+          "obsidian",
+          "frontmatter"
+        ],
+        "title": "Frontmatter Advanced",
+        "word_count": 1250
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Frontmatter Advanced",
+          "slug": "frontmatter-advanced"
+        },
+        {
+          "level": 2,
+          "text": "Field Types Tested",
+          "slug": "field-types-tested"
+        },
+        {
+          "level": 2,
+          "text": "Aliases",
+          "slug": "aliases"
+        }
+      ],
+      "folder": "Obsidian",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2024-03-15T00:00:00Z"
+    },
+    {
+      "id": "obsidian-frontmatter",
+      "title": "Frontmatter",
+      "aliases": [
+        "YAML frontmatter",
+        "Note properties"
+      ],
+      "path": "Obsidian/Frontmatter.md",
+      "content": "---\ntitle: Frontmatter\naliases:\n  - YAML frontmatter\n  - Note properties\ntags:\n  - obsidian\n  - frontmatter\n  - yaml\nauthor: Fx64b\nstatus: published\npriority: 1\nfeatured: true\ndraft: false\ncreated: 2024-01-15\nupdated: 2024-03-20\nwebsite: https://github.com/Fx64b/obsidianator\nrelated:\n  - Tags\n  - Callouts\n  - Blockquotes\n---\n\n# Frontmatter\n\nObsidian notes can have YAML frontmatter between `---` delimiters at the top of the file.\n\n## What is Frontmatter?\n\nFrontmatter is structured metadata attached to a note. It's written in YAML and must appear at the very start of the file.\n\n```yaml\n---\ntitle: My Note\ntags:\n  - example\n  - test\nauthor: Someone\ndate: 2024-01-15\n---\n```\n\n## Supported Field Types\n\nThe Properties panel in the right sidebar renders these intelligently:\n\n| Type | Example | Rendered as |\n|------|---------|-------------|\n| String | `author: Fx64b` | Plain text |\n| Number | `priority: 1` | Number |\n| Boolean | `featured: true` | Green \"Yes\" badge |\n| Boolean | `draft: false` | Muted \"No\" badge |\n| Date | `created: 2024-01-15` | Formatted date |\n| URL | `website: https://...` | Clickable link |\n| Array | `tags: [a, b]` | Badge list |\n| Note ref | `related: Tags` | Clickable wikilink |\n\n## Skipped Fields\n\nThese fields are shown elsewhere in the UI and skipped in the Properties panel:\n\n- `tags` — shown as badges under the note title\n- `aliases` — used for search/linking\n- `title` — shown as the page heading\n- `cssclass`, `banner`, `publish` — Obsidian-specific, not rendered\n\n## Frontmatter in this Note\n\nThis note's own frontmatter (visible in the Properties panel):\n\n- **author** → plain string\n- **status** → plain string\n- **priority** → number\n- **featured** → boolean (Yes)\n- **draft** → boolean (No)\n- **created** → date (formatted)\n- **updated** → date (formatted)\n- **website** → URL (clickable)\n- **related** → array of note references (clickable badges)\n\nSee also: [[Tags]], [[Callouts]], [[Blockquotes]].\n",
+      "plainText": "Frontmatter\n\nObsidian notes can have YAML frontmatter between delimiters at the top of the file.\n\nWhat is Frontmatter?\n\nFrontmatter is structured metadata attached to a note. It's written in YAML and must appear at the very start of the file.\n\n \n\nSupported Field Types\n\nThe Properties panel in the right sidebar renders these intelligently:\n\n| Type | Example | Rendered as |\n|------|---------|-------------|\n| String | | Plain text |\n| Number | | Number |\n| Boolean | | Green \"Yes\" badge |\n| Boolean | | Muted \"No\" badge |\n| Date | | Formatted date |\n| URL | | Clickable link |\n| Array | | Badge list |\n| Note ref | | Clickable wikilink |\n\nSkipped Fields\n\nThese fields are shown elsewhere in the UI and skipped in the Properties panel:\n\n- — shown as badges under the note title\n- — used for search/linking\n- — shown as the page heading\n- , , — Obsidian-specific, not rendered\n\nFrontmatter in this Note\n\nThis note's own frontmatter (visible in the Properties panel):\n\n- author → plain string\n- status → plain string\n- priority → number\n- featured → boolean (Yes)\n- draft → boolean (No)\n- created → date (formatted)\n- updated → date (formatted)\n- website → URL (clickable)\n- related → array of note references (clickable badges)\n\nSee also: Tags, Callouts, Blockquotes.",
+      "tags": [
+        "obsidian",
+        "frontmatter",
+        "yaml"
+      ],
+      "links": [
+        "obsidian-tags",
+        "obsidian-callouts",
+        "obsidian-blockquotes"
+      ],
+      "backlinks": [
+        "graph-hub-note",
+        "obsidian-callouts",
+        "obsidian-frontmatter-advanced",
+        "obsidian-tags-advanced",
+        "obsidian-tags"
+      ],
+      "frontmatter": {
+        "aliases": [
+          "YAML frontmatter",
+          "Note properties"
+        ],
+        "author": "Fx64b",
+        "created": "2024-01-15T00:00:00Z",
+        "draft": false,
+        "featured": true,
+        "priority": 1,
+        "related": [
+          "Tags",
+          "Callouts",
+          "Blockquotes"
+        ],
+        "status": "published",
+        "tags": [
+          "obsidian",
+          "frontmatter",
+          "yaml"
+        ],
+        "title": "Frontmatter",
+        "updated": "2024-03-20T00:00:00Z",
+        "website": "https://github.com/Fx64b/obsidianator"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Frontmatter",
+          "slug": "frontmatter"
+        },
+        {
+          "level": 2,
+          "text": "What is Frontmatter?",
+          "slug": "what-is-frontmatter"
+        },
+        {
+          "level": 2,
+          "text": "Supported Field Types",
+          "slug": "supported-field-types"
+        },
+        {
+          "level": 2,
+          "text": "Skipped Fields",
+          "slug": "skipped-fields"
+        },
+        {
+          "level": 2,
+          "text": "Frontmatter in this Note",
+          "slug": "frontmatter-in-this-note"
+        }
+      ],
+      "folder": "Obsidian",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": "obsidian-tags-advanced",
+      "title": "Tags Advanced",
+      "aliases": [],
+      "path": "Obsidian/Tags Advanced.md",
+      "content": "---\ntitle: Tags Advanced\ntags:\n  - obsidian\n  - tags/frontmatter\n  - tools/cli\n  - tools/obsidian\n  - project/obsidianator\n---\n\n# Tags Advanced\n\nThis note tests hierarchical/nested tag syntax and various tag edge cases.\n\n## Hierarchical Tags (Frontmatter)\n\nThe frontmatter above uses nested tags with `/` separators:\n- `tags/frontmatter` — a tag under the `tags` namespace\n- `tools/cli` — under `tools`\n- `tools/obsidian` — sibling of `tools/cli`\n- `project/obsidianator` — under `project`\n\n## Inline Hierarchical Tags\n\nInline tags also support nesting: #tools/vite is a nested inline tag.\n\nYou can also write #obsidian/plugins or #workflow/daily for deeper nesting.\n\n## Tag Edge Cases\n\nTags must start with a letter: #123invalid won't be parsed as a tag.\n\nTags can contain digits after the first char: #tag1 and #my-tag and #my_tag.\n\nTags stop at punctuation: the tag in \"see #obsidian.\" ends before the period.\n\n## Multiple Tags on One Line\n\nTagged as #status/done and #priority/high and #type/note.\n\nSee also: [[Tags]], [[Frontmatter]].\n",
+      "plainText": "Tags Advanced\n\nThis note tests hierarchical/nested tag syntax and various tag edge cases.\n\nHierarchical Tags (Frontmatter)\n\nThe frontmatter above uses nested tags with separators:\n- — a tag under the namespace\n- — under \n- — sibling of \n- — under \n\nInline Hierarchical Tags\n\nInline tags also support nesting: #tools/vite is a nested inline tag.\n\nYou can also write #obsidian/plugins or #workflow/daily for deeper nesting.\n\nTag Edge Cases\n\nTags must start with a letter: #123invalid won't be parsed as a tag.\n\nTags can contain digits after the first char: #tag1 and #my-tag and #my_tag.\n\nTags stop at punctuation: the tag in \"see #obsidian.\" ends before the period.\n\nMultiple Tags on One Line\n\nTagged as #status/done and #priority/high and #type/note.\n\nSee also: Tags, Frontmatter.",
+      "tags": [
+        "obsidian",
+        "tags/frontmatter",
+        "tools/cli",
+        "tools/obsidian",
+        "project/obsidianator",
+        "tools/vite",
+        "obsidian/plugins",
+        "workflow/daily",
+        "tag1",
+        "my-tag",
+        "my_tag",
+        "status/done",
+        "priority/high",
+        "type/note"
+      ],
+      "links": [
+        "obsidian-tags",
+        "obsidian-frontmatter"
+      ],
+      "backlinks": [],
+      "frontmatter": {
+        "tags": [
+          "obsidian",
+          "tags/frontmatter",
+          "tools/cli",
+          "tools/obsidian",
+          "project/obsidianator"
+        ],
+        "title": "Tags Advanced"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Tags Advanced",
+          "slug": "tags-advanced"
+        },
+        {
+          "level": 2,
+          "text": "Hierarchical Tags (Frontmatter)",
+          "slug": "hierarchical-tags-frontmatter"
+        },
+        {
+          "level": 2,
+          "text": "Inline Hierarchical Tags",
+          "slug": "inline-hierarchical-tags"
+        },
+        {
+          "level": 2,
+          "text": "Tag Edge Cases",
+          "slug": "tag-edge-cases"
+        },
+        {
+          "level": 2,
+          "text": "Multiple Tags on One Line",
+          "slug": "multiple-tags-on-one-line"
+        }
+      ],
+      "folder": "Obsidian",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "obsidian-tags",
+      "title": "Tags",
+      "aliases": [],
+      "path": "Obsidian/Tags.md",
+      "content": "---\ntitle: Tags\ntags:\n  - obsidian\n  - tags\n  - organization\n---\n\n# Tags\n\nObsidian supports tags both in frontmatter and inline in note content.\n\n## Frontmatter Tags\n\nTags defined in YAML frontmatter (see the `tags` field at the top of this file):\n\n```yaml\n---\ntags:\n  - obsidian\n  - tags\n  - organization\n---\n```\n\nOr as a single string:\n\n```yaml\n---\ntags: quick-note\n---\n```\n\n## Inline Tags\n\nTags can also be used inline in note content using the `#tag` syntax.\n\nHere are some inline tags: #inline-tag #another-tag #test/nested\n\nTags must start with a letter and can contain letters, numbers, hyphens, slashes, and underscores.\n\nValid: #tag #my-tag #tag123 #tag/subtag #TAG_NAME\n\nInvalid (not parsed as tags): #123starts-with-number # space-after-hash\n\n## Nested Tags\n\nObsidian supports hierarchical tags using forward slashes:\n\n#project/obsidianator #project/obsidianator/frontend #status/in-progress #status/done\n\nThese create a tag hierarchy in the sidebar.\n\n## Tags in Context\n\nTags appear inline in text like this #workflow-tag and continue the sentence normally.\n\nA sentence can have #multiple #tags #scattered throughout it.\n\n## Tag Uses\n\n- **Organization** — group related notes by topic\n- **Status** — `#status/draft`, `#status/published`\n- **Type** — `#type/meeting-notes`, `#type/reference`\n- **Project** — `#project/name`\n- **Priority** — `#priority/high`, `#priority/low`\n\nSee also: [[Frontmatter]], [[Callouts]], [[Blockquotes]].\n\n#obsidian #tags #organization #test\n",
+      "plainText": "Tags\n\nObsidian supports tags both in frontmatter and inline in note content.\n\nFrontmatter Tags\n\nTags defined in YAML frontmatter (see the field at the top of this file):\n\n \n\nOr as a single string:\n\n \n\nInline Tags\n\nTags can also be used inline in note content using the syntax.\n\nHere are some inline tags: #inline-tag #another-tag #test/nested\n\nTags must start with a letter and can contain letters, numbers, hyphens, slashes, and underscores.\n\nValid: #tag #my-tag #tag123 #tag/subtag #TAG_NAME\n\nInvalid (not parsed as tags): #123starts-with-number # space-after-hash\n\nNested Tags\n\nObsidian supports hierarchical tags using forward slashes:\n\n#project/obsidianator #project/obsidianator/frontend #status/in-progress #status/done\n\nThese create a tag hierarchy in the sidebar.\n\nTags in Context\n\nTags appear inline in text like this #workflow-tag and continue the sentence normally.\n\nA sentence can have #multiple #tags #scattered throughout it.\n\nTag Uses\n\n- Organization — group related notes by topic\n- Status — , \n- Type — , \n- Project — \n- Priority — , \n\nSee also: Frontmatter, Callouts, Blockquotes.\n\n#obsidian #tags #organization #test",
+      "tags": [
+        "obsidian",
+        "tags",
+        "organization",
+        "inline-tag",
+        "another-tag",
+        "test/nested",
+        "tag",
+        "my-tag",
+        "tag123",
+        "tag/subtag",
+        "TAG_NAME",
+        "project/obsidianator",
+        "project/obsidianator/frontend",
+        "status/in-progress",
+        "status/done",
+        "workflow-tag",
+        "multiple",
+        "scattered",
+        "test"
+      ],
+      "links": [
+        "obsidian-frontmatter",
+        "obsidian-callouts",
+        "obsidian-blockquotes"
+      ],
+      "backlinks": [
+        "graph-hub-note",
+        "obsidian-callouts",
+        "obsidian-frontmatter-advanced",
+        "obsidian-frontmatter",
+        "obsidian-tags-advanced"
+      ],
+      "frontmatter": {
+        "tags": [
+          "obsidian",
+          "tags",
+          "organization"
+        ],
+        "title": "Tags"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Tags",
+          "slug": "tags"
+        },
+        {
+          "level": 2,
+          "text": "Frontmatter Tags",
+          "slug": "frontmatter-tags"
+        },
+        {
+          "level": 2,
+          "text": "Inline Tags",
+          "slug": "inline-tags"
+        },
+        {
+          "level": 2,
+          "text": "Nested Tags",
+          "slug": "nested-tags"
+        },
+        {
+          "level": 2,
+          "text": "Tags in Context",
+          "slug": "tags-in-context"
+        },
+        {
+          "level": 2,
+          "text": "Tag Uses",
+          "slug": "tag-uses"
+        }
+      ],
+      "folder": "Obsidian",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "welcome",
+      "title": "Welcome",
+      "aliases": [],
+      "path": "Welcome.md",
+      "content": "---\ntitle: Welcome\ntags:\n  - getting-started\n  - obsidianator\n---\n\n# Welcome to Obsidianator\n\n**Obsidianator** is a tool that exports your [Obsidian](https://obsidian.md) vault to a self-contained static website.\n\n## What it does\n\n- Parses all your `.md` notes\n- Resolves `[[wikilinks]]` between notes\n- Extracts tags, headers, and frontmatter\n- Renders a fast, searchable web UI\n\n## Getting Started\n\nSee [[Getting Started]] for instructions on how to use Obsidianator.\n\nFor a full list of supported features, check out [[Features]].\n\n## Why Obsidianator?\n\nYour notes deserve to be shared. Obsidianator turns your vault into a self-contained website you can host anywhere — no server required, no Node.js at runtime.\n",
+      "plainText": "Welcome to Obsidianator\n\nObsidianator is a tool that exports your Obsidian vault to a self-contained static website.\n\nWhat it does\n\n- Parses all your notes\n- Resolves between notes\n- Extracts tags, headers, and frontmatter\n- Renders a fast, searchable web UI\n\nGetting Started\n\nSee Getting Started for instructions on how to use Obsidianator.\n\nFor a full list of supported features, check out Features.\n\nWhy Obsidianator?\n\nYour notes deserve to be shared. Obsidianator turns your vault into a self-contained website you can host anywhere — no server required, no Node.js at runtime.",
+      "tags": [
+        "getting-started",
+        "obsidianator"
+      ],
+      "links": [
+        "links-wikilinks",
+        "getting-started",
+        "features"
+      ],
+      "backlinks": [
+        "advanced-long-document",
+        "features",
+        "folders-level-1-level-2-deep-note",
+        "getting-started",
+        "graph-hub-note",
+        "links-embeds",
+        "links-wikilinks"
+      ],
+      "frontmatter": {
+        "tags": [
+          "getting-started",
+          "obsidianator"
+        ],
+        "title": "Welcome"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Welcome to Obsidianator",
+          "slug": "welcome-to-obsidianator"
+        },
+        {
+          "level": 2,
+          "text": "What it does",
+          "slug": "what-it-does"
+        },
+        {
+          "level": 2,
+          "text": "Getting Started",
+          "slug": "getting-started"
+        },
+        {
+          "level": 2,
+          "text": "Why Obsidianator?",
+          "slug": "why-obsidianator"
+        }
+      ],
+      "folder": "",
+      "modified": "2026-06-11T20:57:13Z",
+      "created": "2026-06-11T20:57:13Z"
+    }
+  ],
+  "tags": [
+    "footnotes",
+    "transclusion",
+    "tag/subtag",
+    "mermaid",
+    "test",
+    "syntax-highlighting",
+    "tables",
+    "getting-started",
+    "project/obsidianator",
+    "tag",
+    "scroll-spy",
+    "status/done",
+    "status/in-progress",
+    "lists",
+    "tags/frontmatter",
+    "organization",
+    "obsidianator",
+    "cli",
+    "hub",
+    "another-tag",
+    "math",
+    "formatting",
+    "graph",
+    "tools/obsidian",
+    "my_tag",
+    "tag123",
+    "katex",
+    "folders",
+    "nesting",
+    "project/obsidianator/frontend",
+    "latex",
+    "example-inline-tag",
+    "inline",
+    "tag1",
+    "type/note",
+    "tags",
+    "advanced",
+    "diagrams",
+    "callouts",
+    "yaml",
+    "blockquotes",
+    "orphan",
+    "links",
+    "external",
+    "my-tag",
+    "test/nested",
+    "workflow-tag",
+    "scattered",
+    "toc",
+    "features",
+    "markdown",
+    "code",
+    "frontmatter",
+    "priority/high",
+    "multiple",
+    "connectivity",
+    "embeds",
+    "obsidian/plugins",
+    "TAG_NAME",
+    "obsidian",
+    "admonitions",
+    "tools/cli",
+    "workflow/daily",
+    "inline-tag",
+    "wikilinks",
+    "tools/vite"
+  ],
+  "folders": [
+    {
+      "name": "Folders",
+      "path": "Folders",
+      "parent": "",
+      "children": [
+        "Folders/Level 1"
+      ],
+      "notes": []
+    },
+    {
+      "name": "Level 1",
+      "path": "Folders/Level 1",
+      "parent": "Folders",
+      "children": [
+        "Folders/Level 1/Level 2"
+      ],
+      "notes": []
+    },
+    {
+      "name": "Level 2",
+      "path": "Folders/Level 1/Level 2",
+      "parent": "Folders/Level 1",
+      "children": [],
+      "notes": [
+        "folders-level-1-level-2-deep-note"
+      ]
+    },
+    {
+      "name": "Formatting",
+      "path": "Formatting",
+      "parent": "",
+      "children": [],
+      "notes": [
+        "formatting-basic-formatting",
+        "formatting-code-blocks",
+        "formatting-lists",
+        "formatting-obsidian-inline",
+        "formatting-tables"
+      ]
+    },
+    {
+      "name": "Advanced",
+      "path": "Advanced",
+      "parent": "",
+      "children": [],
+      "notes": [
+        "advanced-footnotes",
+        "advanced-long-document",
+        "advanced-math",
+        "advanced-mermaid"
+      ]
+    },
+    {
+      "name": "Graph",
+      "path": "Graph",
+      "parent": "",
+      "children": [],
+      "notes": [
+        "graph-hub-note",
+        "graph-orphan-note"
+      ]
+    },
+    {
+      "name": "Links",
+      "path": "Links",
+      "parent": "",
+      "children": [],
+      "notes": [
+        "links-embeds",
+        "links-external-links",
+        "links-wikilinks"
+      ]
+    },
+    {
+      "name": "Obsidian",
+      "path": "Obsidian",
+      "parent": "",
+      "children": [],
+      "notes": [
+        "obsidian-blockquotes",
+        "obsidian-callouts",
+        "obsidian-frontmatter-advanced",
+        "obsidian-frontmatter",
+        "obsidian-tags-advanced",
+        "obsidian-tags"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "advanced-footnotes",
+      "target": "advanced-long-document"
+    },
+    {
+      "source": "advanced-footnotes",
+      "target": "formatting-basic-formatting"
+    },
+    {
+      "source": "advanced-long-document",
+      "target": "welcome"
+    },
+    {
+      "source": "advanced-long-document",
+      "target": "getting-started"
+    },
+    {
+      "source": "advanced-long-document",
+      "target": "features"
+    },
+    {
+      "source": "advanced-mermaid",
+      "target": "advanced-long-document"
+    },
+    {
+      "source": "advanced-mermaid",
+      "target": "formatting-code-blocks"
+    },
+    {
+      "source": "features",
+      "target": "getting-started"
+    },
+    {
+      "source": "features",
+      "target": "welcome"
+    },
+    {
+      "source": "folders-level-1-level-2-deep-note",
+      "target": "graph-hub-note"
+    },
+    {
+      "source": "folders-level-1-level-2-deep-note",
+      "target": "folders-level-1-level-2-deep-note"
+    },
+    {
+      "source": "folders-level-1-level-2-deep-note",
+      "target": "welcome"
+    },
+    {
+      "source": "formatting-basic-formatting",
+      "target": "formatting-basic-formatting"
+    },
+    {
+      "source": "formatting-basic-formatting",
+      "target": "formatting-lists"
+    },
+    {
+      "source": "formatting-basic-formatting",
+      "target": "formatting-tables"
+    },
+    {
+      "source": "formatting-basic-formatting",
+      "target": "formatting-code-blocks"
+    },
+    {
+      "source": "formatting-code-blocks",
+      "target": "formatting-basic-formatting"
+    },
+    {
+      "source": "formatting-code-blocks",
+      "target": "formatting-lists"
+    },
+    {
+      "source": "formatting-code-blocks",
+      "target": "formatting-tables"
+    },
+    {
+      "source": "formatting-lists",
+      "target": "formatting-basic-formatting"
+    },
+    {
+      "source": "formatting-lists",
+      "target": "formatting-tables"
+    },
+    {
+      "source": "formatting-lists",
+      "target": "formatting-code-blocks"
+    },
+    {
+      "source": "formatting-obsidian-inline",
+      "target": "formatting-basic-formatting"
+    },
+    {
+      "source": "formatting-obsidian-inline",
+      "target": "formatting-lists"
+    },
+    {
+      "source": "formatting-tables",
+      "target": "formatting-basic-formatting"
+    },
+    {
+      "source": "formatting-tables",
+      "target": "formatting-lists"
+    },
+    {
+      "source": "formatting-tables",
+      "target": "formatting-code-blocks"
+    },
+    {
+      "source": "getting-started",
+      "target": "welcome"
+    },
+    {
+      "source": "getting-started",
+      "target": "features"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "welcome"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "getting-started"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "features"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "formatting-basic-formatting"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "formatting-lists"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "formatting-tables"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "formatting-code-blocks"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "links-wikilinks"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "links-external-links"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "links-embeds"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "obsidian-frontmatter"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "obsidian-tags"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "obsidian-callouts"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "obsidian-blockquotes"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "advanced-footnotes"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "advanced-long-document"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "graph-orphan-note"
+    },
+    {
+      "source": "graph-hub-note",
+      "target": "folders-level-1-level-2-deep-note"
+    },
+    {
+      "source": "graph-orphan-note",
+      "target": "graph-hub-note"
+    },
+    {
+      "source": "links-embeds",
+      "target": "formatting-tables"
+    },
+    {
+      "source": "links-embeds",
+      "target": "welcome"
+    },
+    {
+      "source": "links-embeds",
+      "target": "features"
+    },
+    {
+      "source": "links-embeds",
+      "target": "graph-orphan-note"
+    },
+    {
+      "source": "links-embeds",
+      "target": "links-wikilinks"
+    },
+    {
+      "source": "links-embeds",
+      "target": "links-external-links"
+    },
+    {
+      "source": "links-external-links",
+      "target": "links-wikilinks"
+    },
+    {
+      "source": "links-external-links",
+      "target": "links-embeds"
+    },
+    {
+      "source": "links-wikilinks",
+      "target": "welcome"
+    },
+    {
+      "source": "links-wikilinks",
+      "target": "formatting-basic-formatting"
+    },
+    {
+      "source": "links-wikilinks",
+      "target": "formatting-code-blocks"
+    },
+    {
+      "source": "links-wikilinks",
+      "target": "getting-started"
+    },
+    {
+      "source": "links-wikilinks",
+      "target": "features"
+    },
+    {
+      "source": "links-wikilinks",
+      "target": "links-wikilinks"
+    },
+    {
+      "source": "links-wikilinks",
+      "target": "folders-level-1-level-2-deep-note"
+    },
+    {
+      "source": "links-wikilinks",
+      "target": "links-external-links"
+    },
+    {
+      "source": "links-wikilinks",
+      "target": "links-embeds"
+    },
+    {
+      "source": "obsidian-blockquotes",
+      "target": "obsidian-callouts"
+    },
+    {
+      "source": "obsidian-blockquotes",
+      "target": "formatting-basic-formatting"
+    },
+    {
+      "source": "obsidian-blockquotes",
+      "target": "formatting-lists"
+    },
+    {
+      "source": "obsidian-callouts",
+      "target": "obsidian-blockquotes"
+    },
+    {
+      "source": "obsidian-callouts",
+      "target": "obsidian-frontmatter"
+    },
+    {
+      "source": "obsidian-callouts",
+      "target": "obsidian-tags"
+    },
+    {
+      "source": "obsidian-frontmatter-advanced",
+      "target": "obsidian-frontmatter-advanced"
+    },
+    {
+      "source": "obsidian-frontmatter-advanced",
+      "target": "obsidian-frontmatter"
+    },
+    {
+      "source": "obsidian-frontmatter-advanced",
+      "target": "obsidian-tags"
+    },
+    {
+      "source": "obsidian-frontmatter",
+      "target": "obsidian-tags"
+    },
+    {
+      "source": "obsidian-frontmatter",
+      "target": "obsidian-callouts"
+    },
+    {
+      "source": "obsidian-frontmatter",
+      "target": "obsidian-blockquotes"
+    },
+    {
+      "source": "obsidian-tags-advanced",
+      "target": "obsidian-tags"
+    },
+    {
+      "source": "obsidian-tags-advanced",
+      "target": "obsidian-frontmatter"
+    },
+    {
+      "source": "obsidian-tags",
+      "target": "obsidian-frontmatter"
+    },
+    {
+      "source": "obsidian-tags",
+      "target": "obsidian-callouts"
+    },
+    {
+      "source": "obsidian-tags",
+      "target": "obsidian-blockquotes"
+    },
+    {
+      "source": "welcome",
+      "target": "links-wikilinks"
+    },
+    {
+      "source": "welcome",
+      "target": "getting-started"
+    },
+    {
+      "source": "welcome",
+      "target": "features"
+    }
+  ],
+  "attachments": {}
+}

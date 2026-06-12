@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import type { VaultData, Note, Folder } from "@/types";
+import { useCallback, useEffect, useState } from "react";
+import type { Folder, Note, VaultData } from "@/types";
 
 function normalizeVault(raw: VaultData): VaultData {
 	return {

@@ -39,6 +39,18 @@ go test ./...
 go test ./internal/vault/... -run TestName -v   # single test, verbose
 ```
 
+**Tests:**
+```
+make test             # Go + frontend tests
+cd web && pnpm test   # frontend (Vitest) only
+cd web && pnpm test:watch
+```
+Frontend integration tests run against `web/src/test/fixtures/vault-data.json`,
+generated from the example vault: `go run . export data/test --output <tmp>` then
+copy `vault-data.json` into the fixtures directory. Regenerate it whenever the
+parser output format or `data/test` changes. `static/placeholder.txt` is committed
+so `go build`/`go test` work without a frontend build.
+
 **TypeScript type-check (no build):**
 ```
 cd web && tsc --noEmit

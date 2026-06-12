@@ -2,7 +2,10 @@ dist/
 .claude/
 obsidianator
 static/
+!static/placeholder.txt
 vault-data.json
+!web/src/test/fixtures/vault-data.json
 .idea/
 node_modules/
 graphify-out/
+coverage/
