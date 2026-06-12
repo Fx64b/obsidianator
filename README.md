@@ -64,6 +64,19 @@ obsidianator serve --help
 obsidianator export --help
 ```
 
+### Network exposure
+
+The built-in server binds to `127.0.0.1` by default, so it is only reachable
+from your own machine. To make it reachable from other devices (e.g. your phone
+on the same Wi-Fi), opt in explicitly:
+
+```sh
+obsidianator serve ./my-vault --host 0.0.0.0
+```
+
+> **Warning:** there is no authentication — anyone who can reach the port can
+> read the entire vault. Only expose it on networks you trust.
+
 ---
 
 ## Development

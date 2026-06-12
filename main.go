@@ -34,6 +34,7 @@ var exportCmd = &cobra.Command{
 		outputDir, _ := cmd.Flags().GetString("output")
 		serve, _ := cmd.Flags().GetBool("serve")
 		watch, _ := cmd.Flags().GetBool("watch")
+		host, _ := cmd.Flags().GetString("host")
 		port, _ := cmd.Flags().GetInt("port")
 		includes, _ := cmd.Flags().GetStringArray("include")
 
@@ -60,10 +61,10 @@ var exportCmd = &cobra.Command{
 		fmt.Printf("Export complete in %s.\n", time.Since(t1).Round(time.Millisecond))
 
 		if watch {
-			return export.Watch(vaultPath, outputDir, port, staticFS, parseVault)
+			return export.Watch(vaultPath, outputDir, host, port, staticFS, parseVault)
 		}
 		if serve {
-			return export.Serve(outputDir, port)
+			return export.Serve(outputDir, host, port)
 		}
 		return nil
 	},
@@ -75,6 +76,7 @@ var serveCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		vaultPath := args[0]
+		host, _ := cmd.Flags().GetString("host")
 		port, _ := cmd.Flags().GetInt("port")
 		watch, _ := cmd.Flags().GetBool("watch")
 		includes, _ := cmd.Flags().GetStringArray("include")
@@ -83,7 +85,7 @@ var serveCmd = &cobra.Command{
 			fmt.Printf("Include filter: %v\n", includes)
 		}
 		fmt.Printf("Parsing vault: %s\n", vaultPath)
-		return export.ServeInMemory(vaultPath, port, watch, staticFS, makeFilteredParser(includes))
+		return export.ServeInMemory(vaultPath, host, port, watch, staticFS, makeFilteredParser(includes))
 	},
 }
 
@@ -103,10 +105,12 @@ func init() {
 	exportCmd.Flags().StringP("output", "o", "./dist", "Output directory")
 	exportCmd.Flags().Bool("serve", false, "Serve the output directory after export")
 	exportCmd.Flags().BoolP("watch", "w", false, "Watch vault for changes and live-reload (implies --serve)")
+	exportCmd.Flags().String("host", "127.0.0.1", "Address to bind to (use 0.0.0.0 to expose on the network; used with --serve or --watch)")
 	exportCmd.Flags().Int("port", 3000, "Port to serve on (used with --serve or --watch)")
 	exportCmd.Flags().StringArray("include", nil, "Include only specific files or folders (repeatable, e.g. --include Notes --include Diary/2024.md)")
 	rootCmd.AddCommand(exportCmd)
 
+	serveCmd.Flags().String("host", "127.0.0.1", "Address to bind to (use 0.0.0.0 to expose on the network)")
 	serveCmd.Flags().Int("port", 3000, "Port to serve on")
 	serveCmd.Flags().BoolP("watch", "w", false, "Watch vault for changes and live-reload")
 	serveCmd.Flags().StringArray("include", nil, "Include only specific files or folders (repeatable, e.g. --include Notes --include Diary/2024.md)")
