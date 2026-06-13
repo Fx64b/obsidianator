@@ -11,6 +11,7 @@ import {
 	HoverCardContent,
 	HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEnsureContent } from "@/hooks/useNoteContent";
 import {
 	extractBlock,
@@ -129,29 +130,31 @@ export function NotePreviewBody({ note, anchor, vault }: NotePreviewBodyProps) {
 					<div className="text-[11px] text-muted-foreground">{note.folder}</div>
 				)}
 			</div>
-			<div className="max-h-64 overflow-y-auto px-3 py-2">
-				{!loaded ? (
-					<p className="text-xs italic text-muted-foreground">Loading…</p>
-				) : processed.trim() ? (
-					<div className="markdown-body">
-						<ReactMarkdown
-							remarkPlugins={[remarkGfm, remarkMath]}
-							rehypePlugins={[
-								rehypeRaw,
-								[rehypeSanitize, sanitizeSchema],
-								rehypeKatex,
-								rehypeHighlight,
-							]}
-							urlTransform={(url) => url}
-							components={previewComponents}
-						>
-							{processed}
-						</ReactMarkdown>
-					</div>
-				) : (
-					<p className="text-xs italic text-muted-foreground">Empty note</p>
-				)}
-			</div>
+			<ScrollArea className="max-h-64">
+				<div className="px-3 py-2">
+					{!loaded ? (
+						<p className="text-xs italic text-muted-foreground">Loading…</p>
+					) : processed.trim() ? (
+						<div className="markdown-body">
+							<ReactMarkdown
+								remarkPlugins={[remarkGfm, remarkMath]}
+								rehypePlugins={[
+									rehypeRaw,
+									[rehypeSanitize, sanitizeSchema],
+									rehypeKatex,
+									rehypeHighlight,
+								]}
+								urlTransform={(url) => url}
+								components={previewComponents}
+							>
+								{processed}
+							</ReactMarkdown>
+						</div>
+					) : (
+						<p className="text-xs italic text-muted-foreground">Empty note</p>
+					)}
+				</div>
+			</ScrollArea>
 		</div>
 	);
 }

@@ -102,6 +102,21 @@ describe("MarkdownView with example vault notes", () => {
 		expect(container.querySelector("#what-it-does")).toBeInTheDocument();
 	});
 
+	it("keeps footnote reference ids so back-arrows have a scroll target", () => {
+		const vault = fixtureVault();
+		const { container } = renderNote(
+			fixtureNote(vault, "advanced-footnotes"),
+			vault,
+		);
+		// The inline footnote ref carries the fnref id...
+		expect(
+			container.querySelector("a#user-content-fnref-1"),
+		).toBeInTheDocument();
+		// ...and a back-arrow link points at exactly that id.
+		const backref = container.querySelector('a[href="#user-content-fnref-1"]');
+		expect(backref).toBeInTheDocument();
+	});
+
 	it("renders note tags and fires onTagClick", async () => {
 		const user = userEvent.setup();
 		const vault = fixtureVault();

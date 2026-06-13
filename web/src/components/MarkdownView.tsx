@@ -401,7 +401,15 @@ export function MarkdownView({
 			},
 
 			// Links: wiki: → internal, wiki-missing: → broken, tag: → tag filter, external → new tab
-			a({ href, children }: { href?: string; children?: React.ReactNode }) {
+			a({
+				href,
+				id,
+				children,
+			}: {
+				href?: string;
+				id?: string;
+				children?: React.ReactNode;
+			}) {
 				if (href?.startsWith("tag:")) {
 					const tag = decodeURIComponent(href.slice(4));
 					return (
@@ -447,8 +455,11 @@ export function MarkdownView({
 					// (which would be misinterpreted as a note-id navigation).
 					const slug = href.slice(1);
 					return (
+						// `id` is forwarded so GFM footnote references keep their
+						// fnref id and the footnote back-arrow can scroll back to them.
 						<a
 							href={href}
+							id={id}
 							onClick={(e) => {
 								e.preventDefault();
 								document

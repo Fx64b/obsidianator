@@ -47,6 +47,10 @@ interface RightPanelProps {
 	activeHeadingId: string;
 	onSelectNote: (noteId: string, anchor?: string) => void;
 	isDark: boolean;
+	// Height class for the scroll container. Defaults to "h-full" (desktop
+	// sidebar, which has a definite height). The mobile bottom sheet passes a
+	// max-height instead, because a percentage height can't resolve there.
+	scrollClassName?: string;
 }
 
 export function RightPanel({
@@ -55,6 +59,7 @@ export function RightPanel({
 	activeHeadingId,
 	onSelectNote,
 	isDark,
+	scrollClassName = "h-full",
 }: RightPanelProps) {
 	const backlinks = note
 		? (note.backlinks
@@ -71,7 +76,7 @@ export function RightPanel({
 	}
 
 	return (
-		<ScrollArea className="h-full">
+		<ScrollArea className={scrollClassName}>
 			<div>
 				{/* Contents / TOC */}
 				<PanelSection title="Contents">

@@ -22,6 +22,11 @@ export const sanitizeSchema = {
 	},
 	attributes: {
 		...defaultSchema.attributes,
+		// Allow `id` on anchors so GFM footnote *references* keep their
+		// `user-content-fnref-N` id — without it the back-reference arrow in a
+		// footnote definition has no element to scroll back to. `clobberPrefix:
+		// ""` keeps the id matching the `#user-content-fnref-N` href.
+		a: [...((defaultSchema.attributes?.a ?? []) as string[]), "id"],
 		// hast-util-sanitize matches camelCase *property* names, not HTML
 		// attribute names: data-callout → dataCallout, class → className.
 		span: [

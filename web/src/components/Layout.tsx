@@ -289,22 +289,25 @@ export function Layout({
 						className="fixed inset-0 z-40 bg-black/40 border-0 p-0 cursor-default"
 						onClick={onRightPanelClose}
 					/>
-					<div className="fixed bottom-0 left-0 right-0 z-50 flex max-h-[72vh] flex-col rounded-t-xl border-t border-border bg-background shadow-xl">
-						<div className="flex shrink-0 justify-center py-2.5">
+					{/* Drag handle plus a fixed-height ScrollArea. The scroll region needs
+					    a *definite* height: Radix's viewport is height:100%, which can't
+					    resolve against a max-height-only parent, so the content would
+					    overflow the sheet and never scroll. */}
+					<div className="fixed bottom-0 left-0 right-0 z-50 overflow-hidden rounded-t-xl border-t border-border bg-background shadow-xl">
+						<div className="flex justify-center py-2.5">
 							<div className="h-1 w-10 rounded-full bg-border" />
 						</div>
-						<div className="min-h-0 flex-1 overflow-hidden">
-							<RightPanel
-								vault={vault}
-								note={panelNote}
-								activeHeadingId={activeHeadingId}
-								onSelectNote={(noteId, anchor) => {
-									handleNoteSelect(noteId, anchor);
-									onRightPanelClose();
-								}}
-								isDark={isDark}
-							/>
-						</div>
+						<RightPanel
+							vault={vault}
+							note={panelNote}
+							activeHeadingId={activeHeadingId}
+							onSelectNote={(noteId, anchor) => {
+								handleNoteSelect(noteId, anchor);
+								onRightPanelClose();
+							}}
+							isDark={isDark}
+							scrollClassName="h-[70vh]"
+						/>
 					</div>
 				</>
 			)}
