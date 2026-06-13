@@ -67,12 +67,15 @@ Launch-post material; things almost no alternative does.
 
 ## Phase 4 — Delight and stickiness
 
-- ⬜ **Search upgrades** — operators (`tag:x`, `path:y`), full-content match
-  highlighting in the search dialog.
+- ✅ **Search upgrades** — `tag:`, `path:`, `title:`, `line:` operators (with
+  `#tag` shorthand and quoted values), combinable with free text; match
+  highlighting on the parsed free text.
 - ⬜ **Semantic search (optional)** — embeddings precomputed at export time,
-  flag-gated so the default stays dependency-free.
-- ⬜ **Graph view upgrades** — color by folder/tag, filter controls, orphan
-  highlighting, time-lapse slider over note `created` dates.
+  flag-gated so the default stays dependency-free. *Deferred: a local
+  embedding step conflicts with the dependency-free, no-API identity.*
+- ✅ **Graph view upgrades** — color by folder or tag (toggle), orphan-only
+  filter, and a time-lapse slider over note `created` dates (on top of the
+  existing tag filter and folder legend).
 - ⬜ **Stacked pages / sliding panes** — Andy-Matuschak-style alternate
   reading mode.
 - ⬜ **Git-aware note history** — when the vault is a git repo, `serve` shows

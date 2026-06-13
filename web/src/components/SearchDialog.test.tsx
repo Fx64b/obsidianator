@@ -20,7 +20,7 @@ function renderDialog(onSelectNote = vi.fn(), onOpenChange = vi.fn()) {
 describe("SearchDialog", () => {
 	it("shows the first notes by default", () => {
 		renderDialog();
-		expect(screen.getByPlaceholderText("Search notes…")).toBeInTheDocument();
+		expect(screen.getByPlaceholderText(/Search/)).toBeInTheDocument();
 		// 10 default results + result count footer
 		expect(screen.getByText("10 results")).toBeInTheDocument();
 	});
@@ -28,7 +28,7 @@ describe("SearchDialog", () => {
 	it("finds notes by fuzzy title match", async () => {
 		const user = userEvent.setup();
 		renderDialog();
-		await user.type(screen.getByPlaceholderText("Search notes…"), "wikilink");
+		await user.type(screen.getByPlaceholderText(/Search/), "wikilink");
 		// result titles are split by the match-highlight <mark>, so compare
 		// whole textContent of the title paragraphs
 		await waitFor(() => {
@@ -43,10 +43,7 @@ describe("SearchDialog", () => {
 		const user = userEvent.setup();
 		renderDialog();
 		// phrase that only appears in Hub Note's body, not in any title
-		await user.type(
-			screen.getByPlaceholderText("Search notes…"),
-			"degree centrality",
-		);
+		await user.type(screen.getByPlaceholderText(/Search/), "degree centrality");
 		await waitFor(() => {
 			expect(screen.getByText(/Hub Note/)).toBeInTheDocument();
 		});
@@ -56,7 +53,7 @@ describe("SearchDialog", () => {
 		const user = userEvent.setup();
 		renderDialog();
 		await user.type(
-			screen.getByPlaceholderText("Search notes…"),
+			screen.getByPlaceholderText(/Search/),
 			"zzzqqqxxx-no-such-thing",
 		);
 		await waitFor(() => {
@@ -67,7 +64,7 @@ describe("SearchDialog", () => {
 	it("selects the top result with Enter and closes", async () => {
 		const user = userEvent.setup();
 		const { onSelectNote, onOpenChange } = renderDialog();
-		await user.type(screen.getByPlaceholderText("Search notes…"), "Welcome");
+		await user.type(screen.getByPlaceholderText(/Search/), "Welcome");
 		await user.keyboard("{Enter}");
 		expect(onSelectNote).toHaveBeenCalledTimes(1);
 		expect(onSelectNote.mock.calls[0][0].title).toBe("Welcome");
@@ -77,16 +74,43 @@ describe("SearchDialog", () => {
 	it("selects a result by clicking it", async () => {
 		const user = userEvent.setup();
 		const { onSelectNote } = renderDialog();
-		await user.type(screen.getByPlaceholderText("Search notes…"), "Callouts");
+		await user.type(screen.getByPlaceholderText(/Search/), "Callouts");
 		const hits = await screen.findAllByText("Callouts");
 		await user.click(hits[0]);
 		expect(onSelectNote.mock.calls[0][0].id).toBe("obsidian-callouts");
 	});
 
+	it("filters by the title: operator", async () => {
+		const user = userEvent.setup();
+		renderDialog();
+		await user.type(screen.getByPlaceholderText(/Search/), "title:wikilinks");
+		await waitFor(() => {
+			const titles = [...document.querySelectorAll("p")].map(
+				(el) => el.textContent,
+			);
+			expect(titles).toContain("Wikilinks");
+			// notes without "wikilinks" in the title are filtered out
+			expect(titles).not.toContain("Callouts");
+		});
+	});
+
+	it("filters by the tag: operator", async () => {
+		const user = userEvent.setup();
+		renderDialog();
+		await user.type(screen.getByPlaceholderText(/Search/), "tag:transclusion");
+		await waitFor(() => {
+			const titles = [...document.querySelectorAll("p")].map(
+				(el) => el.textContent,
+			);
+			expect(titles).toContain("Transclusion");
+			expect(titles).not.toContain("Callouts");
+		});
+	});
+
 	it("navigates results with arrow keys", async () => {
 		const user = userEvent.setup();
 		const { onSelectNote } = renderDialog();
-		const input = screen.getByPlaceholderText("Search notes…");
+		const input = screen.getByPlaceholderText(/Search/);
 		await user.type(input, "Frontmatter");
 		await screen.findAllByText("Frontmatter");
 		await user.keyboard("{ArrowDown}{Enter}");

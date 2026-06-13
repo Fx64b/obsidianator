@@ -3,6 +3,12 @@ import Fuse from "fuse.js";
 import { Search, FileText, CornerDownLeft } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+	hasFilters,
+	isEmptyQuery,
+	noteMatchesFilters,
+	parseSearchQuery,
+} from "@/lib/search";
 import { cn } from "@/lib/utils";
 import type { Note, VaultData } from "@/types";
 
@@ -111,21 +117,40 @@ export function SearchDialog({
 		} else setResults(vault.notes.slice(0, 10));
 	}, [open, vault.notes.slice]);
 
+	// Parsed query: structured filters (tag:/path:/title:/line:) + free text.
+	const parsed = useMemo(() => parseSearchQuery(query), [query]);
+
 	useEffect(() => {
-		if (!query.trim()) {
+		if (isEmptyQuery(parsed)) {
 			setResults(vault.notes.slice(0, 10));
 			setIdx(0);
 			return;
 		}
-		const fuseHits = fuse.search(query).map((r) => r.item);
+
+		// Narrow to notes matching the structured filters first.
+		const candidates = hasFilters(parsed)
+			? vault.notes.filter((n) => noteMatchesFilters(n, parsed, plainTextOf(n)))
+			: vault.notes;
+
+		if (!parsed.text) {
+			setResults(candidates.slice(0, 50));
+			setIdx(0);
+			return;
+		}
+
+		const candidateIds = new Set(candidates.map((n) => n.id));
+		const lq = parsed.text.toLowerCase();
+		const fuseHits = fuse
+			.search(parsed.text)
+			.map((r) => r.item)
+			.filter((n) => candidateIds.has(n.id));
 		const fuseIds = new Set(fuseHits.map((n) => n.id));
-		const lq = query.toLowerCase();
-		const contentHits = vault.notes.filter(
+		const contentHits = candidates.filter(
 			(n) => !fuseIds.has(n.id) && plainTextOf(n).toLowerCase().includes(lq),
 		);
 		setResults([...fuseHits, ...contentHits].slice(0, 12));
 		setIdx(0);
-	}, [query, vault.notes.slice, vault.notes.filter, fuse.search, plainTextOf]);
+	}, [parsed, vault.notes, fuse, plainTextOf]);
 
 	useEffect(() => {
 		const el = listRef.current?.children[idx] as HTMLElement | undefined;
@@ -171,7 +196,7 @@ export function SearchDialog({
 						value={query}
 						onChange={(e) => setQuery(e.target.value)}
 						onKeyDown={onKey}
-						placeholder="Search notes…"
+						placeholder="Search… (try tag:, path:, title:)"
 						className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
 					/>
 					{query && (
@@ -206,7 +231,7 @@ export function SearchDialog({
 									<FileText className="h-4 w-4 shrink-0 text-muted-foreground" />
 									<div className="flex-1 min-w-0">
 										<p className="truncate text-sm font-medium">
-											<Highlight text={note.title} query={query} />
+											<Highlight text={note.title} query={parsed.text} />
 										</p>
 										{note.folder && (
 											<p className="mt-0.5 truncate text-xs text-muted-foreground">
@@ -214,10 +239,10 @@ export function SearchDialog({
 											</p>
 										)}
 										{(() => {
-											const ex = getExcerpt(plainTextOf(note), query);
+											const ex = getExcerpt(plainTextOf(note), parsed.text);
 											return ex ? (
 												<p className="mt-0.5 truncate text-xs text-muted-foreground/70">
-													<Highlight text={ex} query={query} />
+													<Highlight text={ex} query={parsed.text} />
 												</p>
 											) : null;
 										})()}
