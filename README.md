@@ -101,6 +101,28 @@ parsed and rendered as an interactive, pan-and-zoom board — text, note, link
 and group cards connected by labelled arrows. Canvases appear at the top of the
 sidebar; note cards link straight into the vault.
 
+### Password-protected sharing
+
+```sh
+obsidianator export ./my-vault --output ./dist --password "correct horse battery staple"
+```
+
+`--password` encrypts the vault (PBKDF2-SHA256 → AES-256-GCM) so the exported
+site is unreadable until the password is entered in the browser, where it is
+decrypted entirely client-side. This lets you host a private vault on any
+static host (GitHub Pages, S3, Netlify…) without a backend. The password is
+never written anywhere — if you lose it, the export can't be recovered.
+
+> Because the content must stay encrypted, this mode disables the pre-rendered
+> per-note pages, sitemap and RSS feed (which would expose plaintext), and
+> can't be combined with `--chunked`.
+
+### Search operators
+
+The search dialog (⌘K) accepts filters that combine with free text:
+`tag:project`, `path:Diary`, `title:intro`, `line:todo`, the `#tag` shorthand,
+and quoted values like `path:"Daily Notes"`.
+
 ### Other flags
 ```sh
 obsidianator --version    # print version

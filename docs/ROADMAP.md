@@ -76,12 +76,15 @@ Launch-post material; things almost no alternative does.
 - ✅ **Graph view upgrades** — color by folder or tag (toggle), orphan-only
   filter, and a time-lapse slider over note `created` dates (on top of the
   existing tag filter and folder legend).
+- ✅ **Encrypted sharing** — `--password` encrypts `vault-data.json`
+  (PBKDF2-SHA256 → AES-256-GCM) and ships a client-side decryptor; the vault
+  is unreadable until the password is entered in the browser, so private
+  vaults can be hosted on any static host. SEO pre-rendering and chunking are
+  disabled in this mode (they would expose plaintext).
 - ⬜ **Stacked pages / sliding panes** — Andy-Matuschak-style alternate
   reading mode.
 - ⬜ **Git-aware note history** — when the vault is a git repo, `serve` shows
   per-note edit history from `git log`.
-- ⬜ **Encrypted sharing** — `--password` export with client-side decryption
-  (staticrypt-style), so private vaults can be shared via any static host.
 
 ---
 

@@ -97,9 +97,27 @@ func Export(data *vault.VaultData, vaultPath, outputDir string, staticFS fs.FS, 
 		}
 	}
 
-	// Write vault data LAST (so it overwrites any stale embedded copy). In
-	// chunked mode this writes a metadata index plus per-note chunks; otherwise
-	// a single vault-data.json.
+	// Write vault data LAST (so it overwrites any stale embedded copy).
+	//   - encrypted: a single encrypted vault-data.json envelope; the
+	//     pre-rendered SEO pages/sitemap/feed are skipped because they would
+	//     embed plaintext content.
+	//   - chunked: a metadata index plus per-note content chunks.
+	//   - otherwise: a single plaintext vault-data.json.
+	if seo.Password != "" {
+		jsonBytes, err := json.MarshalIndent(data, "", "  ")
+		if err != nil {
+			return fmt.Errorf("marshaling vault data: %w", err)
+		}
+		envelope, err := encryptVaultData(jsonBytes, seo.Password)
+		if err != nil {
+			return fmt.Errorf("encrypting vault data: %w", err)
+		}
+		if err := os.WriteFile(filepath.Join(outputDir, "vault-data.json"), envelope, 0644); err != nil {
+			return fmt.Errorf("writing encrypted vault-data.json: %w", err)
+		}
+		return nil
+	}
+
 	if seo.Chunked {
 		if err := writeChunkedData(data, outputDir); err != nil {
 			return err

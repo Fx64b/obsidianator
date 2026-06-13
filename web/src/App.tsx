@@ -19,6 +19,7 @@ import {
 	ChevronRight,
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
+import { PasswordPrompt } from "@/components/PasswordPrompt";
 import { SearchDialog } from "@/components/SearchDialog";
 import {
 	TooltipProvider,
@@ -45,7 +46,15 @@ const page = getPageContext();
 const routing = page.routing;
 
 export default function App() {
-	const { vault, loading, error } = useVaultData();
+	const {
+		vault,
+		loading,
+		error,
+		needsPassword,
+		unlock,
+		unlockError,
+		unlocking,
+	} = useVaultData();
 	const { hydratedVault, ensure, ready } = useNoteContent(vault);
 	const [view, setView] = useState<View>("notes");
 	const [searchOpen, setSearchOpen] = useState(false);
@@ -243,6 +252,12 @@ export default function App() {
 					<span className="text-sm text-muted-foreground">Loading vault…</span>
 				</div>
 			</div>
+		);
+	}
+
+	if (needsPassword) {
+		return (
+			<PasswordPrompt onUnlock={unlock} error={unlockError} busy={unlocking} />
 		);
 	}
 

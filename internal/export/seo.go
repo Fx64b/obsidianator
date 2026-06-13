@@ -28,6 +28,10 @@ type SEOOptions struct {
 	// Chunked splits vault-data.json into a metadata-only index plus per-note
 	// content chunks and a search index, for large vaults.
 	Chunked bool
+	// Password, when set, encrypts vault-data.json so the site can only be read
+	// after entering the password in the browser. Incompatible with chunking
+	// and with the SEO/pre-render artifacts (which would leak plaintext).
+	Password string
 }
 
 // NotePageFilename returns the flat root-level .html filename a note page is

@@ -42,12 +42,26 @@ var exportCmd = &cobra.Command{
 		baseURL, _ := cmd.Flags().GetString("base-url")
 		feed, _ := cmd.Flags().GetBool("feed")
 		chunked, _ := cmd.Flags().GetBool("chunked")
+		password, _ := cmd.Flags().GetString("password")
 
 		baseURL = strings.TrimRight(baseURL, "/")
 		if feed && baseURL == "" {
 			return fmt.Errorf("--feed requires --base-url (feeds need absolute URLs)")
 		}
-		seo := export.SEOOptions{BaseURL: baseURL, Feed: feed, Chunked: chunked}
+		if password != "" {
+			if chunked {
+				return fmt.Errorf("--password cannot be combined with --chunked")
+			}
+			if baseURL != "" || feed {
+				return fmt.Errorf("--password cannot be combined with --base-url/--feed: SEO pages would expose plaintext")
+			}
+		}
+		seo := export.SEOOptions{
+			BaseURL:  baseURL,
+			Feed:     feed,
+			Chunked:  chunked,
+			Password: password,
+		}
 
 		parseVault := makeFilteredParser(includes, publishedOnly)
 
@@ -135,6 +149,7 @@ func init() {
 	exportCmd.Flags().String("base-url", "", "Absolute URL the site will be hosted at (e.g. https://notes.example.com); enables canonical URLs, sitemap.xml and robots.txt")
 	exportCmd.Flags().Bool("feed", false, "Write an RSS feed.xml of the most recently created notes (requires --base-url)")
 	exportCmd.Flags().Bool("chunked", false, "Split vault-data.json into a metadata index plus per-note content chunks (for large vaults)")
+	exportCmd.Flags().String("password", "", "Encrypt the exported vault so it can only be read after entering this password in the browser (client-side AES-256-GCM)")
 	rootCmd.AddCommand(exportCmd)
 
 	serveCmd.Flags().String("host", "127.0.0.1", "Address to bind to (use 0.0.0.0 to expose on the network)")
