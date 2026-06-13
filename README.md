@@ -18,7 +18,7 @@ Turn an [Obsidian](https://obsidian.md) vault into a self-contained static websi
 
 ## Install
 
-Either download it from latest release or:
+Either download it from latest [release](https://github.com/Fx64b/obsidianator/releases/latest) or:
 
 **From source:**
 ```sh
