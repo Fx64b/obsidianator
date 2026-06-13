@@ -36,7 +36,7 @@ import {
 } from "@/lib/routing";
 import { cn } from "@/lib/utils";
 
-type View = "notes" | "graph";
+type View = "notes" | "graph" | "canvas";
 
 // Resolved once at startup: pre-rendered note pages stamp data attributes on
 // #root before React mounts, switching the app from hash to path routing.
@@ -67,6 +67,7 @@ export default function App() {
 		"active-tag",
 		null,
 	);
+	const [activeCanvasId, setActiveCanvasId] = useState<string | null>(null);
 	const [sidebarTab, setSidebarTab] = useLocalStorage<"files" | "tags">(
 		"sidebar-tab",
 		"files",
@@ -413,6 +414,11 @@ export default function App() {
 						// Push a real browser history entry so the browser's own back button works
 						history.pushState(null, "", noteUrl(noteId, routing));
 						return anchor;
+					}}
+					activeCanvasId={activeCanvasId}
+					onCanvasSelect={(canvas) => {
+						setActiveCanvasId(canvas.id);
+						setView("canvas");
 					}}
 					activeTag={activeTag}
 					onTagChange={setActiveTag}

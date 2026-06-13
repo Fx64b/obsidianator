@@ -51,9 +51,11 @@ free alternative to Obsidian Publish.
 
 Launch-post material; things almost no alternative does.
 
-- ⬜ **Canvas (`.canvas`) rendering** — parse Obsidian's open JSON Canvas
-  format in Go, render cards + edges in the frontend. Almost no publishing
-  tool renders canvases.
+- ✅ **Canvas (`.canvas`) rendering** — `.canvas` files are parsed in Go (JSON
+  Canvas spec) and rendered as a pan/zoom board: text/file/link/group nodes,
+  bezier edges with arrows and labels, preset colors. File nodes link into the
+  vault; canvases are listed in the sidebar. Publish/include filters strip
+  canvas file nodes pointing at excluded notes.
 - ⬜ **Scale: chunked/lazy vault data** — split `vault-data.json` into a small
   metadata/edges index plus per-note content fetched on demand, with a
   pre-built search index, so 10k-note vaults load instantly. Keep the current

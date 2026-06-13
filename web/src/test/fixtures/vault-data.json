@@ -2018,73 +2018,73 @@
     }
   ],
   "tags": [
-    "advanced",
-    "latex",
-    "example-inline-tag",
-    "syntax-highlighting",
     "project/obsidianator",
-    "callouts",
-    "frontmatter",
-    "status/done",
     "tag",
-    "another-tag",
-    "code",
-    "hub",
-    "links",
-    "type/note",
-    "workflow-tag",
-    "orphan",
-    "mermaid",
-    "features",
-    "getting-started",
-    "yaml",
-    "tools/obsidian",
-    "obsidian/plugins",
-    "tag1",
-    "footnotes",
-    "connectivity",
-    "blockquotes",
-    "priority/high",
-    "obsidianator",
-    "my-tag",
-    "organization",
-    "inline-tag",
-    "status/in-progress",
-    "scattered",
-    "obsidian",
-    "tables",
-    "tools/vite",
-    "my_tag",
-    "tags",
-    "blocks",
-    "math",
+    "frontmatter",
     "nesting",
-    "wikilinks",
-    "tags/frontmatter",
-    "tools/cli",
+    "math",
+    "mermaid",
+    "example-inline-tag",
+    "formatting",
+    "admonitions",
+    "test/nested",
     "tag/subtag",
+    "status/in-progress",
+    "workflow-tag",
     "toc",
     "scroll-spy",
-    "markdown",
-    "folders",
-    "test",
-    "formatting",
-    "external",
-    "project/obsidianator/frontend",
     "lists",
+    "test",
+    "blocks",
+    "yaml",
+    "obsidianator",
+    "folders",
     "inline",
-    "test/nested",
-    "diagrams",
-    "graph",
-    "workflow/daily",
-    "TAG_NAME",
-    "multiple",
-    "cli",
-    "embeds",
-    "transclusion",
-    "admonitions",
+    "tools/vite",
+    "tag1",
+    "status/done",
+    "latex",
+    "wikilinks",
+    "obsidian/plugins",
     "tag123",
-    "katex"
+    "footnotes",
+    "embeds",
+    "blockquotes",
+    "tags",
+    "organization",
+    "diagrams",
+    "syntax-highlighting",
+    "scattered",
+    "inline-tag",
+    "external",
+    "callouts",
+    "TAG_NAME",
+    "advanced",
+    "markdown",
+    "getting-started",
+    "transclusion",
+    "features",
+    "connectivity",
+    "multiple",
+    "graph",
+    "orphan",
+    "links",
+    "another-tag",
+    "priority/high",
+    "type/note",
+    "obsidian",
+    "cli",
+    "tags/frontmatter",
+    "tools/cli",
+    "workflow/daily",
+    "my_tag",
+    "project/obsidianator/frontend",
+    "tables",
+    "hub",
+    "tools/obsidian",
+    "my-tag",
+    "katex",
+    "code"
   ],
   "folders": [
     {
@@ -2097,20 +2097,6 @@
         "links-external-links",
         "links-transclusion",
         "links-wikilinks"
-      ]
-    },
-    {
-      "name": "Obsidian",
-      "path": "Obsidian",
-      "parent": "",
-      "children": [],
-      "notes": [
-        "obsidian-blockquotes",
-        "obsidian-callouts",
-        "obsidian-frontmatter-advanced",
-        "obsidian-frontmatter",
-        "obsidian-tags-advanced",
-        "obsidian-tags"
       ]
     },
     {
@@ -2135,13 +2121,13 @@
       "notes": []
     },
     {
-      "name": "Level 2",
-      "path": "Folders/Level 1/Level 2",
-      "parent": "Folders/Level 1",
-      "children": [],
-      "notes": [
-        "folders-level-1-level-2-deep-note"
-      ]
+      "name": "Level 1",
+      "path": "Folders/Level 1",
+      "parent": "Folders",
+      "children": [
+        "Folders/Level 1/Level 2"
+      ],
+      "notes": []
     },
     {
       "name": "Formatting",
@@ -2167,13 +2153,27 @@
       ]
     },
     {
-      "name": "Level 1",
-      "path": "Folders/Level 1",
-      "parent": "Folders",
-      "children": [
-        "Folders/Level 1/Level 2"
-      ],
-      "notes": []
+      "name": "Obsidian",
+      "path": "Obsidian",
+      "parent": "",
+      "children": [],
+      "notes": [
+        "obsidian-blockquotes",
+        "obsidian-callouts",
+        "obsidian-frontmatter-advanced",
+        "obsidian-frontmatter",
+        "obsidian-tags-advanced",
+        "obsidian-tags"
+      ]
+    },
+    {
+      "name": "Level 2",
+      "path": "Folders/Level 1/Level 2",
+      "parent": "Folders/Level 1",
+      "children": [],
+      "notes": [
+        "folders-level-1-level-2-deep-note"
+      ]
     }
   ],
   "edges": [
@@ -2530,5 +2530,119 @@
       "target": "features"
     }
   ],
-  "attachments": {}
+  "attachments": {},
+  "canvases": [
+    {
+      "id": "overview",
+      "name": "Overview",
+      "path": "Overview.canvas",
+      "folder": "",
+      "nodes": [
+        {
+          "id": "group-intro",
+          "type": "group",
+          "x": -60,
+          "y": -60,
+          "width": 760,
+          "height": 360,
+          "color": "5",
+          "label": "Start here"
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 120,
+          "color": "4",
+          "text": "# Obsidianator\n\nA **canvas** rendered from the JSON Canvas format. Drag to pan, scroll to zoom."
+        },
+        {
+          "id": "welcome",
+          "type": "file",
+          "x": 400,
+          "y": 0,
+          "width": 280,
+          "height": 100,
+          "file": "Welcome.md",
+          "noteId": "welcome"
+        },
+        {
+          "id": "getting-started",
+          "type": "file",
+          "x": 400,
+          "y": 160,
+          "width": 280,
+          "height": 100,
+          "file": "Getting Started.md",
+          "noteId": "getting-started"
+        },
+        {
+          "id": "features",
+          "type": "file",
+          "x": 0,
+          "y": 400,
+          "width": 280,
+          "height": 100,
+          "file": "Features.md",
+          "noteId": "features"
+        },
+        {
+          "id": "note-text",
+          "type": "text",
+          "x": 400,
+          "y": 400,
+          "width": 280,
+          "height": 140,
+          "color": "3",
+          "text": "Text nodes support **markdown**, `code`, and [[Wikilinks]] that navigate the vault."
+        },
+        {
+          "id": "link-out",
+          "type": "link",
+          "x": 0,
+          "y": 600,
+          "width": 280,
+          "height": 80,
+          "url": "https://obsidian.md"
+        }
+      ],
+      "edges": [
+        {
+          "id": "e1",
+          "fromNode": "title",
+          "fromSide": "right",
+          "toNode": "welcome",
+          "toSide": "left",
+          "toEnd": "arrow",
+          "label": "open"
+        },
+        {
+          "id": "e2",
+          "fromNode": "welcome",
+          "fromSide": "bottom",
+          "toNode": "getting-started",
+          "toSide": "top",
+          "toEnd": "arrow"
+        },
+        {
+          "id": "e3",
+          "fromNode": "title",
+          "fromSide": "bottom",
+          "toNode": "features",
+          "toSide": "top",
+          "toEnd": "arrow",
+          "color": "1"
+        },
+        {
+          "id": "e4",
+          "fromNode": "getting-started",
+          "fromSide": "bottom",
+          "toNode": "note-text",
+          "toSide": "top"
+        }
+      ]
+    }
+  ]
 }

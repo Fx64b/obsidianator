@@ -73,6 +73,7 @@ func ParseVault(vaultPath string) (*VaultData, error) {
 	vaultName := filepath.Base(vaultPath)
 
 	var notes []Note
+	var canvases []Canvas
 	attachments := map[string]string{}    // lowercase-basename → vault-relative-slash-path
 	titleToID := map[string]string{}      // exact title → id
 	lowerTitleToID := map[string]string{} // lowercase title → id
@@ -116,6 +117,16 @@ func ParseVault(vaultPath string) (*VaultData, error) {
 					lowerTitleToID[lower] = note.ID
 				}
 			}
+		} else if ext == ".canvas" {
+			if !isWithinVault(vaultPath, path) {
+				return nil // skip symlinks pointing outside vault
+			}
+			canvas, err := parseCanvas(path, vaultPath)
+			if err != nil {
+				relErr, _ := filepath.Rel(vaultPath, path)
+				return fmt.Errorf("parsing %s: %w", relErr, err)
+			}
+			canvases = append(canvases, *canvas)
 		} else if attachmentExts[ext] {
 			if !isWithinVault(vaultPath, path) {
 				return nil // skip symlinks pointing outside vault
@@ -171,6 +182,16 @@ func ParseVault(vaultPath string) (*VaultData, error) {
 		tags = append(tags, t)
 	}
 
+	// --- Resolve canvas file-node references to note ids ---
+	noteIDSet := make(map[string]struct{}, len(notes))
+	for _, n := range notes {
+		noteIDSet[n.ID] = struct{}{}
+	}
+	resolveCanvasNotes(canvases, noteIDSet)
+	if canvases == nil {
+		canvases = []Canvas{}
+	}
+
 	// --- 4-pass folder algorithm ---
 	folders := buildFolders(notes)
 
@@ -188,6 +209,7 @@ func ParseVault(vaultPath string) (*VaultData, error) {
 		Folders:     folders,
 		Edges:       edges,
 		Attachments: attachments,
+		Canvases:    canvases,
 	}, nil
 }
 
@@ -510,7 +532,15 @@ func FilterVaultData(data *VaultData, includes []string) *VaultData {
 		}
 	}
 
-	return rebuildVaultData(data, filteredNotes, filteredAttachments)
+	out := rebuildVaultData(data, filteredNotes, filteredAttachments)
+	noteSet := make(map[string]struct{}, len(filteredNotes))
+	for _, n := range filteredNotes {
+		noteSet[n.ID] = struct{}{}
+	}
+	out.Canvases = filterCanvases(data.Canvases, noteSet, func(c Canvas) bool {
+		return matchesAnyInclude(c.Path, normalized)
+	})
+	return out
 }
 
 // rebuildVaultData reconstructs the derived structures (edges, backlinks,
@@ -585,6 +615,7 @@ func rebuildVaultData(data *VaultData, filteredNotes []Note, attachments map[str
 		Folders:     buildFolders(filteredNotes),
 		Edges:       edges,
 		Attachments: attachments,
+		Canvases:    []Canvas{},
 	}
 }
 

@@ -2,12 +2,13 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { MarkdownView } from "@/components/MarkdownView";
 import { GraphView } from "@/components/GraphView";
+import { CanvasView } from "@/components/CanvasView";
 import { RightPanel } from "@/components/RightPanel";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useMobile } from "@/hooks/useMobile";
 import { cn } from "@/lib/utils";
-import type { VaultData, Note } from "@/types";
+import type { Canvas, VaultData, Note } from "@/types";
 
 const MIN_SIDEBAR = 160;
 const MAX_SIDEBAR = 480;
@@ -64,7 +65,7 @@ function ResizeHandle({
 
 interface LayoutProps {
 	vault: VaultData;
-	view: "notes" | "graph";
+	view: "notes" | "graph" | "canvas";
 	sidebarOpen: boolean;
 	onSidebarClose: () => void;
 	rightSidebarOpen: boolean;
@@ -72,6 +73,8 @@ interface LayoutProps {
 	isDark: boolean;
 	activeNoteId: string | null;
 	onNoteSelect: (noteId: string, anchor?: string) => void;
+	activeCanvasId: string | null;
+	onCanvasSelect: (canvas: Canvas) => void;
 	activeTag: string | null;
 	onTagChange: (tag: string | null) => void;
 	sidebarTab: "files" | "tags";
@@ -89,6 +92,8 @@ export function Layout({
 	isDark,
 	activeNoteId,
 	onNoteSelect,
+	activeCanvasId,
+	onCanvasSelect,
 	activeTag,
 	onTagChange,
 	sidebarTab,
@@ -108,6 +113,14 @@ export function Layout({
 		(activeNoteId ? vault.notes.find((n) => n.id === activeNoteId) : null) ??
 		vault.notes[0] ??
 		null;
+
+	const activeCanvas: Canvas | null = activeCanvasId
+		? (vault.canvases.find((c) => c.id === activeCanvasId) ?? null)
+		: null;
+
+	// The right panel (TOC, backlinks, mini-graph) is note-specific; suppress it
+	// while a canvas fills the main area so it doesn't show a stale note.
+	const panelNote = view === "canvas" ? null : activeNote;
 
 	// Scroll-spy
 	useEffect(() => {
@@ -206,12 +219,17 @@ export function Layout({
 					>
 						<Sidebar
 							vault={vault}
-							selectedNote={activeNote}
+							selectedNote={view === "canvas" ? null : activeNote}
 							onSelectNote={(note) => handleNoteSelect(note.id)}
 							tab={sidebarTab}
 							onTabChange={onSidebarTabChange}
 							activeTag={activeTag}
 							onTagChange={onTagChange}
+							activeCanvasId={view === "canvas" ? activeCanvasId : null}
+							onSelectCanvas={(canvas) => {
+								onCanvasSelect(canvas);
+								if (isMobile) onSidebarClose();
+							}}
 						/>
 					</aside>
 					{!isMobile && <ResizeHandle side="left" onDelta={handleLeftDelta} />}
@@ -220,7 +238,13 @@ export function Layout({
 
 			{/* Main */}
 			<main className="flex-1 min-w-0 h-full overflow-hidden">
-				{view === "graph" ? (
+				{view === "canvas" && activeCanvas ? (
+					<CanvasView
+						canvas={activeCanvas}
+						vault={vault}
+						onSelectNote={handleNoteSelect}
+					/>
+				) : view === "graph" ? (
 					<GraphView
 						vault={vault}
 						selectedNote={activeNote}
@@ -264,7 +288,7 @@ export function Layout({
 						<div className="min-h-0 flex-1 overflow-hidden">
 							<RightPanel
 								vault={vault}
-								note={activeNote}
+								note={panelNote}
 								activeHeadingId={activeHeadingId}
 								onSelectNote={(noteId, anchor) => {
 									handleNoteSelect(noteId, anchor);
@@ -282,7 +306,7 @@ export function Layout({
 					<aside style={{ width: rightWidth }} className="shrink-0 min-h-0">
 						<RightPanel
 							vault={vault}
-							note={activeNote}
+							note={panelNote}
 							activeHeadingId={activeHeadingId}
 							onSelectNote={handleNoteSelect}
 							isDark={isDark}

@@ -607,7 +607,7 @@ func watchVault(
 func isVaultFile(path string) bool {
 	lower := strings.ToLower(filepath.Ext(path))
 	switch lower {
-	case ".md",
+	case ".md", ".canvas",
 		".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp",
 		".pdf", ".mp4", ".mp3", ".wav", ".ogg", ".mov",
 		".zip", ".csv", ".xlsx":

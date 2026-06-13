@@ -22,6 +22,11 @@ function normalizeVault(raw: VaultData): VaultData {
 			notes: f.notes ?? [],
 			children: f.children ?? [],
 		})),
+		canvases: (raw.canvases ?? []).map((c) => ({
+			...c,
+			nodes: c.nodes ?? [],
+			edges: c.edges ?? [],
+		})),
 	};
 }
 

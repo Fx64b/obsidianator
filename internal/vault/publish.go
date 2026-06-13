@@ -49,5 +49,13 @@ func FilterPublished(data *VaultData) *VaultData {
 
 	out := rebuildVaultData(data, published, attachments)
 	out.AppVersion = data.AppVersion
+
+	// Carry canvases, but drop any file node pointing at an unpublished note
+	// (and edges touching it) so private notes never leak through a canvas.
+	pubSet := make(map[string]struct{}, len(published))
+	for _, n := range published {
+		pubSet[n.ID] = struct{}{}
+	}
+	out.Canvases = filterCanvases(data.Canvases, pubSet, nil)
 	return out
 }
