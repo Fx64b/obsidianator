@@ -10,6 +10,11 @@
         {
           "type": "generic",
           "path": "main.go"
+        },
+        {
+          "type": "json",
+          "path": "web/package.json",
+          "jsonpath": "$.version"
         }
       ]
     }
