@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/collapsible";
 import { MiniGraph } from "@/components/MiniGraph";
 import { FrontmatterPanel } from "@/components/FrontmatterPanel";
+import { WikilinkPreview } from "@/components/WikilinkPreview";
 import type { Note, VaultData } from "@/types";
 
 function PanelSection({
@@ -46,6 +47,10 @@ interface RightPanelProps {
 	activeHeadingId: string;
 	onSelectNote: (noteId: string, anchor?: string) => void;
 	isDark: boolean;
+	// Height class for the scroll container. Defaults to "h-full" (desktop
+	// sidebar, which has a definite height). The mobile bottom sheet passes a
+	// max-height instead, because a percentage height can't resolve there.
+	scrollClassName?: string;
 }
 
 export function RightPanel({
@@ -54,6 +59,7 @@ export function RightPanel({
 	activeHeadingId,
 	onSelectNote,
 	isDark,
+	scrollClassName = "h-full",
 }: RightPanelProps) {
 	const backlinks = note
 		? (note.backlinks
@@ -70,7 +76,7 @@ export function RightPanel({
 	}
 
 	return (
-		<ScrollArea className="h-full">
+		<ScrollArea className={scrollClassName}>
 			<div>
 				{/* Contents / TOC */}
 				<PanelSection title="Contents">
@@ -123,14 +129,15 @@ export function RightPanel({
 					) : (
 						<div className="py-1 pb-2">
 							{backlinks.map((n) => (
-								<button
-									type="button"
-									key={n.id}
-									onClick={() => onSelectNote(n.id)}
-									className="block w-full truncate px-4 py-1.5 text-left text-xs text-muted-foreground transition-colors hover:text-foreground"
-								>
-									{n.title}
-								</button>
+								<WikilinkPreview key={n.id} noteId={n.id} vault={vault}>
+									<button
+										type="button"
+										onClick={() => onSelectNote(n.id)}
+										className="block w-full truncate px-4 py-1.5 text-left text-xs text-muted-foreground transition-colors hover:text-foreground"
+									>
+										{n.title}
+									</button>
+								</WikilinkPreview>
 							))}
 						</div>
 					)}

@@ -4,6 +4,7 @@ import (
 	"embed"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/Fx64b/obsidianator/internal/export"
@@ -37,8 +38,32 @@ var exportCmd = &cobra.Command{
 		host, _ := cmd.Flags().GetString("host")
 		port, _ := cmd.Flags().GetInt("port")
 		includes, _ := cmd.Flags().GetStringArray("include")
+		publishedOnly, _ := cmd.Flags().GetBool("published-only")
+		baseURL, _ := cmd.Flags().GetString("base-url")
+		feed, _ := cmd.Flags().GetBool("feed")
+		chunked, _ := cmd.Flags().GetBool("chunked")
+		password, _ := cmd.Flags().GetString("password")
 
-		parseVault := makeFilteredParser(includes)
+		baseURL = strings.TrimRight(baseURL, "/")
+		if feed && baseURL == "" {
+			return fmt.Errorf("--feed requires --base-url (feeds need absolute URLs)")
+		}
+		if password != "" {
+			if chunked {
+				return fmt.Errorf("--password cannot be combined with --chunked")
+			}
+			if baseURL != "" || feed {
+				return fmt.Errorf("--password cannot be combined with --base-url/--feed: SEO pages would expose plaintext")
+			}
+		}
+		seo := export.SEOOptions{
+			BaseURL:  baseURL,
+			Feed:     feed,
+			Chunked:  chunked,
+			Password: password,
+		}
+
+		parseVault := makeFilteredParser(includes, publishedOnly)
 
 		fmt.Printf("Parsing vault: %s\n", vaultPath)
 		t0 := time.Now()
@@ -49,19 +74,22 @@ var exportCmd = &cobra.Command{
 		if len(includes) > 0 {
 			fmt.Printf("Include filter: %v\n", includes)
 		}
+		if publishedOnly {
+			fmt.Printf("Publishing only notes with publish: true frontmatter\n")
+		}
 		fmt.Printf("Found %d notes · %d folders · %d tags · %d edges · %d attachments (parsed in %s)\n",
 			len(data.Notes), len(data.Folders), len(data.Tags), len(data.Edges), len(data.Attachments),
 			time.Since(t0).Round(time.Millisecond))
 
 		fmt.Printf("Exporting to: %s\n", outputDir)
 		t1 := time.Now()
-		if err := export.Export(data, vaultPath, outputDir, staticFS); err != nil {
+		if err := export.Export(data, vaultPath, outputDir, staticFS, seo); err != nil {
 			return fmt.Errorf("exporting: %w", err)
 		}
 		fmt.Printf("Export complete in %s.\n", time.Since(t1).Round(time.Millisecond))
 
 		if watch {
-			return export.Watch(vaultPath, outputDir, host, port, staticFS, parseVault)
+			return export.Watch(vaultPath, outputDir, host, port, staticFS, parseVault, seo)
 		}
 		if serve {
 			return export.Serve(outputDir, host, port)
@@ -80,24 +108,31 @@ var serveCmd = &cobra.Command{
 		port, _ := cmd.Flags().GetInt("port")
 		watch, _ := cmd.Flags().GetBool("watch")
 		includes, _ := cmd.Flags().GetStringArray("include")
+		publishedOnly, _ := cmd.Flags().GetBool("published-only")
 
 		if len(includes) > 0 {
 			fmt.Printf("Include filter: %v\n", includes)
 		}
+		if publishedOnly {
+			fmt.Printf("Serving only notes with publish: true frontmatter\n")
+		}
 		fmt.Printf("Parsing vault: %s\n", vaultPath)
-		return export.ServeInMemory(vaultPath, host, port, watch, staticFS, makeFilteredParser(includes))
+		return export.ServeInMemory(vaultPath, host, port, watch, staticFS, makeFilteredParser(includes, publishedOnly))
 	},
 }
 
 // makeFilteredParser returns a ParseVault-compatible function that applies
-// the given include filter after parsing. If includes is empty the full vault is returned.
-func makeFilteredParser(includes []string) func(string) (*vault.VaultData, error) {
+// the include filter and (optionally) the publish: true gate after parsing.
+func makeFilteredParser(includes []string, publishedOnly bool) func(string) (*vault.VaultData, error) {
 	return func(path string) (*vault.VaultData, error) {
 		data, err := vault.ParseVault(path)
 		if err != nil {
 			return nil, err
 		}
 		filtered := vault.FilterVaultData(data, includes)
+		if publishedOnly {
+			filtered = vault.FilterPublished(filtered)
+		}
 		filtered.AppVersion = version
 		return filtered, nil
 	}
@@ -110,12 +145,18 @@ func init() {
 	exportCmd.Flags().String("host", "127.0.0.1", "Address to bind to (use 0.0.0.0 to expose on the network; used with --serve or --watch)")
 	exportCmd.Flags().Int("port", 3000, "Port to serve on (used with --serve or --watch)")
 	exportCmd.Flags().StringArray("include", nil, "Include only specific files or folders (repeatable, e.g. --include Notes --include Diary/2024.md)")
+	exportCmd.Flags().Bool("published-only", false, "Export only notes with publish: true frontmatter (links to unpublished notes are stripped)")
+	exportCmd.Flags().String("base-url", "", "Absolute URL the site will be hosted at (e.g. https://notes.example.com); enables canonical URLs, sitemap.xml and robots.txt")
+	exportCmd.Flags().Bool("feed", false, "Write an RSS feed.xml of the most recently created notes (requires --base-url)")
+	exportCmd.Flags().Bool("chunked", false, "Split vault-data.json into a metadata index plus per-note content chunks (for large vaults)")
+	exportCmd.Flags().String("password", "", "Encrypt the exported vault so it can only be read after entering this password in the browser (client-side AES-256-GCM)")
 	rootCmd.AddCommand(exportCmd)
 
 	serveCmd.Flags().String("host", "127.0.0.1", "Address to bind to (use 0.0.0.0 to expose on the network)")
 	serveCmd.Flags().Int("port", 3000, "Port to serve on")
 	serveCmd.Flags().BoolP("watch", "w", false, "Watch vault for changes and live-reload")
 	serveCmd.Flags().StringArray("include", nil, "Include only specific files or folders (repeatable, e.g. --include Notes --include Diary/2024.md)")
+	serveCmd.Flags().Bool("published-only", false, "Serve only notes with publish: true frontmatter (preview of --published-only exports)")
 	rootCmd.AddCommand(serveCmd)
 }
 

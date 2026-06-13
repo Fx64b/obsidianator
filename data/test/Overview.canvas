@@ -1,0 +1,17 @@
+{
+	"nodes": [
+		{"id": "group-intro", "type": "group", "x": -60, "y": -60, "width": 760, "height": 360, "label": "Start here", "color": "5"},
+		{"id": "title", "type": "text", "x": 0, "y": 0, "width": 320, "height": 120, "text": "# Obsidianator\n\nA **canvas** rendered from the JSON Canvas format. Drag to pan, scroll to zoom.", "color": "4"},
+		{"id": "welcome", "type": "file", "x": 400, "y": 0, "width": 280, "height": 100, "file": "Welcome.md"},
+		{"id": "getting-started", "type": "file", "x": 400, "y": 160, "width": 280, "height": 100, "file": "Getting Started.md"},
+		{"id": "features", "type": "file", "x": 0, "y": 400, "width": 280, "height": 100, "file": "Features.md"},
+		{"id": "note-text", "type": "text", "x": 400, "y": 400, "width": 280, "height": 140, "text": "Text nodes support **markdown**, `code`, and [[Wikilinks]] that navigate the vault.", "color": "3"},
+		{"id": "link-out", "type": "link", "x": 0, "y": 600, "width": 280, "height": 80, "url": "https://obsidian.md"}
+	],
+	"edges": [
+		{"id": "e1", "fromNode": "title", "fromSide": "right", "toNode": "welcome", "toSide": "left", "toEnd": "arrow", "label": "open"},
+		{"id": "e2", "fromNode": "welcome", "fromSide": "bottom", "toNode": "getting-started", "toSide": "top", "toEnd": "arrow"},
+		{"id": "e3", "fromNode": "title", "fromSide": "bottom", "toNode": "features", "toSide": "top", "toEnd": "arrow", "color": "1"},
+		{"id": "e4", "fromNode": "getting-started", "fromSide": "bottom", "toNode": "note-text", "toSide": "top"}
+	]
+}

@@ -54,6 +54,73 @@ obsidianator export ./my-vault --output ./dist --watch   # export, watch, serve
 obsidianator serve ./my-vault --include Notes --include Diary/2024.md
 ```
 
+### Publish to the web (SEO-ready)
+
+Every export writes a real, pre-rendered HTML page per note (`<note-id>.html`)
+with meta/OpenGraph tags and a crawlable internal link graph — so published
+notes are indexable and shareable, not locked inside an SPA.
+
+```sh
+obsidianator export ./my-vault --output ./dist \
+  --published-only \
+  --base-url https://notes.example.com \
+  --feed
+```
+
+- `--published-only` — export only notes with `publish: true` in their
+  frontmatter. Links, backlinks, graph edges and attachments referencing
+  unpublished notes are stripped, so private content never leaks.
+- `--base-url <url>` — the absolute URL the site will be hosted at. Enables
+  canonical URLs and OpenGraph `og:url` on every page, plus `sitemap.xml` and
+  `robots.txt`.
+- `--feed` — write an RSS `feed.xml` of the most recently created notes
+  (requires `--base-url`).
+
+`serve` mode supports `--published-only` too, for previewing exactly what a
+published export will contain.
+
+### Large vaults
+
+```sh
+obsidianator export ./my-vault --output ./dist --chunked
+```
+
+`--chunked` splits `vault-data.json` into a small metadata-only index plus
+per-note content chunks under `notes/` and a `search-index.json`. The site
+becomes interactive (sidebar, graph, canvases, title search) as soon as the
+index loads; note bodies are fetched on demand, so vaults with thousands of
+notes start fast instead of downloading everything up front. Without the flag,
+the vault is written as a single `vault-data.json` (best for small vaults).
+
+### Canvas
+
+`.canvas` files (Obsidian's [JSON Canvas](https://jsoncanvas.org) format) are
+parsed and rendered as an interactive, pan-and-zoom board — text, note, link
+and group cards connected by labelled arrows. Canvases appear at the top of the
+sidebar; note cards link straight into the vault.
+
+### Password-protected sharing
+
+```sh
+obsidianator export ./my-vault --output ./dist --password "correct horse battery staple"
+```
+
+`--password` encrypts the vault (PBKDF2-SHA256 → AES-256-GCM) so the exported
+site is unreadable until the password is entered in the browser, where it is
+decrypted entirely client-side. This lets you host a private vault on any
+static host (GitHub Pages, S3, Netlify…) without a backend. The password is
+never written anywhere — if you lose it, the export can't be recovered.
+
+> Because the content must stay encrypted, this mode disables the pre-rendered
+> per-note pages, sitemap and RSS feed (which would expose plaintext), and
+> can't be combined with `--chunked`.
+
+### Search operators
+
+The search dialog (⌘K) accepts filters that combine with free text:
+`tag:project`, `path:Diary`, `title:intro`, `line:todo`, the `#tag` shorthand,
+and quoted values like `path:"Daily Notes"`.
+
 ### Other flags
 ```sh
 obsidianator --version    # print version
