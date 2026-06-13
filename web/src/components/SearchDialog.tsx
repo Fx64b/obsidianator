@@ -62,6 +62,36 @@ export function SearchDialog({
 	const [idx, setIdx] = useState(0);
 	const listRef = useRef<HTMLDivElement>(null);
 
+	// Full-text search index. For a non-chunked vault, plainText already lives
+	// on each note. For a chunked vault, note.plainText is empty in the index,
+	// so we lazily fetch search-index.json the first time the dialog opens and
+	// resolve plainText from it.
+	const [searchText, setSearchText] = useState<Map<string, string> | null>(
+		null,
+	);
+	useEffect(() => {
+		if (!open || !vault.chunked || searchText) return;
+		let cancelled = false;
+		fetch("./search-index.json")
+			.then((r) => (r.ok ? r.json() : []))
+			.then((entries: { id: string; plainText: string }[]) => {
+				if (cancelled) return;
+				setSearchText(new Map(entries.map((e) => [e.id, e.plainText])));
+			})
+			.catch(() => {
+				if (!cancelled) setSearchText(new Map());
+			});
+		return () => {
+			cancelled = true;
+		};
+	}, [open, vault.chunked, searchText]);
+
+	const plainTextOf = useCallback(
+		(note: Note) =>
+			vault.chunked ? (searchText?.get(note.id) ?? "") : note.plainText,
+		[vault.chunked, searchText],
+	);
+
 	const fuse = useMemo(
 		() =>
 			new Fuse(vault.notes, {
@@ -91,11 +121,11 @@ export function SearchDialog({
 		const fuseIds = new Set(fuseHits.map((n) => n.id));
 		const lq = query.toLowerCase();
 		const contentHits = vault.notes.filter(
-			(n) => !fuseIds.has(n.id) && n.plainText.toLowerCase().includes(lq),
+			(n) => !fuseIds.has(n.id) && plainTextOf(n).toLowerCase().includes(lq),
 		);
 		setResults([...fuseHits, ...contentHits].slice(0, 12));
 		setIdx(0);
-	}, [query, vault.notes.slice, vault.notes.filter, fuse.search]);
+	}, [query, vault.notes.slice, vault.notes.filter, fuse.search, plainTextOf]);
 
 	useEffect(() => {
 		const el = listRef.current?.children[idx] as HTMLElement | undefined;
@@ -184,7 +214,7 @@ export function SearchDialog({
 											</p>
 										)}
 										{(() => {
-											const ex = getExcerpt(note.plainText, query);
+											const ex = getExcerpt(plainTextOf(note), query);
 											return ex ? (
 												<p className="mt-0.5 truncate text-xs text-muted-foreground/70">
 													<Highlight text={ex} query={query} />

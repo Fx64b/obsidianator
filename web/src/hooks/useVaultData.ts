@@ -4,6 +4,7 @@ import type { Folder, Note, VaultData } from "@/types";
 function normalizeVault(raw: VaultData): VaultData {
 	return {
 		...raw,
+		chunked: raw.chunked ?? false,
 		notes: (raw.notes ?? []).map((n: Note) => ({
 			...n,
 			aliases: n.aliases ?? [],

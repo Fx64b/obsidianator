@@ -4,6 +4,7 @@ package vault
 type VaultData struct {
 	Name       string `json:"name"`
 	AppVersion string `json:"appVersion,omitempty"` // obsidianator version that generated this file
+	Chunked    bool   `json:"chunked,omitempty"`    // true when note content lives in per-note chunk files
 
 	Notes       []Note            `json:"notes"`
 	Tags        []string          `json:"tags"`

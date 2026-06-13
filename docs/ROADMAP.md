@@ -56,10 +56,14 @@ Launch-post material; things almost no alternative does.
   bezier edges with arrows and labels, preset colors. File nodes link into the
   vault; canvases are listed in the sidebar. Publish/include filters strip
   canvas file nodes pointing at excluded notes.
-- ⬜ **Scale: chunked/lazy vault data** — split `vault-data.json` into a small
-  metadata/edges index plus per-note content fetched on demand, with a
-  pre-built search index, so 10k-note vaults load instantly. Keep the current
-  single-file format for small vaults.
+- ✅ **Scale: chunked/lazy vault data** — `--chunked` splits `vault-data.json`
+  into a metadata-only index (titles, links, tags, headers, folders, edges,
+  canvases) plus per-note `notes/<id>.json` content chunks and a
+  `search-index.json`. The frontend renders sidebar/graph/canvases from the
+  small index immediately and fetches note bodies on demand (active note + its
+  link targets prefetched so transclusion and previews resolve; full-text
+  search loads its index on first use). The single-file format remains the
+  default for small vaults.
 
 ## Phase 4 — Delight and stickiness
 

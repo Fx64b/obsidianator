@@ -81,6 +81,26 @@ obsidianator export ./my-vault --output ./dist \
 `serve` mode supports `--published-only` too, for previewing exactly what a
 published export will contain.
 
+### Large vaults
+
+```sh
+obsidianator export ./my-vault --output ./dist --chunked
+```
+
+`--chunked` splits `vault-data.json` into a small metadata-only index plus
+per-note content chunks under `notes/` and a `search-index.json`. The site
+becomes interactive (sidebar, graph, canvases, title search) as soon as the
+index loads; note bodies are fetched on demand, so vaults with thousands of
+notes start fast instead of downloading everything up front. Without the flag,
+the vault is written as a single `vault-data.json` (best for small vaults).
+
+### Canvas
+
+`.canvas` files (Obsidian's [JSON Canvas](https://jsoncanvas.org) format) are
+parsed and rendered as an interactive, pan-and-zoom board — text, note, link
+and group cards connected by labelled arrows. Canvases appear at the top of the
+sidebar; note cards link straight into the vault.
+
 ### Other flags
 ```sh
 obsidianator --version    # print version

@@ -7,6 +7,7 @@ import { RightPanel } from "@/components/RightPanel";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useMobile } from "@/hooks/useMobile";
+import { useEnsureContent } from "@/hooks/useNoteContent";
 import { cn } from "@/lib/utils";
 import type { Canvas, VaultData, Note } from "@/types";
 
@@ -108,6 +109,7 @@ export function Layout({
 		224,
 	);
 	const isMobile = useMobile();
+	const { ready } = useEnsureContent();
 
 	const activeNote: Note | null =
 		(activeNoteId ? vault.notes.find((n) => n.id === activeNoteId) : null) ??
@@ -256,12 +258,18 @@ export function Layout({
 						className="h-full [&>[data-slot=scroll-area-viewport]>div]:!block [&>[data-slot=scroll-area-viewport]>div]:!min-w-0"
 						viewportRef={scrollRef}
 					>
-						<MarkdownView
-							note={activeNote}
-							vault={vault}
-							onSelectNote={handleNoteSelect}
-							onTagClick={onTagClick}
-						/>
+						{ready(activeNote.id) ? (
+							<MarkdownView
+								note={activeNote}
+								vault={vault}
+								onSelectNote={handleNoteSelect}
+								onTagClick={onTagClick}
+							/>
+						) : (
+							<div className="flex h-full items-center justify-center py-20">
+								<div className="h-5 w-5 animate-spin rounded-full border-2 border-foreground border-t-transparent" />
+							</div>
+						)}
 					</ScrollArea>
 				) : (
 					<div className="flex h-full items-center justify-center">

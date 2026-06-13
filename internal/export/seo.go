@@ -16,7 +16,8 @@ import (
 	"github.com/yuin/goldmark/extension"
 )
 
-// SEOOptions control the publishing-grade artifacts written on export.
+// SEOOptions control the publishing-grade and packaging artifacts written on
+// export.
 type SEOOptions struct {
 	// BaseURL is the absolute URL the site will be hosted at, without a
 	// trailing slash (e.g. "https://notes.example.com"). When set, note pages
@@ -24,6 +25,9 @@ type SEOOptions struct {
 	BaseURL string
 	// Feed writes an RSS feed.xml from note created dates (requires BaseURL).
 	Feed bool
+	// Chunked splits vault-data.json into a metadata-only index plus per-note
+	// content chunks and a search index, for large vaults.
+	Chunked bool
 }
 
 // NotePageFilename returns the flat root-level .html filename a note page is

@@ -97,14 +97,22 @@ func Export(data *vault.VaultData, vaultPath, outputDir string, staticFS fs.FS, 
 		}
 	}
 
-	// Write vault-data.json LAST (so it overwrites any stale embedded copy)
-	jsonBytes, err := json.MarshalIndent(data, "", "  ")
-	if err != nil {
-		return fmt.Errorf("marshaling vault data: %w", err)
-	}
-	jsonPath := filepath.Join(outputDir, "vault-data.json")
-	if err := os.WriteFile(jsonPath, jsonBytes, 0644); err != nil {
-		return fmt.Errorf("writing vault-data.json: %w", err)
+	// Write vault data LAST (so it overwrites any stale embedded copy). In
+	// chunked mode this writes a metadata index plus per-note chunks; otherwise
+	// a single vault-data.json.
+	if seo.Chunked {
+		if err := writeChunkedData(data, outputDir); err != nil {
+			return err
+		}
+	} else {
+		jsonBytes, err := json.MarshalIndent(data, "", "  ")
+		if err != nil {
+			return fmt.Errorf("marshaling vault data: %w", err)
+		}
+		jsonPath := filepath.Join(outputDir, "vault-data.json")
+		if err := os.WriteFile(jsonPath, jsonBytes, 0644); err != nil {
+			return fmt.Errorf("writing vault-data.json: %w", err)
+		}
 	}
 
 	return writeSEOFiles(data, outputDir, sub, seo)

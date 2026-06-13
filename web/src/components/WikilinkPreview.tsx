@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import rehypeKatex from "rehype-katex";
@@ -11,6 +11,7 @@ import {
 	HoverCardContent,
 	HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { useEnsureContent } from "@/hooks/useNoteContent";
 import {
 	extractBlock,
 	extractSection,
@@ -101,6 +102,14 @@ interface NotePreviewBodyProps {
 // Exported separately so tests can render the preview content without going
 // through radix hover interactions.
 export function NotePreviewBody({ note, anchor, vault }: NotePreviewBodyProps) {
+	const { ensure, ready } = useEnsureContent();
+	// In chunked mode the preview target's content may not be loaded yet;
+	// request it on open and show a loading line until it arrives.
+	useEffect(() => {
+		ensure([note.id]);
+	}, [ensure, note.id]);
+	const loaded = ready(note.id);
+
 	const processed = useMemo(() => {
 		let body: string | null = null;
 		if (anchor) {
@@ -121,7 +130,9 @@ export function NotePreviewBody({ note, anchor, vault }: NotePreviewBodyProps) {
 				)}
 			</div>
 			<div className="max-h-64 overflow-y-auto px-3 py-2">
-				{processed.trim() ? (
+				{!loaded ? (
+					<p className="text-xs italic text-muted-foreground">Loading…</p>
+				) : processed.trim() ? (
 					<div className="markdown-body">
 						<ReactMarkdown
 							remarkPlugins={[remarkGfm, remarkMath]}

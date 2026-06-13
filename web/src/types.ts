@@ -76,6 +76,7 @@ export interface Canvas {
 export interface VaultData {
 	name: string;
 	appVersion?: string;
+	chunked?: boolean;
 	notes: Note[];
 	tags: string[];
 	folders: Folder[];

@@ -13,6 +13,7 @@ import {
 	type Rect,
 	type Side,
 } from "@/lib/canvas";
+import { useEnsureContent } from "@/hooks/useNoteContent";
 import { preprocessContent } from "@/lib/markdown";
 import { sanitizeSchema } from "@/lib/sanitizeSchema";
 import { cn } from "@/lib/utils";
@@ -47,6 +48,16 @@ export function CanvasView({ canvas, vault, onSelectNote }: CanvasViewProps) {
 		origY: number;
 	} | null>(null);
 	const [panning, setPanning] = useState(false);
+
+	// In chunked mode, fetch the content of every note referenced by a file
+	// node so their excerpts render and clicking through opens instantly.
+	const { ensure } = useEnsureContent();
+	useEffect(() => {
+		const ids = canvas.nodes
+			.filter((n) => n.type === "file" && n.noteId)
+			.map((n) => n.noteId as string);
+		if (ids.length) ensure(ids);
+	}, [canvas.nodes, ensure]);
 
 	const bounds = useMemo<Bounds>(
 		() => nodeBounds(canvas.nodes),
