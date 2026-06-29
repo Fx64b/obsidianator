@@ -60,4 +60,4 @@ This is a link to [GitHub][gh] and another to [Obsidian][obs].
 
 Contact: [hello@example.com](mailto:hello@example.com)
 
-See also: [[Wikilinks]], [[Embeds]].
+See also: [[Wikilinks]].

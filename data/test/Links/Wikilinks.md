@@ -73,4 +73,4 @@ These links should render as broken (strikethrough):
 
 [[Deep Note]] — note in a deeply nested folder
 
-See also: [[External Links]], [[Embeds]].
+See also: [[External Links]].

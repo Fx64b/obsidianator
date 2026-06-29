@@ -2,15 +2,6 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## graphify
-
-This project has a graphify knowledge graph at graphify-out/.
-
-Rules:
-- Before answering architecture or codebase questions, read graphify-out/GRAPH_REPORT.md for god nodes and community structure
-- If graphify-out/wiki/index.md exists, navigate it instead of reading raw files
-- After modifying code files in this session, run `graphify update .` to keep the graph current (AST-only, no API cost)
-
 ## Commands
 
 **Full build** (frontend then Go binary with embedded static assets):
@@ -133,7 +124,7 @@ Obsidian-specific syntax is transformed in two stages before rendering:
 
 - **Tailwind v4** via `@tailwindcss/vite` plugin — no separate postcss plugin config needed.
 - **shadcn/ui** components live in `web/src/components/ui/`.
-- Custom hooks (`useVaultData`, `useLocalStorage`, `useMobile`) are in `web/src/components/`, not a separate `hooks/` directory.
+- Custom hooks (`useVaultData`, `useLocalStorage`, `useMobile`) live in `web/src/hooks/`.
 
 ### Static asset embedding
 

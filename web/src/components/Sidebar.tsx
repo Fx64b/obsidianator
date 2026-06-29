@@ -81,7 +81,14 @@ function FolderNode({
 	onSelectNote: (note: Note) => void;
 	depth?: number;
 }) {
-	const [open, setOpen] = useState(true);
+	// First-level folders start open; deeper folders start collapsed unless
+	// they (or a descendant) contain the currently selected note.
+	const [open, setOpen] = useState(
+		() =>
+			depth === 0 ||
+			(selectedNote != null &&
+				folderContainsNote(folder, selectedNote.id, vault.folders)),
+	);
 
 	// Auto-expand when selected note is inside this folder or its descendants
 	useEffect(() => {
