@@ -73,7 +73,7 @@
 		"shadcn": "^4.3.0",
 		"tailwindcss": "^4.2.2",
 		"typescript": "^5.9.3",
-		"vite": "^6.4.2",
+		"vite": "^6.4.3",
 		"vitest": "^4.1.8"
 	}
 }
