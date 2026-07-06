@@ -1,6 +1,7 @@
 package export
 
 import (
+	"io"
 	"bufio"
 	"encoding/json"
 	"fmt"
@@ -17,10 +18,12 @@ import (
 	"github.com/Fx64b/obsidianator/internal/vault"
 )
 
-// testStaticFS mimics the embedded frontend build output.
+// testStaticFS mimics the embedded frontend build output. index.html uses the
+// same markers (title tag, #root div) as the real Vite build so the per-note
+// page generation is exercised.
 func testStaticFS() fstest.MapFS {
 	return fstest.MapFS{
-		"static/index.html":      {Data: []byte("<html>test app</html>")},
+		"static/index.html":      {Data: []byte(testShell)},
 		"static/assets/app.js":   {Data: []byte("console.log('app')")},
 		"static/placeholder.txt": {Data: []byte("placeholder")},
 		// Stale embedded vault-data.json that must be overwritten by the real one
@@ -59,7 +62,7 @@ func TestExport(t *testing.T) {
 	}
 
 	outDir := filepath.Join(t.TempDir(), "dist")
-	if err := Export(data, vaultDir, outDir, testStaticFS()); err != nil {
+	if err := Export(data, vaultDir, outDir, testStaticFS(), SEOOptions{}); err != nil {
 		t.Fatalf("Export: %v", err)
 	}
 
@@ -68,11 +71,32 @@ func TestExport(t *testing.T) {
 		if err != nil {
 			t.Fatalf("index.html missing: %v", err)
 		}
-		if string(got) != "<html>test app</html>" {
+		if string(got) != testShell {
 			t.Errorf("index.html content = %q", got)
 		}
 		if _, err := os.Stat(filepath.Join(outDir, "assets", "app.js")); err != nil {
 			t.Errorf("assets/app.js missing: %v", err)
+		}
+	})
+
+	t.Run("per-note pages written", func(t *testing.T) {
+		got, err := os.ReadFile(filepath.Join(outDir, "note-one.html"))
+		if err != nil {
+			t.Fatalf("note page missing: %v", err)
+		}
+		if !strings.Contains(string(got), `data-note-id="note-one"`) {
+			t.Errorf("note page lacks routing attributes:\n%s", got)
+		}
+		if !strings.Contains(string(got), `<a href="sub-note-two.html">`) {
+			t.Errorf("note page lacks crawlable wikilink:\n%s", got)
+		}
+	})
+
+	t.Run("no sitemap or feed without base URL", func(t *testing.T) {
+		for _, f := range []string{"sitemap.xml", "robots.txt", "feed.xml"} {
+			if _, err := os.Stat(filepath.Join(outDir, f)); !os.IsNotExist(err) {
+				t.Errorf("%s should not exist without --base-url", f)
+			}
 		}
 	})
 
@@ -116,6 +140,54 @@ func TestExport(t *testing.T) {
 	})
 }
 
+func TestExportSEOFiles(t *testing.T) {
+	vaultDir := writeTestVault(t)
+	data, err := vault.ParseVault(vaultDir)
+	if err != nil {
+		t.Fatalf("ParseVault: %v", err)
+	}
+
+	outDir := filepath.Join(t.TempDir(), "dist")
+	seo := SEOOptions{BaseURL: "https://example.com", Feed: true}
+	if err := Export(data, vaultDir, outDir, testStaticFS(), seo); err != nil {
+		t.Fatalf("Export: %v", err)
+	}
+
+	t.Run("sitemap, robots and feed written", func(t *testing.T) {
+		sitemap, err := os.ReadFile(filepath.Join(outDir, "sitemap.xml"))
+		if err != nil {
+			t.Fatalf("sitemap.xml missing: %v", err)
+		}
+		if !strings.Contains(string(sitemap), "https://example.com/note-one.html") {
+			t.Errorf("sitemap content:\n%s", sitemap)
+		}
+		robots, err := os.ReadFile(filepath.Join(outDir, "robots.txt"))
+		if err != nil {
+			t.Fatalf("robots.txt missing: %v", err)
+		}
+		if !strings.Contains(string(robots), "https://example.com/sitemap.xml") {
+			t.Errorf("robots content: %s", robots)
+		}
+		feed, err := os.ReadFile(filepath.Join(outDir, "feed.xml"))
+		if err != nil {
+			t.Fatalf("feed.xml missing: %v", err)
+		}
+		if !strings.Contains(string(feed), "<rss version=\"2.0\"") {
+			t.Errorf("feed content:\n%s", feed)
+		}
+	})
+
+	t.Run("note pages carry canonical URLs", func(t *testing.T) {
+		page, err := os.ReadFile(filepath.Join(outDir, "note-one.html"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(string(page), `<link rel="canonical" href="https://example.com/note-one.html" />`) {
+			t.Errorf("canonical missing:\n%s", page)
+		}
+	})
+}
+
 func TestExportRejectsPathTraversalAttachment(t *testing.T) {
 	vaultDir := t.TempDir()
 	if err := os.WriteFile(filepath.Join(vaultDir, "note.md"), []byte("# n"), 0644); err != nil {
@@ -135,7 +207,7 @@ func TestExportRejectsPathTraversalAttachment(t *testing.T) {
 	data.Attachments["secret.png"] = "../secret.png"
 
 	outDir := filepath.Join(t.TempDir(), "dist")
-	if err := Export(data, vaultDir, outDir, testStaticFS()); err != nil {
+	if err := Export(data, vaultDir, outDir, testStaticFS(), SEOOptions{}); err != nil {
 		t.Fatalf("Export: %v", err)
 	}
 
@@ -364,8 +436,37 @@ func TestServeInMemory(t *testing.T) {
 		defer resp.Body.Close()
 		body := make([]byte, 64)
 		n, _ := resp.Body.Read(body)
-		if !strings.Contains(string(body[:n]), "test app") {
+		if !strings.Contains(string(body[:n]), "<title>Obsidianator</title>") {
 			t.Errorf("index body = %q", body[:n])
+		}
+	})
+
+	t.Run("serves per-note page shells", func(t *testing.T) {
+		resp, err := http.Get(base + "/sub-note-two.html")
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer resp.Body.Close()
+		if resp.StatusCode != http.StatusOK {
+			t.Fatalf("status = %d", resp.StatusCode)
+		}
+		body, _ := io.ReadAll(resp.Body)
+		if !strings.Contains(string(body), `data-note-id="sub-note-two"`) {
+			t.Errorf("note page body:\n%s", body)
+		}
+		if !strings.Contains(string(body), "<title>Note Two — ") {
+			t.Errorf("note page title missing:\n%s", body)
+		}
+	})
+
+	t.Run("unknown .html paths fall through to 404", func(t *testing.T) {
+		resp, err := http.Get(base + "/no-such-note.html")
+		if err != nil {
+			t.Fatal(err)
+		}
+		resp.Body.Close()
+		if resp.StatusCode != http.StatusNotFound {
+			t.Errorf("status = %d; want 404", resp.StatusCode)
 		}
 	})
 

@@ -1,7 +1,7 @@
 {
   "name": "obsidianator-web",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.2",
   "description": "Turn an Obsidian vault into a self-contained static website",
   "license": "MIT",
   "homepage": "https://github.com/Fx64b/obsidianator",
@@ -10,6 +10,11 @@
     "url": "https://github.com/Fx64b/obsidianator"
   },
   "type": "module",
+  "pnpm": {
+    "overrides": {
+      "uuid": ">=11.1.1"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

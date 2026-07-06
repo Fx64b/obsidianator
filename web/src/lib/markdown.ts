@@ -36,6 +36,70 @@ export function findNote(target: string, vault: VaultData): Note | undefined {
 }
 
 // ---------------------------------------------------------------------------
+// Section / block extraction for partial transclusion
+// ---------------------------------------------------------------------------
+export function stripFrontmatter(content: string): string {
+	return content.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, "");
+}
+
+// Extract the section under the heading whose slug matches `anchor` — from the
+// heading line until the next heading of the same or higher level (Obsidian
+// semantics: subsections are included). Matching is slug-based so both
+// "My Heading" and "my-heading" resolve. Returns null when no heading matches.
+export function extractSection(content: string, anchor: string): string | null {
+	const lines = stripFrontmatter(content).split("\n");
+	const want = slugify(anchor);
+	if (!want) return null;
+	let start = -1;
+	let level = 0;
+	let inFence = false;
+	for (let i = 0; i < lines.length; i++) {
+		if (/^\s*(`{3,}|~{3,})/.test(lines[i])) {
+			inFence = !inFence;
+			continue;
+		}
+		if (inFence) continue;
+		const m = /^(#{1,6})\s+(.+)$/.exec(lines[i]);
+		if (!m) continue;
+		if (start === -1) {
+			if (slugify(m[2]) === want) {
+				start = i;
+				level = m[1].length;
+			}
+		} else if (m[1].length <= level) {
+			return lines.slice(start, i).join("\n").trim();
+		}
+	}
+	if (start === -1) return null;
+	return lines.slice(start).join("\n").trim();
+}
+
+const BLOCK_ID = /^[A-Za-z0-9-]+$/;
+
+// Extract the block tagged `^blockId`. A marker at the end of a line tags the
+// contiguous chunk of non-blank lines it terminates; a marker alone on its own
+// line tags the previous non-blank chunk (how Obsidian tags tables/quotes).
+// The marker itself is stripped from the result. Returns null when not found.
+export function extractBlock(content: string, blockId: string): string | null {
+	if (!BLOCK_ID.test(blockId)) return null;
+	const lines = stripFrontmatter(content).split("\n");
+	const marker = new RegExp(`(^|[ \\t])\\^${blockId}[ \\t]*$`);
+	const idx = lines.findIndex((l) => marker.test(l));
+	if (idx === -1) return null;
+	const markerOnly = lines[idx].trim() === `^${blockId}`;
+	let end = markerOnly ? idx - 1 : idx;
+	while (end >= 0 && lines[end].trim() === "") end--;
+	if (end < 0) return null;
+	let start = end;
+	while (start > 0 && lines[start - 1].trim() !== "") start--;
+	return lines
+		.slice(start, end + 1)
+		.join("\n")
+		.replace(marker, "")
+		.trim();
+}
+
+// ---------------------------------------------------------------------------
 // Callout sentinel helpers
 // Callouts are emitted as an invisible <span data-callout="TYPE" ...> so that
 // the title and collapsed state are carried as HTML attributes — immune to
@@ -88,9 +152,19 @@ export function resolveEmbedsInBody(body: string, vault: VaultData): string {
 // ---------------------------------------------------------------------------
 // Preprocessing pipeline
 // ---------------------------------------------------------------------------
+
+// Replace inline code spans with placeholders stored in `store`, so later
+// transformation passes never touch literal examples like `![[...]]`.
+function protectInlineCode(src: string, store: string[]): string {
+	return src.replace(/(`+)([^`\n]+?)\1/g, (match) => {
+		const placeholder = `__INLINECODE_${store.length}__`;
+		store.push(match);
+		return placeholder;
+	});
+}
 export function preprocessContent(content: string, vault: VaultData): string {
 	// 1. Strip frontmatter
-	let out = content.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, "");
+	let out = stripFrontmatter(content);
 
 	// 2. Protect regular fenced code blocks AND convert ad-* admonitions.
 	//    Both are handled in one pass so that ad-* blocks are never accidentally
@@ -125,10 +199,21 @@ export function preprocessContent(content: string, vault: VaultData): string {
 		},
 	);
 
-	// 3. Embed blocks  ![[...]]
+	// 2b. Protect inline code spans so `![[...]]`, `[[...]]`, `#tag`, `==x==`
+	//     and `^block-id` written as literal examples are never transformed.
+	//     Backticks *generated* by later steps (e.g. the unresolvable-embed
+	//     fallback) are intentionally not protected — they are created after
+	//     this pass.
+	const inlineCode: string[] = [];
+	out = protectInlineCode(out, inlineCode);
+
+	// 3. Embed blocks  ![[...]]  ![[Note#Heading]]  ![[Note#^block-id]]
 	out = out.replace(/!\[\[([^\]]+?)\]\]/g, (_, inner) => {
 		const parts = inner.split("|");
-		const name = parts[0].trim();
+		const ref = parts[0].trim();
+		const hashIdx = ref.indexOf("#");
+		const name = (hashIdx === -1 ? ref : ref.slice(0, hashIdx)).trim();
+		const anchor = hashIdx === -1 ? "" : ref.slice(hashIdx + 1).trim();
 		const sizePart = parts[1]?.trim() ?? "";
 		const ext = name.split(".").pop()?.toLowerCase() ?? "";
 
@@ -164,20 +249,36 @@ export function preprocessContent(content: string, vault: VaultData): string {
 			const targetName = name.replace(/\.md$/, "");
 			const targetNote = findNote(targetName, vault);
 			if (targetNote) {
-				const rawBody = targetNote.content
-					.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, "")
-					.trim();
-				// Resolve image/PDF embeds inside the transcluded note before quoting
-				const body = resolveEmbedsInBody(rawBody, vault);
-				const quoted = body
-					.split("\n")
-					.map((line) => `> ${line}`)
-					.join("\n");
-				return `${quoted}\n> \n> — *[[${targetNote.title}]]*\n`;
+				let rawBody: string | null;
+				let attribution: string;
+				if (anchor.startsWith("^")) {
+					rawBody = extractBlock(targetNote.content, anchor.slice(1));
+					attribution = `[[${targetNote.title}#${anchor}|${targetNote.title}]]`;
+				} else if (anchor) {
+					rawBody = extractSection(targetNote.content, anchor);
+					attribution = `[[${targetNote.title}#${anchor}|${targetNote.title} › ${anchor}]]`;
+				} else {
+					rawBody = stripFrontmatter(targetNote.content).trim();
+					attribution = `[[${targetNote.title}]]`;
+				}
+				if (rawBody !== null) {
+					// The transcluded body is spliced in after the protection pass in
+					// 2b, so protect its inline code here (shared store, restored at
+					// the end), then resolve image/PDF embeds before quoting.
+					const body = resolveEmbedsInBody(
+						protectInlineCode(rawBody, inlineCode),
+						vault,
+					);
+					const quoted = body
+						.split("\n")
+						.map((line) => `> ${line}`)
+						.join("\n");
+					return `${quoted}\n> \n> — *${attribution}*\n`;
+				}
 			}
 		}
 
-		return `\`![[${name}]]\``;
+		return `\`![[${ref}]]\``;
 	});
 
 	// 4. Obsidian callouts  > [!TYPE] Title  and  > [!TYPE]- Title (collapsed)
@@ -216,6 +317,20 @@ export function preprocessContent(content: string, vault: VaultData): string {
 			}
 			return `[${displayText}](wiki-missing:${encodeURIComponent(t)})`;
 		},
+	);
+
+	// 5b. Block ID markers  ^block-id  →  invisible anchor spans.
+	//     A trailing marker tags its own line; a marker alone on a line tags the
+	//     block above it. Either way the marker disappears from reading view and
+	//     leaves a span whose id matches the slug that [[Note#^block-id]] links
+	//     resolve to (slugify strips the caret).
+	out = out.replace(
+		/^\^([A-Za-z0-9-]+)[ \t]*$/gm,
+		'<span id="$1" data-block-anchor="$1"></span>',
+	);
+	out = out.replace(
+		/^(.*\S)[ \t]+\^([A-Za-z0-9-]+)[ \t]*$/gm,
+		'$1 <span id="$2" data-block-anchor="$2"></span>',
 	);
 
 	// 6. Inline tags  #tag  →  [#tag](tag:tag)
@@ -260,7 +375,11 @@ export function preprocessContent(content: string, vault: VaultData): string {
 		return `${prefix}${icons[state] ?? `[${state}] `}`;
 	});
 
-	// Restore fenced code blocks
+	// Restore inline code spans, then fenced code blocks
+	out = out.replace(
+		/__INLINECODE_(\d+)__/g,
+		(_, i) => inlineCode[parseInt(i, 10)],
+	);
 	out = out.replace(
 		/__CODEBLOCK_(\d+)__/g,
 		(_, i) => codeBlocks[parseInt(i, 10)],

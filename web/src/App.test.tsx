@@ -111,7 +111,7 @@ describe("App integration (example vault)", () => {
 		const user = userEvent.setup();
 		await renderApp();
 		await user.keyboard("{Control>}k{/Control}");
-		const input = await screen.findByPlaceholderText("Search notes…");
+		const input = await screen.findByPlaceholderText(/Search/);
 		await user.type(input, "Orphan");
 		await user.keyboard("{Enter}");
 		await waitFor(() =>
@@ -123,10 +123,7 @@ describe("App integration (example vault)", () => {
 		const user = userEvent.setup();
 		await renderApp();
 		await user.keyboard("{Control>}k{/Control}");
-		await user.type(
-			await screen.findByPlaceholderText("Search notes…"),
-			"Orphan",
-		);
+		await user.type(await screen.findByPlaceholderText(/Search/), "Orphan");
 		await user.keyboard("{Enter}");
 		// Orphan Note's only backlink is Hub Note
 		await waitFor(() =>

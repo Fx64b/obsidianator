@@ -1,5 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronRight, Hash, FileText, Search, X } from "lucide-react";
+import {
+	ChevronRight,
+	Hash,
+	FileText,
+	LayoutDashboard,
+	Search,
+	X,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -7,7 +14,7 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import type { Note, VaultData, Folder } from "@/types";
+import type { Canvas, Note, VaultData, Folder } from "@/types";
 
 interface SidebarProps {
 	vault: VaultData;
@@ -17,6 +24,8 @@ interface SidebarProps {
 	onTabChange: (tab: "files" | "tags") => void;
 	activeTag: string | null;
 	onTagChange: (tag: string | null) => void;
+	activeCanvasId?: string | null;
+	onSelectCanvas?: (canvas: Canvas) => void;
 }
 
 function folderContainsNote(
@@ -163,6 +172,8 @@ export function Sidebar({
 	onTabChange,
 	activeTag,
 	onTagChange,
+	activeCanvasId,
+	onSelectCanvas,
 }: SidebarProps) {
 	const [filter, setFilter] = useState("");
 	const [tagFilter, setTagFilter] = useState("");
@@ -332,6 +343,30 @@ export function Sidebar({
 						</div>
 					) : (
 						<div className="px-2 py-3 space-y-px">
+							{/* Canvases — listed above the folder tree when present */}
+							{vault.canvases.length > 0 && onSelectCanvas && (
+								<div className="mb-2 space-y-px">
+									{[...vault.canvases]
+										.sort((a, b) => a.name.localeCompare(b.name))
+										.map((canvas) => (
+											<button
+												type="button"
+												key={canvas.id}
+												onClick={() => onSelectCanvas(canvas)}
+												className={cn(
+													"w-full flex items-center gap-1.5 rounded-md py-1 pl-2 pr-3 text-left text-xs transition-colors",
+													activeCanvasId === canvas.id
+														? "bg-accent text-foreground font-medium"
+														: "text-muted-foreground hover:text-foreground hover:bg-accent/60",
+												)}
+											>
+												<LayoutDashboard className="h-3 w-3 shrink-0 opacity-60" />
+												<span className="truncate min-w-0">{canvas.name}</span>
+											</button>
+										))}
+									<div className="mt-2 h-px bg-sidebar-border" />
+								</div>
+							)}
 							{/* Folders first, then notes — mirrors Obsidian default */}
 							{rootFolders.map((folder) => (
 								<FolderNode
