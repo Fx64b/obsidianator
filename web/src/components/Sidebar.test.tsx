@@ -43,9 +43,28 @@ describe("Sidebar files tab", () => {
 		}
 	});
 
-	it("renders nested folder levels (open by default)", () => {
+	it("collapses folders below the first level by default", () => {
 		renderSidebar();
+		// First-level folder is expanded, so its direct child folder shows
 		expect(screen.getByText("Level 1")).toBeInTheDocument();
+		// Deeper levels start collapsed
+		expect(screen.queryByText("Level 2")).not.toBeInTheDocument();
+		expect(screen.queryByText("Deep Note")).not.toBeInTheDocument();
+	});
+
+	it("expanding a nested folder reveals its children", async () => {
+		const user = userEvent.setup();
+		renderSidebar();
+		await user.click(screen.getByText("Level 1"));
+		expect(screen.getByText("Level 2")).toBeInTheDocument();
+	});
+
+	it("auto-expands the folders containing the selected note", () => {
+		const vault = fixtureVault();
+		renderSidebar({
+			vault,
+			selectedNote: fixtureNote(vault, "folders-level-1-level-2-deep-note"),
+		});
 		expect(screen.getByText("Level 2")).toBeInTheDocument();
 		expect(screen.getByText("Deep Note")).toBeInTheDocument();
 	});

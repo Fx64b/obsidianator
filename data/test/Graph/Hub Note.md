@@ -27,7 +27,6 @@ This note links to every other note in the vault. In the graph view, it should a
 
 - [[Wikilinks]]
 - [[External Links]]
-- [[Embeds]]
 
 ## Obsidian
 

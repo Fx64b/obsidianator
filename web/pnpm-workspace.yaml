@@ -4,3 +4,5 @@ packages:
 allowBuilds:
   esbuild: true
   msw: true
+overrides:
+  uuid: '>=11.1.1'

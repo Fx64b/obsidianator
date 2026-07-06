@@ -9,3 +9,5 @@ vault-data.json
 node_modules/
 graphify-out/
 coverage/
+release/
+static-*

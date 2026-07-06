@@ -34,6 +34,32 @@ if (!window.ResizeObserver) {
 	} as unknown as typeof ResizeObserver;
 }
 
+// jsdom 29 exposes `window.localStorage` as an empty object with no Storage
+// methods, so any hook that reads/writes it throws. Back it with a real Map.
+if (typeof window.localStorage?.setItem !== "function") {
+	const store = new Map<string, string>();
+	const storage: Storage = {
+		getItem: (key) => (store.has(key) ? (store.get(key) as string) : null),
+		setItem: (key, value) => {
+			store.set(key, String(value));
+		},
+		removeItem: (key) => {
+			store.delete(key);
+		},
+		clear: () => {
+			store.clear();
+		},
+		key: (index) => [...store.keys()][index] ?? null,
+		get length() {
+			return store.size;
+		},
+	};
+	Object.defineProperty(window, "localStorage", {
+		value: storage,
+		configurable: true,
+	});
+}
+
 Element.prototype.scrollIntoView ??= () => {};
 // Radix UI pointer-capture calls not implemented by jsdom
 Element.prototype.hasPointerCapture ??= () => false;

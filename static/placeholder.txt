@@ -1,0 +1,1 @@
+Placeholder so //go:embed static works without a frontend build. Replaced by 'make web'.
