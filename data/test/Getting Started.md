@@ -3,6 +3,7 @@ title: Getting Started
 tags:
   - getting-started
   - cli
+publish: true
 ---
 
 # Getting Started

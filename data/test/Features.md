@@ -3,6 +3,7 @@ title: Features
 tags:
   - features
   - markdown
+publish: true
 ---
 
 # Features

@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.2](https://github.com/Fx64b/obsidianator/compare/v0.2.1...v0.2.2) (2026-06-13)
+
+
+### Features
+
+* password-protected exports with client-side decryption ([af54cc2](https://github.com/Fx64b/obsidianator/commit/af54cc20c59ac051217854694c6fcb9d597c6a08))
+* search operators and graph color/orphan/time-lapse controls ([56df689](https://github.com/Fx64b/obsidianator/commit/56df689392a07d1298982ed14728fb684d77c7ba))
+
+
+### Bug Fixes
+
+* hover preview scrollbar, footnote back-navigation, mobile sheet scroll ([86297bc](https://github.com/Fx64b/obsidianator/commit/86297bcfac1fe890185594cd49d2e07a341b6e58))
+
 ## [0.2.1](https://github.com/Fx64b/obsidianator/compare/v0.2.0...v0.2.1) (2026-06-12)
 
 

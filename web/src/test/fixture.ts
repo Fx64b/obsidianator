@@ -43,6 +43,7 @@ export function makeVault(overrides: Partial<VaultData> = {}): VaultData {
 		folders: [],
 		edges: [],
 		attachments: {},
+		canvases: [],
 		...overrides,
 	};
 }

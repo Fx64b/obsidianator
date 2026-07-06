@@ -1,5 +1,6 @@
 {
   "name": "test",
+  "appVersion": "0.2.0",
   "notes": [
     {
       "id": "advanced-footnotes",
@@ -17,7 +18,8 @@
         "formatting-basic-formatting"
       ],
       "backlinks": [
-        "graph-hub-note"
+        "graph-hub-note",
+        "links-embeds"
       ],
       "frontmatter": {
         "tags": [
@@ -402,7 +404,7 @@
       "title": "Features",
       "aliases": [],
       "path": "Features.md",
-      "content": "---\ntitle: Features\ntags:\n  - features\n  - markdown\n---\n\n# Features\n\n## Markdown Support\n\nObsidianator renders your notes with full GitHub Flavored Markdown support.\n\n### Supported elements\n\n- **Bold** and *italic* text\n- `inline code` and fenced code blocks with syntax highlighting\n- Tables (like the one in [[Getting Started]])\n- Blockquotes\n- Task lists\n- Images\n\n### Code blocks\n\n```typescript\nconst greeting = (name: string): string =\u003e {\n  return `Hello, ${name}!`\n}\n```\n\n## Wikilinks\n\nLink between notes using Obsidian's `[[wikilink]]` syntax:\n\n- `[[Note Title]]` — links to a note by title\n- `[[Note Title|Alias]]` — links with a custom display name\n\n## Tags\n\nTags can be defined in frontmatter or inline with `#tag-name`.\n\n#example-inline-tag\n\n## Graph View\n\nThe graph view shows all notes as nodes and wikilinks as edges. Larger nodes have more backlinks.\n\n- Click a node to open the note\n- Scroll to zoom, drag to pan\n\n## Search\n\nPress `⌘K` (or `Ctrl+K`) to open the search dialog. Notes are indexed by title, content, and tags using fuzzy search.\n\n## Back to basics\n\nStart from [[Welcome]] or follow the [[Getting Started]] guide.\n",
+      "content": "---\ntitle: Features\ntags:\n  - features\n  - markdown\npublish: true\n---\n\n# Features\n\n## Markdown Support\n\nObsidianator renders your notes with full GitHub Flavored Markdown support.\n\n### Supported elements\n\n- **Bold** and *italic* text\n- `inline code` and fenced code blocks with syntax highlighting\n- Tables (like the one in [[Getting Started]])\n- Blockquotes\n- Task lists\n- Images\n\n### Code blocks\n\n```typescript\nconst greeting = (name: string): string =\u003e {\n  return `Hello, ${name}!`\n}\n```\n\n## Wikilinks\n\nLink between notes using Obsidian's `[[wikilink]]` syntax:\n\n- `[[Note Title]]` — links to a note by title\n- `[[Note Title|Alias]]` — links with a custom display name\n\n## Tags\n\nTags can be defined in frontmatter or inline with `#tag-name`.\n\n#example-inline-tag\n\n## Graph View\n\nThe graph view shows all notes as nodes and wikilinks as edges. Larger nodes have more backlinks.\n\n- Click a node to open the note\n- Scroll to zoom, drag to pan\n\n## Search\n\nPress `⌘K` (or `Ctrl+K`) to open the search dialog. Notes are indexed by title, content, and tags using fuzzy search.\n\n## Back to basics\n\nStart from [[Welcome]] or follow the [[Getting Started]] guide.\n",
       "plainText": "Features\n\nMarkdown Support\n\nObsidianator renders your notes with full GitHub Flavored Markdown support.\n\nSupported elements\n\n- Bold and italic text\n- and fenced code blocks with syntax highlighting\n- Tables (like the one in Getting Started)\n- Blockquotes\n- Task lists\n- Images\n\nCode blocks\n\n \n\nWikilinks\n\nLink between notes using Obsidian's syntax:\n\n- — links to a note by title\n- — links with a custom display name\n\nTags\n\nTags can be defined in frontmatter or inline with .\n\n#example-inline-tag\n\nGraph View\n\nThe graph view shows all notes as nodes and wikilinks as edges. Larger nodes have more backlinks.\n\n- Click a node to open the note\n- Scroll to zoom, drag to pan\n\nSearch\n\nPress (or ) to open the search dialog. Notes are indexed by title, content, and tags using fuzzy search.\n\nBack to basics\n\nStart from Welcome or follow the Getting Started guide.",
       "tags": [
         "features",
@@ -417,11 +419,11 @@
         "advanced-long-document",
         "getting-started",
         "graph-hub-note",
-        "links-embeds",
         "links-wikilinks",
         "welcome"
       ],
       "frontmatter": {
+        "publish": true,
         "tags": [
           "features",
           "markdown"
@@ -476,8 +478,8 @@
         }
       ],
       "folder": "",
-      "modified": "2026-06-11T20:57:13Z",
-      "created": "2026-06-11T20:57:13Z"
+      "modified": "2026-06-12T18:15:54Z",
+      "created": "2026-06-12T18:15:54Z"
     },
     {
       "id": "folders-level-1-level-2-deep-note",
@@ -499,6 +501,8 @@
       "backlinks": [
         "folders-level-1-level-2-deep-note",
         "graph-hub-note",
+        "links-embeds",
+        "links-transclusion",
         "links-wikilinks"
       ],
       "frontmatter": {
@@ -924,8 +928,7 @@
         "formatting-basic-formatting",
         "formatting-code-blocks",
         "formatting-lists",
-        "graph-hub-note",
-        "links-embeds"
+        "graph-hub-note"
       ],
       "frontmatter": {
         "tags": [
@@ -980,7 +983,7 @@
       "title": "Getting Started",
       "aliases": [],
       "path": "Getting Started.md",
-      "content": "---\ntitle: Getting Started\ntags:\n  - getting-started\n  - cli\n---\n\n# Getting Started\n\n## Installation\n\nBuild the binary from source:\n\n```bash\ngit clone https://github.com/Fx64b/obsidianator\ncd obsidianator\nmake all\n```\n\n## Usage\n\nExport your vault to a static site:\n\n```bash\n./obsidianator export /path/to/your/vault --output ./dist\n```\n\nExport and serve immediately:\n\n```bash\n./obsidianator export /path/to/your/vault --output ./dist --serve --port 8080\n```\n\n## Options\n\n| Flag | Default | Description |\n|------|---------|-------------|\n| `--output`, `-o` | `./dist` | Output directory |\n| `--serve` | false | Serve the output after export |\n| `--port` | 3000 | Port to serve on |\n\n## Development\n\nRun the Vite dev server against the test vault:\n\n```bash\nmake copy-vault-data  # exports test vault to web/public/\nmake dev-web          # starts Vite at http://localhost:5173\n```\n\nSee [[Welcome]] to go back to the introduction, or [[Features]] for what's supported.\n",
+      "content": "---\ntitle: Getting Started\ntags:\n  - getting-started\n  - cli\npublish: true\n---\n\n# Getting Started\n\n## Installation\n\nBuild the binary from source:\n\n```bash\ngit clone https://github.com/Fx64b/obsidianator\ncd obsidianator\nmake all\n```\n\n## Usage\n\nExport your vault to a static site:\n\n```bash\n./obsidianator export /path/to/your/vault --output ./dist\n```\n\nExport and serve immediately:\n\n```bash\n./obsidianator export /path/to/your/vault --output ./dist --serve --port 8080\n```\n\n## Options\n\n| Flag | Default | Description |\n|------|---------|-------------|\n| `--output`, `-o` | `./dist` | Output directory |\n| `--serve` | false | Serve the output after export |\n| `--port` | 3000 | Port to serve on |\n\n## Development\n\nRun the Vite dev server against the test vault:\n\n```bash\nmake copy-vault-data  # exports test vault to web/public/\nmake dev-web          # starts Vite at http://localhost:5173\n```\n\nSee [[Welcome]] to go back to the introduction, or [[Features]] for what's supported.\n",
       "plainText": "Getting Started\n\nInstallation\n\nBuild the binary from source:\n\n \n\nUsage\n\nExport your vault to a static site:\n\n \n\nExport and serve immediately:\n\n \n\nOptions\n\n| Flag | Default | Description |\n|------|---------|-------------|\n| , | | Output directory |\n| | false | Serve the output after export |\n| | 3000 | Port to serve on |\n\nDevelopment\n\nRun the Vite dev server against the test vault:\n\n \n\nSee Welcome to go back to the introduction, or Features for what's supported.",
       "tags": [
         "getting-started",
@@ -998,6 +1001,7 @@
         "welcome"
       ],
       "frontmatter": {
+        "publish": true,
         "tags": [
           "getting-started",
           "cli"
@@ -1032,8 +1036,8 @@
         }
       ],
       "folder": "",
-      "modified": "2026-06-11T20:57:13Z",
-      "created": "2026-06-11T20:57:13Z"
+      "modified": "2026-06-12T18:15:54Z",
+      "created": "2026-06-12T18:15:54Z"
     },
     {
       "id": "graph-hub-note",
@@ -1140,8 +1144,7 @@
         "graph-hub-note"
       ],
       "backlinks": [
-        "graph-hub-note",
-        "links-embeds"
+        "graph-hub-note"
       ],
       "frontmatter": {
         "tags": [
@@ -1181,24 +1184,25 @@
       "title": "Embeds",
       "aliases": [],
       "path": "Links/Embeds.md",
-      "content": "---\ntitle: Embeds\ntags:\n  - links\n  - embeds\n  - transclusion\n---\n\n# Embeds\n\nObsidianator supports `![[...]]` embed syntax.\n\n## Note Transclusion\n\nEmbed an entire note inline:\n\n![[Welcome]]\n\n## Partial Transclusion (Heading Anchor)\n\nEmbed just a section of a note (renders full note with attribution):\n\n![[Features]]\n\n## Image Embeds\n\nIf image files are present in the vault, they render inline:\n\n![[example.png]]\n\n![[screenshot.jpg]]\n\n## PDF Embeds\n\nPDF files render as an iframe with an \"Open PDF\" button:\n\n![[document.pdf]]\n\n## Non-Existent Embed\n\nEmbedding a file that doesn't exist falls back gracefully:\n\n![[nonexistent-file.png]]\n\n![[missing-note]]\n\n## Wikilink vs Embed\n\n- `[[Note]]` → wikilink (navigates to note on click)\n- `![[Note]]` → embed (renders note content inline)\n\nSee also: [[Wikilinks]], [[External Links]].\n",
-      "plainText": "Embeds\n\nObsidianator supports embed syntax.\n\nNote Transclusion\n\nEmbed an entire note inline:\n\n!Welcome\n\nPartial Transclusion (Heading Anchor)\n\nEmbed just a section of a note (renders full note with attribution):\n\n!Features\n\nImage Embeds\n\nIf image files are present in the vault, they render inline:\n\n!example.png\n\n!screenshot.jpg\n\nPDF Embeds\n\nPDF files render as an iframe with an \"Open PDF\" button:\n\n!document.pdf\n\nNon-Existent Embed\n\nEmbedding a file that doesn't exist falls back gracefully:\n\n!nonexistent-file.png\n\n!missing-note\n\nWikilink vs Embed\n\n- → wikilink (navigates to note on click)\n- → embed (renders note content inline)\n\nSee also: Wikilinks, External Links.",
+      "content": "---\ntitle: Embeds\ntags:\n  - links\n  - embeds\n  - transclusion\n---\n\n# Embeds\n\nObsidianator supports `![[...]]` embed syntax.\n\n## Note Transclusion\n\nEmbed an entire note inline:\n\n![[Welcome]]\n\n## Partial Transclusion (Heading Anchor)\n\nEmbed just one section of a note — subsections included, with a deep-linked\nattribution:\n\n![[Welcome#What it does]]\n\n![[Transclusion#A Reusable Section]]\n\n## Block Transclusion\n\nEmbed a single block tagged with a `^block-id`:\n\n![[Transclusion#^key-fact]]\n\n![[Transclusion#^tagged-quote]]\n\n![[Transclusion#^table-block]]\n\nLink (rather than embed) a block: [[Transclusion#^key-fact|the key fact]].\n\nAn anchor that doesn't resolve falls back gracefully: ![[Welcome#No Such Section]]\n\n## Image Embeds\n\nIf image files are present in the vault, they render inline:\n\n![[example.png]]\n\n![[screenshot.jpg]]\n\n## PDF Embeds\n\nPDF files render as an iframe with an \"Open PDF\" button:\n\n![[document.pdf]]\n\n## Non-Existent Embed\n\nEmbedding a file that doesn't exist falls back gracefully:\n\n![[nonexistent-file.png]]\n\n![[missing-note]]\n\n## Wikilink vs Embed\n\n- `[[Note]]` → wikilink (navigates to note on click)\n- `![[Note]]` → embed (renders note content inline)\n\nSee also: [[Wikilinks]], [[External Links]].\n",
+      "plainText": "Embeds\n\nObsidianator supports embed syntax.\n\nNote Transclusion\n\nEmbed an entire note inline:\n\n!Welcome\n\nPartial Transclusion (Heading Anchor)\n\nEmbed just one section of a note — subsections included, with a deep-linked\nattribution:\n\n!Welcome#What it does\n\n!Transclusion#A Reusable Section\n\nBlock Transclusion\n\nEmbed a single block tagged with a :\n\n!Transclusion#^key-fact\n\n!Transclusion#^tagged-quote\n\n!Transclusion#^table-block\n\nLink (rather than embed) a block: the key fact.\n\nAn anchor that doesn't resolve falls back gracefully: !Welcome#No Such Section\n\nImage Embeds\n\nIf image files are present in the vault, they render inline:\n\n!example.png\n\n!screenshot.jpg\n\nPDF Embeds\n\nPDF files render as an iframe with an \"Open PDF\" button:\n\n!document.pdf\n\nNon-Existent Embed\n\nEmbedding a file that doesn't exist falls back gracefully:\n\n!nonexistent-file.png\n\n!missing-note\n\nWikilink vs Embed\n\n- → wikilink (navigates to note on click)\n- → embed (renders note content inline)\n\nSee also: Wikilinks, External Links.",
       "tags": [
         "links",
         "embeds",
         "transclusion"
       ],
       "links": [
-        "formatting-tables",
+        "advanced-footnotes",
         "welcome",
-        "features",
-        "graph-orphan-note",
+        "links-transclusion",
+        "folders-level-1-level-2-deep-note",
         "links-wikilinks",
         "links-external-links"
       ],
       "backlinks": [
         "graph-hub-note",
         "links-external-links",
+        "links-transclusion",
         "links-wikilinks"
       ],
       "frontmatter": {
@@ -1227,6 +1231,11 @@
         },
         {
           "level": 2,
+          "text": "Block Transclusion",
+          "slug": "block-transclusion"
+        },
+        {
+          "level": 2,
           "text": "Image Embeds",
           "slug": "image-embeds"
         },
@@ -1247,8 +1256,8 @@
         }
       ],
       "folder": "Links",
-      "modified": "2026-06-11T20:57:13Z",
-      "created": "2026-06-11T20:57:13Z"
+      "modified": "2026-06-12T16:47:29Z",
+      "created": "2026-06-12T16:47:29Z"
     },
     {
       "id": "links-external-links",
@@ -1327,6 +1336,66 @@
       "folder": "Links",
       "modified": "2026-06-11T20:57:13Z",
       "created": "2026-06-11T20:57:13Z"
+    },
+    {
+      "id": "links-transclusion",
+      "title": "Transclusion",
+      "aliases": [],
+      "path": "Links/Transclusion.md",
+      "content": "---\ntitle: Transclusion\ntags:\n  - links\n  - transclusion\n  - blocks\n---\n\n# Transclusion\n\nTargets for heading and block transclusion. See [[Embeds]] for embeds that\nreference this note.\n\n## A Reusable Section\n\nThis whole section can be embedded elsewhere with\n`![[Transclusion#A Reusable Section]]`.\n\n### Nested Subsection\n\nSubsections are included when their parent heading is embedded.\n\n## Block Targets\n\nThis paragraph has a block ID and can be embedded from any note with\n`![[Transclusion#^key-fact]]`. The `^key-fact` marker at the end of the line is\ninvisible in reading view. ^key-fact\n\n\u003e Quoted blocks can be tagged too. ^tagged-quote\n\n| Syntax                | Result           |\n| --------------------- | ---------------- |\n| `![[Note#Heading]]`   | embeds a section |\n| `![[Note#^block-id]]` | embeds a block   |\n\n^table-block\n\nA standalone `^block-id` on its own line (like above) tags the block before it.\n\n## Linking to Blocks\n\nA regular wikilink with a block anchor navigates and scrolls to the block:\n[[Transclusion#^key-fact|jump to the key fact]].\n",
+      "plainText": "Transclusion\n\nTargets for heading and block transclusion. See Embeds for embeds that\nreference this note.\n\nA Reusable Section\n\nThis whole section can be embedded elsewhere with\n .\n\nNested Subsection\n\nSubsections are included when their parent heading is embedded.\n\nBlock Targets\n\nThis paragraph has a block ID and can be embedded from any note with\n . The marker at the end of the line is\ninvisible in reading view. ^key-fact\n\nQuoted blocks can be tagged too. ^tagged-quote\n\n| Syntax | Result |\n| --------------------- | ---------------- |\n| | embeds a section |\n| | embeds a block |\n\n^table-block\n\nA standalone on its own line (like above) tags the block before it.\n\nLinking to Blocks\n\nA regular wikilink with a block anchor navigates and scrolls to the block:\njump to the key fact.",
+      "tags": [
+        "links",
+        "transclusion",
+        "blocks"
+      ],
+      "links": [
+        "links-embeds",
+        "links-transclusion",
+        "folders-level-1-level-2-deep-note"
+      ],
+      "backlinks": [
+        "links-embeds",
+        "links-transclusion"
+      ],
+      "frontmatter": {
+        "tags": [
+          "links",
+          "transclusion",
+          "blocks"
+        ],
+        "title": "Transclusion"
+      },
+      "headers": [
+        {
+          "level": 1,
+          "text": "Transclusion",
+          "slug": "transclusion"
+        },
+        {
+          "level": 2,
+          "text": "A Reusable Section",
+          "slug": "a-reusable-section"
+        },
+        {
+          "level": 3,
+          "text": "Nested Subsection",
+          "slug": "nested-subsection"
+        },
+        {
+          "level": 2,
+          "text": "Block Targets",
+          "slug": "block-targets"
+        },
+        {
+          "level": 2,
+          "text": "Linking to Blocks",
+          "slug": "linking-to-blocks"
+        }
+      ],
+      "folder": "Links",
+      "modified": "2026-06-12T16:42:59Z",
+      "created": "2026-06-12T16:42:59Z"
     },
     {
       "id": "links-wikilinks",
@@ -1893,7 +1962,7 @@
       "title": "Welcome",
       "aliases": [],
       "path": "Welcome.md",
-      "content": "---\ntitle: Welcome\ntags:\n  - getting-started\n  - obsidianator\n---\n\n# Welcome to Obsidianator\n\n**Obsidianator** is a tool that exports your [Obsidian](https://obsidian.md) vault to a self-contained static website.\n\n## What it does\n\n- Parses all your `.md` notes\n- Resolves `[[wikilinks]]` between notes\n- Extracts tags, headers, and frontmatter\n- Renders a fast, searchable web UI\n\n## Getting Started\n\nSee [[Getting Started]] for instructions on how to use Obsidianator.\n\nFor a full list of supported features, check out [[Features]].\n\n## Why Obsidianator?\n\nYour notes deserve to be shared. Obsidianator turns your vault into a self-contained website you can host anywhere — no server required, no Node.js at runtime.\n",
+      "content": "---\ntitle: Welcome\ntags:\n  - getting-started\n  - obsidianator\npublish: true\n---\n\n# Welcome to Obsidianator\n\n**Obsidianator** is a tool that exports your [Obsidian](https://obsidian.md) vault to a self-contained static website.\n\n## What it does\n\n- Parses all your `.md` notes\n- Resolves `[[wikilinks]]` between notes\n- Extracts tags, headers, and frontmatter\n- Renders a fast, searchable web UI\n\n## Getting Started\n\nSee [[Getting Started]] for instructions on how to use Obsidianator.\n\nFor a full list of supported features, check out [[Features]].\n\n## Why Obsidianator?\n\nYour notes deserve to be shared. Obsidianator turns your vault into a self-contained website you can host anywhere — no server required, no Node.js at runtime.\n",
       "plainText": "Welcome to Obsidianator\n\nObsidianator is a tool that exports your Obsidian vault to a self-contained static website.\n\nWhat it does\n\n- Parses all your notes\n- Resolves between notes\n- Extracts tags, headers, and frontmatter\n- Renders a fast, searchable web UI\n\nGetting Started\n\nSee Getting Started for instructions on how to use Obsidianator.\n\nFor a full list of supported features, check out Features.\n\nWhy Obsidianator?\n\nYour notes deserve to be shared. Obsidianator turns your vault into a self-contained website you can host anywhere — no server required, no Node.js at runtime.",
       "tags": [
         "getting-started",
@@ -1914,6 +1983,7 @@
         "links-wikilinks"
       ],
       "frontmatter": {
+        "publish": true,
         "tags": [
           "getting-started",
           "obsidianator"
@@ -1943,79 +2013,104 @@
         }
       ],
       "folder": "",
-      "modified": "2026-06-11T20:57:13Z",
-      "created": "2026-06-11T20:57:13Z"
+      "modified": "2026-06-12T18:15:54Z",
+      "created": "2026-06-12T18:15:54Z"
     }
   ],
   "tags": [
-    "footnotes",
-    "transclusion",
-    "tag/subtag",
-    "mermaid",
-    "test",
-    "syntax-highlighting",
-    "tables",
-    "getting-started",
     "project/obsidianator",
     "tag",
-    "scroll-spy",
-    "status/done",
-    "status/in-progress",
-    "lists",
-    "tags/frontmatter",
-    "organization",
-    "obsidianator",
-    "cli",
-    "hub",
-    "another-tag",
-    "math",
-    "formatting",
-    "graph",
-    "tools/obsidian",
-    "my_tag",
-    "tag123",
-    "katex",
-    "folders",
+    "frontmatter",
     "nesting",
-    "project/obsidianator/frontend",
-    "latex",
+    "math",
+    "mermaid",
     "example-inline-tag",
-    "inline",
-    "tag1",
-    "type/note",
-    "tags",
-    "advanced",
-    "diagrams",
-    "callouts",
+    "formatting",
+    "admonitions",
+    "test/nested",
+    "tag/subtag",
+    "status/in-progress",
+    "workflow-tag",
+    "toc",
+    "scroll-spy",
+    "lists",
+    "test",
+    "blocks",
     "yaml",
+    "obsidianator",
+    "folders",
+    "inline",
+    "tools/vite",
+    "tag1",
+    "status/done",
+    "latex",
+    "wikilinks",
+    "obsidian/plugins",
+    "tag123",
+    "footnotes",
+    "embeds",
     "blockquotes",
+    "tags",
+    "organization",
+    "diagrams",
+    "syntax-highlighting",
+    "scattered",
+    "inline-tag",
+    "external",
+    "callouts",
+    "TAG_NAME",
+    "advanced",
+    "markdown",
+    "getting-started",
+    "transclusion",
+    "features",
+    "connectivity",
+    "multiple",
+    "graph",
     "orphan",
     "links",
-    "external",
-    "my-tag",
-    "test/nested",
-    "workflow-tag",
-    "scattered",
-    "toc",
-    "features",
-    "markdown",
-    "code",
-    "frontmatter",
+    "another-tag",
     "priority/high",
-    "multiple",
-    "connectivity",
-    "embeds",
-    "obsidian/plugins",
-    "TAG_NAME",
+    "type/note",
     "obsidian",
-    "admonitions",
+    "cli",
+    "tags/frontmatter",
     "tools/cli",
     "workflow/daily",
-    "inline-tag",
-    "wikilinks",
-    "tools/vite"
+    "my_tag",
+    "project/obsidianator/frontend",
+    "tables",
+    "hub",
+    "tools/obsidian",
+    "my-tag",
+    "katex",
+    "code"
   ],
   "folders": [
+    {
+      "name": "Links",
+      "path": "Links",
+      "parent": "",
+      "children": [],
+      "notes": [
+        "links-embeds",
+        "links-external-links",
+        "links-transclusion",
+        "links-wikilinks"
+      ]
+    },
+    {
+      "name": "Advanced",
+      "path": "Advanced",
+      "parent": "",
+      "children": [],
+      "notes": [
+        "advanced-footnotes",
+        "advanced-long-document",
+        "advanced-math",
+        "advanced-mermaid"
+      ]
+    },
     {
       "name": "Folders",
       "path": "Folders",
@@ -2035,15 +2130,6 @@
       "notes": []
     },
     {
-      "name": "Level 2",
-      "path": "Folders/Level 1/Level 2",
-      "parent": "Folders/Level 1",
-      "children": [],
-      "notes": [
-        "folders-level-1-level-2-deep-note"
-      ]
-    },
-    {
       "name": "Formatting",
       "path": "Formatting",
       "parent": "",
@@ -2057,18 +2143,6 @@
       ]
     },
     {
-      "name": "Advanced",
-      "path": "Advanced",
-      "parent": "",
-      "children": [],
-      "notes": [
-        "advanced-footnotes",
-        "advanced-long-document",
-        "advanced-math",
-        "advanced-mermaid"
-      ]
-    },
-    {
       "name": "Graph",
       "path": "Graph",
       "parent": "",
@@ -2076,17 +2150,6 @@
       "notes": [
         "graph-hub-note",
         "graph-orphan-note"
-      ]
-    },
-    {
-      "name": "Links",
-      "path": "Links",
-      "parent": "",
-      "children": [],
-      "notes": [
-        "links-embeds",
-        "links-external-links",
-        "links-wikilinks"
       ]
     },
     {
@@ -2101,6 +2164,15 @@
         "obsidian-frontmatter",
         "obsidian-tags-advanced",
         "obsidian-tags"
+      ]
+    },
+    {
+      "name": "Level 2",
+      "path": "Folders/Level 1/Level 2",
+      "parent": "Folders/Level 1",
+      "children": [],
+      "notes": [
+        "folders-level-1-level-2-deep-note"
       ]
     }
   ],
@@ -2299,7 +2371,7 @@
     },
     {
       "source": "links-embeds",
-      "target": "formatting-tables"
+      "target": "advanced-footnotes"
     },
     {
       "source": "links-embeds",
@@ -2307,11 +2379,11 @@
     },
     {
       "source": "links-embeds",
-      "target": "features"
+      "target": "links-transclusion"
     },
     {
       "source": "links-embeds",
-      "target": "graph-orphan-note"
+      "target": "folders-level-1-level-2-deep-note"
     },
     {
       "source": "links-embeds",
@@ -2328,6 +2400,18 @@
     {
       "source": "links-external-links",
       "target": "links-embeds"
+    },
+    {
+      "source": "links-transclusion",
+      "target": "links-embeds"
+    },
+    {
+      "source": "links-transclusion",
+      "target": "links-transclusion"
+    },
+    {
+      "source": "links-transclusion",
+      "target": "folders-level-1-level-2-deep-note"
     },
     {
       "source": "links-wikilinks",
@@ -2446,5 +2530,119 @@
       "target": "features"
     }
   ],
-  "attachments": {}
+  "attachments": {},
+  "canvases": [
+    {
+      "id": "overview",
+      "name": "Overview",
+      "path": "Overview.canvas",
+      "folder": "",
+      "nodes": [
+        {
+          "id": "group-intro",
+          "type": "group",
+          "x": -60,
+          "y": -60,
+          "width": 760,
+          "height": 360,
+          "color": "5",
+          "label": "Start here"
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 120,
+          "color": "4",
+          "text": "# Obsidianator\n\nA **canvas** rendered from the JSON Canvas format. Drag to pan, scroll to zoom."
+        },
+        {
+          "id": "welcome",
+          "type": "file",
+          "x": 400,
+          "y": 0,
+          "width": 280,
+          "height": 100,
+          "file": "Welcome.md",
+          "noteId": "welcome"
+        },
+        {
+          "id": "getting-started",
+          "type": "file",
+          "x": 400,
+          "y": 160,
+          "width": 280,
+          "height": 100,
+          "file": "Getting Started.md",
+          "noteId": "getting-started"
+        },
+        {
+          "id": "features",
+          "type": "file",
+          "x": 0,
+          "y": 400,
+          "width": 280,
+          "height": 100,
+          "file": "Features.md",
+          "noteId": "features"
+        },
+        {
+          "id": "note-text",
+          "type": "text",
+          "x": 400,
+          "y": 400,
+          "width": 280,
+          "height": 140,
+          "color": "3",
+          "text": "Text nodes support **markdown**, `code`, and [[Wikilinks]] that navigate the vault."
+        },
+        {
+          "id": "link-out",
+          "type": "link",
+          "x": 0,
+          "y": 600,
+          "width": 280,
+          "height": 80,
+          "url": "https://obsidian.md"
+        }
+      ],
+      "edges": [
+        {
+          "id": "e1",
+          "fromNode": "title",
+          "fromSide": "right",
+          "toNode": "welcome",
+          "toSide": "left",
+          "toEnd": "arrow",
+          "label": "open"
+        },
+        {
+          "id": "e2",
+          "fromNode": "welcome",
+          "fromSide": "bottom",
+          "toNode": "getting-started",
+          "toSide": "top",
+          "toEnd": "arrow"
+        },
+        {
+          "id": "e3",
+          "fromNode": "title",
+          "fromSide": "bottom",
+          "toNode": "features",
+          "toSide": "top",
+          "toEnd": "arrow",
+          "color": "1"
+        },
+        {
+          "id": "e4",
+          "fromNode": "getting-started",
+          "fromSide": "bottom",
+          "toNode": "note-text",
+          "toSide": "top"
+        }
+      ]
+    }
+  ]
 }

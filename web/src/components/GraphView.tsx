@@ -3,6 +3,12 @@ import ForceGraph2D, { type ForceGraphMethods } from "react-force-graph-2d";
 import { Search, X, ChevronDown } from "lucide-react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+	type ColorMode,
+	createdBounds,
+	orphanIdSet,
+	visibleAtTime,
+} from "@/lib/graph";
 import { cn } from "@/lib/utils";
 import type { Note, VaultData } from "@/types";
 
@@ -59,6 +65,10 @@ export function GraphView({
 	const [tagSearch, setTagSearch] = useState("");
 	const [activeTag, setActiveTag] = useState<string | null>(null);
 	const [tagsOpen, setTagsOpen] = useState(true);
+	const [colorMode, setColorMode] = useState<ColorMode>("folder");
+	const [orphansOnly, setOrphansOnly] = useState(false);
+	const [timeEnabled, setTimeEnabled] = useState(false);
+	const [timeFrac, setTimeFrac] = useState(1);
 	const searchRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
@@ -78,16 +88,41 @@ export function GraphView({
 		};
 	}, []);
 
-	// Collect top-level folders for color coding
-	const folderColors = useMemo(() => {
+	// Color groups for the active color mode: top-level folder or first tag.
+	const colorGroups = useMemo(() => {
 		const map = new Map<string, string>();
 		for (const note of vault.notes) {
-			const top = note.folder ? note.folder.split("/")[0] : "";
-			if (top && !map.has(top))
-				map.set(top, hslColor(stringToHue(top), isDark));
+			const g =
+				colorMode === "tag"
+					? (note.tags[0] ?? "")
+					: note.folder
+						? note.folder.split("/")[0]
+						: "";
+			if (g && !map.has(g)) map.set(g, hslColor(stringToHue(g), isDark));
 		}
 		return map;
-	}, [vault.notes, isDark]);
+	}, [vault.notes, colorMode, isDark]);
+
+	const groupOfNode = useCallback(
+		(n: GraphNode) =>
+			colorMode === "tag"
+				? (n.tags[0] ?? "")
+				: n.folder
+					? n.folder.split("/")[0]
+					: "",
+		[colorMode],
+	);
+
+	const orphans = useMemo(
+		() => orphanIdSet(vault.notes, vault.edges),
+		[vault.notes, vault.edges],
+	);
+
+	const bounds = useMemo(() => createdBounds(vault.notes), [vault.notes]);
+	const timeThreshold =
+		bounds && timeEnabled
+			? bounds.min + (bounds.max - bounds.min) * timeFrac
+			: Number.POSITIVE_INFINITY;
 
 	// All tags in the vault, filtered by the tag search input
 	const allTags = useMemo(() => {
@@ -112,6 +147,8 @@ export function GraphView({
 		const visibleIds = new Set(
 			vault.notes
 				.filter((n) => !activeTag || n.tags.includes(activeTag))
+				.filter((n) => !orphansOnly || orphans.has(n.id))
+				.filter((n) => visibleAtTime(n, timeThreshold))
 				.map((n) => n.id),
 		);
 
@@ -134,7 +171,14 @@ export function GraphView({
 			.map((e) => ({ source: e.source, target: e.target }));
 
 		return { nodes, links };
-	}, [vault.notes, vault.edges, activeTag]);
+	}, [
+		vault.notes,
+		vault.edges,
+		activeTag,
+		orphansOnly,
+		orphans,
+		timeThreshold,
+	]);
 
 	// Save node positions to cache on each tick so remounts restore positions
 	const onEngineTick = useCallback(() => {
@@ -157,10 +201,11 @@ export function GraphView({
 		(node: object) => {
 			const n = node as GraphNode;
 			if (selectedNote?.id === n.id) return isDark ? "#ffffff" : "#09090b";
-			const top = n.folder ? n.folder.split("/")[0] : "";
-			return folderColors.get(top) ?? (isDark ? "#52525b" : "#a1a1aa");
+			return (
+				colorGroups.get(groupOfNode(n)) ?? (isDark ? "#52525b" : "#a1a1aa")
+			);
 		},
-		[selectedNote, isDark, folderColors],
+		[selectedNote, isDark, colorGroups, groupOfNode],
 	);
 
 	const nodeLabel = useCallback(
@@ -168,10 +213,21 @@ export function GraphView({
 		[],
 	);
 
-	const uniqueFolders = useMemo(
-		() => [...folderColors.entries()],
-		[folderColors],
+	// Legend entries for the active color mode, capped so a tag-heavy vault
+	// doesn't overflow the panel.
+	const legendEntries = useMemo(
+		() => [...colorGroups.entries()].slice(0, 10),
+		[colorGroups],
 	);
+	const legendOverflow = colorGroups.size - legendEntries.length;
+
+	const thresholdLabel =
+		bounds && timeEnabled
+			? new Date(timeThreshold).toLocaleDateString(undefined, {
+					year: "numeric",
+					month: "short",
+				})
+			: null;
 
 	return (
 		<TooltipProvider>
@@ -193,12 +249,12 @@ export function GraphView({
 						const n = node as GraphNode & { x: number; y: number };
 						const isSelected = selectedNote?.id === n.id;
 						const r = (isSelected ? 6 : 4) + n.val;
-						const top = n.folder ? n.folder.split("/")[0] : "";
 						const fill = isSelected
 							? isDark
 								? "#ffffff"
 								: "#09090b"
-							: (folderColors.get(top) ?? (isDark ? "#52525b" : "#a1a1aa"));
+							: (colorGroups.get(groupOfNode(n)) ??
+								(isDark ? "#52525b" : "#a1a1aa"));
 
 						ctx.beginPath();
 						ctx.arc(n.x, n.y, r, 0, 2 * Math.PI);
@@ -224,6 +280,76 @@ export function GraphView({
 
 				{/* Filter panel */}
 				<div className="absolute top-3 left-3 flex flex-col gap-2 w-[220px]">
+					{/* Controls: color mode, orphans, time-lapse */}
+					<div className="rounded-md border border-border bg-background/90 backdrop-blur-sm px-2.5 py-2 shadow-sm space-y-2">
+						<div className="flex items-center justify-between gap-2">
+							<span className="text-[10px] font-medium text-muted-foreground">
+								Color by
+							</span>
+							<div className="flex items-center rounded border border-border p-0.5">
+								{(["folder", "tag"] as const).map((m) => (
+									<button
+										type="button"
+										key={m}
+										onClick={() => setColorMode(m)}
+										className={cn(
+											"rounded px-1.5 py-0.5 text-[10px] capitalize transition-colors",
+											colorMode === m
+												? "bg-foreground text-background"
+												: "text-muted-foreground hover:text-foreground",
+										)}
+									>
+										{m}
+									</button>
+								))}
+							</div>
+						</div>
+						<button
+							type="button"
+							onClick={() => setOrphansOnly((o) => !o)}
+							className={cn(
+								"flex w-full items-center justify-between rounded px-1.5 py-1 text-[10px] transition-colors",
+								orphansOnly
+									? "bg-foreground text-background"
+									: "text-muted-foreground hover:text-foreground hover:bg-accent/60",
+							)}
+						>
+							<span>Orphans only</span>
+							<span className="opacity-70">{orphans.size}</span>
+						</button>
+						{bounds && (
+							<div className="space-y-1">
+								<button
+									type="button"
+									onClick={() => setTimeEnabled((t) => !t)}
+									className={cn(
+										"flex w-full items-center justify-between rounded px-1.5 py-1 text-[10px] transition-colors",
+										timeEnabled
+											? "bg-foreground text-background"
+											: "text-muted-foreground hover:text-foreground hover:bg-accent/60",
+									)}
+								>
+									<span>Time-lapse</span>
+									{thresholdLabel && (
+										<span className="opacity-70">{thresholdLabel}</span>
+									)}
+								</button>
+								{timeEnabled && (
+									<input
+										type="range"
+										min={0}
+										max={1}
+										step={0.01}
+										value={timeFrac}
+										onChange={(e) => setTimeFrac(Number(e.target.value))}
+										className="w-full accent-foreground"
+										aria-label="Time-lapse threshold"
+									/>
+								)}
+							</div>
+						)}
+					</div>
+
 					{/* Tag search input */}
 					<div className="flex items-center gap-1.5 rounded-md border border-border bg-background/90 backdrop-blur-sm px-2.5 py-1.5 shadow-sm">
 						<Search className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
@@ -312,17 +438,24 @@ export function GraphView({
 						{graphData.nodes.length} / {vault.notes.length} notes ·{" "}
 						{graphData.links.length} links
 					</p>
-					{uniqueFolders.length > 0 && (
+					{legendEntries.length > 0 && (
 						<div className="space-y-1">
-							{uniqueFolders.map(([folder, color]) => (
-								<div key={folder} className="flex items-center gap-1.5">
+							{legendEntries.map(([group, color]) => (
+								<div key={group} className="flex items-center gap-1.5">
 									<span
 										className="h-2 w-2 rounded-full shrink-0"
 										style={{ backgroundColor: color }}
 									/>
-									<span className="truncate text-[10px]">{folder}</span>
+									<span className="truncate text-[10px]">
+										{colorMode === "tag" ? `#${group}` : group}
+									</span>
 								</div>
 							))}
+							{legendOverflow > 0 && (
+								<p className="text-[10px] text-muted-foreground/60">
+									+{legendOverflow} more
+								</p>
+							)}
 						</div>
 					)}
 					<p className="mt-1.5 text-muted-foreground/60">

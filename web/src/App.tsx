@@ -19,6 +19,7 @@ import {
 	ChevronRight,
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
+import { PasswordPrompt } from "@/components/PasswordPrompt";
 import { SearchDialog } from "@/components/SearchDialog";
 import {
 	TooltipProvider,
@@ -28,12 +29,33 @@ import {
 } from "@/components/ui/tooltip";
 import { useVaultData } from "@/hooks/useVaultData";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { NoteContentContext, useNoteContent } from "@/hooks/useNoteContent";
+import {
+	getPageContext,
+	noteIdFromLocation,
+	notePageFilename,
+	noteUrl,
+} from "@/lib/routing";
 import { cn } from "@/lib/utils";
 
-type View = "notes" | "graph";
+type View = "notes" | "graph" | "canvas";
+
+// Resolved once at startup: pre-rendered note pages stamp data attributes on
+// #root before React mounts, switching the app from hash to path routing.
+const page = getPageContext();
+const routing = page.routing;
 
 export default function App() {
-	const { vault, loading, error } = useVaultData();
+	const {
+		vault,
+		loading,
+		error,
+		needsPassword,
+		unlock,
+		unlockError,
+		unlocking,
+	} = useVaultData();
+	const { hydratedVault, ensure, ready } = useNoteContent(vault);
 	const [view, setView] = useState<View>("notes");
 	const [searchOpen, setSearchOpen] = useState(false);
 	const [sidebarOpen, setSidebarOpen] = useLocalStorage(
@@ -56,6 +78,7 @@ export default function App() {
 		"active-tag",
 		null,
 	);
+	const [activeCanvasId, setActiveCanvasId] = useState<string | null>(null);
 	const [sidebarTab, setSidebarTab] = useLocalStorage<"files" | "tags">(
 		"sidebar-tab",
 		"files",
@@ -133,16 +156,16 @@ export default function App() {
 		style.textContent = dark ? githubDarkCss : githubCss;
 	}, [dark]);
 
-	// Sync active note from URL hash on vault load (initial mount + live reload).
-	// Must NOT depend on activeNoteId — otherwise it fights the hash-writer effect
+	// Sync active note from the URL on vault load (initial mount + live reload).
+	// Must NOT depend on activeNoteId — otherwise it fights the URL-writer effect
 	// below and creates an infinite A↔B loop on in-app back/forward navigation,
-	// where the hash and activeNoteId are briefly out of sync.
+	// where the URL and activeNoteId are briefly out of sync.
 	useEffect(() => {
 		if (!vault || vault.notes.length === 0) return;
-		const hashId = location.hash.slice(1);
-		const fromHash = hashId ? vault.notes.find((n) => n.id === hashId) : null;
-		if (fromHash) {
-			setActiveNoteId(fromHash.id);
+		const urlId = noteIdFromLocation(routing) ?? page.initialNoteId;
+		const fromUrl = urlId ? vault.notes.find((n) => n.id === urlId) : null;
+		if (fromUrl) {
+			setActiveNoteId(fromUrl.id);
 		} else if (
 			!activeNoteId ||
 			!vault.notes.find((n) => n.id === activeNoteId)
@@ -152,22 +175,50 @@ export default function App() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [vault]);
 
-	// Keep hash in sync whenever activeNoteId changes
+	// Keep the URL in sync whenever activeNoteId changes. Gated on the vault
+	// being loaded: before that, activeNoteId is whatever localStorage restored
+	// and writing it would clobber the requested URL before the sync effect
+	// above has had a chance to read it.
 	useEffect(() => {
-		if (!activeNoteId) return;
-		const desired = `#${activeNoteId}`;
-		if (location.hash !== desired) history.replaceState(null, "", desired);
-	}, [activeNoteId]);
+		if (!vault || !activeNoteId) return;
+		if (routing === "path") {
+			if (noteIdFromLocation("path") !== activeNoteId) {
+				history.replaceState(null, "", `./${notePageFilename(activeNoteId)}`);
+			}
+		} else {
+			const desired = `#${activeNoteId}`;
+			if (location.hash !== desired) history.replaceState(null, "", desired);
+		}
+	}, [vault, activeNoteId]);
 
-	// Handle browser back/forward (hash change from browser chrome or external link)
+	// Keep the document title in sync with the active note
 	useEffect(() => {
 		if (!vault) return;
-		const onHash = () => {
-			const id = location.hash.slice(1);
+		const siteName = vault.name || "Obsidianator";
+		const note = vault.notes.find((n) => n.id === activeNoteId);
+		document.title = note ? `${note.title} — ${siteName}` : siteName;
+	}, [vault, activeNoteId]);
+
+	// In chunked mode, fetch the active note's content plus the content of
+	// every note it links to — so transclusions and link hover-previews of the
+	// active note resolve without each waiting on its own round trip.
+	useEffect(() => {
+		if (!vault || !activeNoteId) return;
+		const note = vault.notes.find((n) => n.id === activeNoteId);
+		if (!note) return;
+		ensure([activeNoteId, ...note.links]);
+	}, [vault, activeNoteId, ensure]);
+
+	// Handle browser back/forward (URL change from browser chrome or external link)
+	useEffect(() => {
+		if (!vault) return;
+		const onNav = () => {
+			const id = noteIdFromLocation(routing);
 			if (id && vault.notes.find((n) => n.id === id)) setActiveNoteId(id);
 		};
-		window.addEventListener("hashchange", onHash);
-		return () => window.removeEventListener("hashchange", onHash);
+		const event = routing === "path" ? "popstate" : "hashchange";
+		window.addEventListener(event, onNav);
+		return () => window.removeEventListener(event, onNav);
 	}, [vault, setActiveNoteId]);
 
 	useEffect(() => {
@@ -204,6 +255,12 @@ export default function App() {
 		);
 	}
 
+	if (needsPassword) {
+		return (
+			<PasswordPrompt onUnlock={unlock} error={unlockError} busy={unlocking} />
+		);
+	}
+
 	if (error || !vault) {
 		return (
 			<div className="flex h-screen items-center justify-center bg-background">
@@ -220,190 +277,201 @@ export default function App() {
 		);
 	}
 
+	const v = hydratedVault ?? vault;
+
 	return (
-		<TooltipProvider delayDuration={300}>
-			<div className="flex h-screen flex-col bg-background overflow-hidden">
-				{/* ── Top bar ──────────────────────────────────────────────────── */}
-				<header className="flex h-12 shrink-0 items-center gap-1 overflow-hidden border-b border-border px-2 sm:gap-2 sm:px-3">
-					{/* Sidebar toggle */}
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<button
-								type="button"
-								onClick={() => setSidebarOpen((v) => !v)}
-								className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-							>
-								<PanelLeft className="h-4 w-4" />
-							</button>
-						</TooltipTrigger>
-						<TooltipContent>
-							{sidebarOpen ? "Hide sidebar" : "Show sidebar"}
-						</TooltipContent>
-					</Tooltip>
+		<NoteContentContext.Provider value={{ ensure, ready }}>
+			<TooltipProvider delayDuration={300}>
+				<div className="flex h-screen flex-col bg-background overflow-hidden">
+					{/* ── Top bar ──────────────────────────────────────────────────── */}
+					<header className="flex h-12 shrink-0 items-center gap-1 overflow-hidden border-b border-border px-2 sm:gap-2 sm:px-3">
+						{/* Sidebar toggle */}
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<button
+									type="button"
+									onClick={() => setSidebarOpen((v) => !v)}
+									className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+								>
+									<PanelLeft className="h-4 w-4" />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent>
+								{sidebarOpen ? "Hide sidebar" : "Show sidebar"}
+							</TooltipContent>
+						</Tooltip>
 
-					{/* Back / Forward */}
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<button
-								type="button"
-								onClick={goBack}
-								disabled={!canBack}
-								className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
-							>
-								<ChevronLeft className="h-4 w-4" />
-							</button>
-						</TooltipTrigger>
-						<TooltipContent>
-							Back <kbd className="ml-1 font-mono text-[10px]">Alt+←</kbd>
-						</TooltipContent>
-					</Tooltip>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<button
-								type="button"
-								onClick={goForward}
-								disabled={!canFwd}
-								className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
-							>
-								<ChevronRight className="h-4 w-4" />
-							</button>
-						</TooltipTrigger>
-						<TooltipContent>
-							Forward <kbd className="ml-1 font-mono text-[10px]">Alt+→</kbd>
-						</TooltipContent>
-					</Tooltip>
+						{/* Back / Forward */}
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<button
+									type="button"
+									onClick={goBack}
+									disabled={!canBack}
+									className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
+								>
+									<ChevronLeft className="h-4 w-4" />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent>
+								Back <kbd className="ml-1 font-mono text-[10px]">Alt+←</kbd>
+							</TooltipContent>
+						</Tooltip>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<button
+									type="button"
+									onClick={goForward}
+									disabled={!canFwd}
+									className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
+								>
+									<ChevronRight className="h-4 w-4" />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent>
+								Forward <kbd className="ml-1 font-mono text-[10px]">Alt+→</kbd>
+							</TooltipContent>
+						</Tooltip>
 
-					{/* Brand */}
-					<div className="flex min-w-0 items-center gap-1.5 select-none">
-						<img
-							src="/logo.svg"
-							alt=""
-							className={cn("h-5 w-auto shrink-0", dark && "invert")}
-						/>
-						<span className="hidden text-sm font-semibold tracking-tight sm:inline">
-							Obsidianator
-						</span>
-						{vault.name && (
-							<>
-								<span className="hidden text-border sm:inline">/</span>
-								<span className="max-w-[120px] truncate text-sm text-muted-foreground sm:max-w-[160px]">
-									{vault.name}
-								</span>
-							</>
-						)}
-					</div>
+						{/* Brand */}
+						<div className="flex min-w-0 items-center gap-1.5 select-none">
+							<img
+								src="/logo.svg"
+								alt=""
+								className={cn("h-5 w-auto shrink-0", dark && "invert")}
+							/>
+							<span className="hidden text-sm font-semibold tracking-tight sm:inline">
+								Obsidianator
+							</span>
+							{vault.name && (
+								<>
+									<span className="hidden text-border sm:inline">/</span>
+									<span className="max-w-[120px] truncate text-sm text-muted-foreground sm:max-w-[160px]">
+										{vault.name}
+									</span>
+								</>
+							)}
+						</div>
 
-					<div className="min-w-[8px] flex-1" />
+						<div className="min-w-[8px] flex-1" />
 
-					{/* View toggle — segmented control */}
-					<div className="flex shrink-0 items-center rounded-md border border-border bg-muted p-0.5">
-						{(["notes", "graph"] as const).map((v) => (
-							<button
-								type="button"
-								key={v}
-								onClick={() => setView(v)}
-								className={cn(
-									"flex h-6 items-center gap-1.5 rounded px-2.5 text-xs font-medium transition-all",
-									view === v
-										? "bg-background text-foreground shadow-sm"
-										: "text-muted-foreground hover:text-foreground",
-								)}
-							>
-								{v === "notes" ? (
-									<FileText className="h-3.5 w-3.5" />
-								) : (
-									<GitGraph className="h-3.5 w-3.5" />
-								)}
-								<span className="hidden sm:inline capitalize">{v}</span>
-							</button>
-						))}
-					</div>
+						{/* View toggle — segmented control */}
+						<div className="flex shrink-0 items-center rounded-md border border-border bg-muted p-0.5">
+							{(["notes", "graph"] as const).map((v) => (
+								<button
+									type="button"
+									key={v}
+									onClick={() => setView(v)}
+									className={cn(
+										"flex h-6 items-center gap-1.5 rounded px-2.5 text-xs font-medium transition-all",
+										view === v
+											? "bg-background text-foreground shadow-sm"
+											: "text-muted-foreground hover:text-foreground",
+									)}
+								>
+									{v === "notes" ? (
+										<FileText className="h-3.5 w-3.5" />
+									) : (
+										<GitGraph className="h-3.5 w-3.5" />
+									)}
+									<span className="hidden sm:inline capitalize">{v}</span>
+								</button>
+							))}
+						</div>
 
-					{/* Search */}
-					<button
-						type="button"
-						onClick={() => setSearchOpen(true)}
-						className="flex h-7 shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2 text-xs text-muted-foreground transition-colors hover:border-foreground/20 hover:text-foreground sm:px-2.5"
-					>
-						<Search className="h-3.5 w-3.5" />
-						<span className="hidden sm:inline">Search…</span>
-						<kbd className="hidden sm:flex items-center gap-0.5 rounded border border-border bg-muted px-1 py-px font-mono text-[10px]">
-							⌘K
-						</kbd>
-					</button>
+						{/* Search */}
+						<button
+							type="button"
+							onClick={() => setSearchOpen(true)}
+							className="flex h-7 shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2 text-xs text-muted-foreground transition-colors hover:border-foreground/20 hover:text-foreground sm:px-2.5"
+						>
+							<Search className="h-3.5 w-3.5" />
+							<span className="hidden sm:inline">Search…</span>
+							<kbd className="hidden sm:flex items-center gap-0.5 rounded border border-border bg-muted px-1 py-px font-mono text-[10px]">
+								⌘K
+							</kbd>
+						</button>
 
-					{/* Theme toggle */}
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<button
-								type="button"
-								onClick={() => setDark((d) => !d)}
-								className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-							>
-								{dark ? (
-									<Sun className="h-4 w-4" />
-								) : (
-									<Moon className="h-4 w-4" />
-								)}
-							</button>
-						</TooltipTrigger>
-						<TooltipContent>{dark ? "Light mode" : "Dark mode"}</TooltipContent>
-					</Tooltip>
+						{/* Theme toggle */}
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<button
+									type="button"
+									onClick={() => setDark((d) => !d)}
+									className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+								>
+									{dark ? (
+										<Sun className="h-4 w-4" />
+									) : (
+										<Moon className="h-4 w-4" />
+									)}
+								</button>
+							</TooltipTrigger>
+							<TooltipContent>
+								{dark ? "Light mode" : "Dark mode"}
+							</TooltipContent>
+						</Tooltip>
 
-					{/* Right sidebar toggle */}
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<button
-								type="button"
-								onClick={() => setRightSidebarOpen((v) => !v)}
-								className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-							>
-								<PanelRight className="h-4 w-4" />
-							</button>
-						</TooltipTrigger>
-						<TooltipContent>
-							{rightSidebarOpen ? "Hide panel" : "Show panel"}
-						</TooltipContent>
-					</Tooltip>
-				</header>
+						{/* Right sidebar toggle */}
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<button
+									type="button"
+									onClick={() => setRightSidebarOpen((v) => !v)}
+									className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+								>
+									<PanelRight className="h-4 w-4" />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent>
+								{rightSidebarOpen ? "Hide panel" : "Show panel"}
+							</TooltipContent>
+						</Tooltip>
+					</header>
 
-				{/* ── Content ──────────────────────────────────────────────────── */}
-				<Layout
-					vault={vault}
-					view={view}
-					sidebarOpen={sidebarOpen}
-					onSidebarClose={() => setSidebarOpen(false)}
-					rightSidebarOpen={rightSidebarOpen}
-					onRightPanelClose={() => setRightSidebarOpen(false)}
-					isDark={dark}
-					activeNoteId={activeNoteId}
-					onNoteSelect={(noteId, anchor) => {
-						setActiveNoteId(noteId);
+					{/* ── Content ──────────────────────────────────────────────────── */}
+					<Layout
+						vault={v}
+						view={view}
+						sidebarOpen={sidebarOpen}
+						onSidebarClose={() => setSidebarOpen(false)}
+						rightSidebarOpen={rightSidebarOpen}
+						onRightPanelClose={() => setRightSidebarOpen(false)}
+						isDark={dark}
+						activeNoteId={activeNoteId}
+						onNoteSelect={(noteId, anchor) => {
+							setActiveNoteId(noteId);
+							setView("notes");
+							pushHistory(noteId, anchor);
+							// Push a real browser history entry so the browser's own back button works
+							history.pushState(null, "", noteUrl(noteId, routing));
+							return anchor;
+						}}
+						activeCanvasId={activeCanvasId}
+						onCanvasSelect={(canvas) => {
+							setActiveCanvasId(canvas.id);
+							setView("canvas");
+						}}
+						activeTag={activeTag}
+						onTagChange={setActiveTag}
+						sidebarTab={sidebarTab}
+						onSidebarTabChange={setSidebarTab}
+						onTagClick={handleTagClick}
+					/>
+				</div>
+
+				<SearchDialog
+					open={searchOpen}
+					onOpenChange={setSearchOpen}
+					vault={v}
+					onSelectNote={(note) => {
+						setActiveNoteId(note.id);
 						setView("notes");
-						pushHistory(noteId, anchor);
-						// Push a real browser history entry so the browser's own back button works
-						history.pushState(null, "", `#${noteId}`);
-						return anchor;
+						pushHistory(note.id);
+						setSearchOpen(false);
 					}}
-					activeTag={activeTag}
-					onTagChange={setActiveTag}
-					sidebarTab={sidebarTab}
-					onSidebarTabChange={setSidebarTab}
-					onTagClick={handleTagClick}
 				/>
-			</div>
-
-			<SearchDialog
-				open={searchOpen}
-				onOpenChange={setSearchOpen}
-				vault={vault}
-				onSelectNote={(note) => {
-					setActiveNoteId(note.id);
-					setView("notes");
-					pushHistory(note.id);
-					setSearchOpen(false);
-				}}
-			/>
-		</TooltipProvider>
+			</TooltipProvider>
+		</NoteContentContext.Provider>
 	);
 }
